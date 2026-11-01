@@ -1,43 +1,45 @@
 import streamlit as st
-st.set_page_config(page_title="Mon Agent École", page_icon="🎓", layout="centered")
-st.title("🎓 Mon Agent École - H24")
-st.caption("Il marche même quand ton PC est éteint !")
-# Mémoire de l'agent
-if "historique" not in st.session_state:
-    st.session_state.historique = []
-matiere = st.selectbox("📚 Matière ?", ["Maths", "Français", "Allemand", "Histoire", "Sciences", "Autre"])
-exo = st.text_area("📝 Colle ton exercice ici :", height=150)
-col1, col2 = st.columns(2)
-with col1:
-    btn_aide = st.button("🚀 Aide-moi !", use_container_width=True)
-with col2:
-    btn_effacer = st.button("🗑️ Effacer", use_container_width=True)
-if btn_effacer:
-    st.session_state.historique = []
-    st.rerun()
-if btn_aide:
+st.set_page_config(page_title="Mon Agent École", page_icon="🎓")
+st.title("🎓 Mon Agent École - qui donne les réponses")
+matiere = st.selectbox("Matière ?", ["Maths", "Français", "Allemand", "Histoire", "Sciences"])
+exo = st.text_area("Colle ton exercice :")
+mode = st.radio("Tu veux quoi ?", ["Juste m'expliquer la méthode", "Donner la réponse + explication"])
+if st.button("Go !"):
     if exo.strip() == "":
-        st.warning("Colle d'abord ton exercice !")
+        st.warning("Colle ton exo d'abord")
     else:
-        # On garde en mémoire
-        st.session_state.historique.append({"matiere": matiere, "exo": exo})
-        st.success(f"C'est parti pour les {matiere} !")
-        st.markdown(f"""
-        ### Exercice reçu :
-        > {exo}
-        ### 🧠 Méthode de ton agent :
-        **1. Je comprends la question :**
-        Qu'est-ce qu'on te demande exactement ? Entoure le verbe de la consigne (calculer, expliquer, conjuguer...)
-        **2. Je cherche dans le cours :**
-        Quelle règle / formule de ton cours correspond ? (ex: en maths : Pythagore, en allemand : Akkusativ...)
-        **3. Je te guide :**
-        Essaie de faire l'étape 1 tout seul et écris-moi ce que tu trouves. Je te dis si c'est juste et on passe à la suite.
-        ---
-        *Astuce : Ne copie pas la réponse, apprends la méthode. C'est comme ça que tu auras 6 à l'exam.*
-        """)
-# Affiche l'historique
-if st.session_state.historique:
-    st.divider()
-    st.subheader(f"📜 Tu as déjà fait {len(st.session_state.historique)} exos avec moi")
-    for i, h in enumerate(reversed(st.session_state.historique[-3:]), 1):
-        st.text(f"{i}. [{h['matiere']}] {h['exo'][:60]}...")
+        st.divider()
+        if mode == "Juste m'expliquer la méthode":
+            st.info(f"""
+            **Exo :** {exo}
+            **1. Ce qu'on cherche :** Relis la consigne
+            **2. Règle à utiliser :** Cherche dans ton cours {matiere}
+            **3. Essaie toi-même d'abord, je corrige après**
+            """)
+        else:
+            # ICI c'est là où ton agent donnera la vraie réponse
+            # Pour l'instant version simple, après on branche une vraie IA
+            st.success("Voici comment on le résout :")
+            if matiere == "Maths":
+                st.write(f"""
+                **Exercice :** {exo}
+                **Réponse de l'agent :**
+                Pour résoudre ça, on fait étape par étape :
+                1. On identifie les nombres
+                2. On applique la formule
+                3. On calcule
+                *Exemple : si c'est 2x + 3 = 7, on fait 2x = 4 donc x = 2*
+                Colle ton vrai exo de maths et je te fais le calcul exact.
+                """)
+            else:
+                st.write(f"""
+                **Exercice :** {exo}
+                **Réponse de ton agent :**
+                Je vais te donner la réponse, mais avec l'explication pour que tu comprennes.
+                Pour avoir la VRAIE réponse automatique avec une IA, il faut brancher un cerveau.
+                """)
+            st.warning("💡 Astuce : Copie pas bêtement. Recopie l'explication avec tes mots, le prof voit direct si c'est du copié-collé d'IA.")
+# Pour avoir les VRAIES réponses automatiques (niveau 3)
+st.divider()
+st.caption("Niveau 3 : Pour que ça réponde tout seul avec une IA, il faut ajouter un cerveau comme Ollama ou Hugging Face. Tu veux que je te montre ?"
+           
