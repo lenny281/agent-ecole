@@ -13,4 +13,3 @@ if st.button("Aide-moi !"):
         st.write("**Etape 1 :** C'est quoi la question exacte ?")
         st.write("**Etape 2 :** Quelle regle du cours on utilise ?")
         st.write("Dis-moi et je te guide pour la suite.")
-           
