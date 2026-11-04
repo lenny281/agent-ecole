@@ -1,99 +1,63 @@
-Python
 import streamlit as st
-import random
-st.set_page_config(page_title="Agent Ecole V2 - Toutes Branches", page_icon="🎓", layout="wide")
-st.title("🎓 Agent Ecole V2 - Toutes les branches")
-st.caption("Sans IA, sans token, juste du code. Il répond à tout.")
-# --- MEMOIRE ---
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Salut ! 👋 Je connais toutes les branches. Écris par exemple : `moyenne`, `conjuguer être`, `table multiplication`, `capitale France`, `photosynthèse`, `code bonjour`..."}
-    ]
-with st.sidebar:
-    st.header("📚 Branches")
-    st.write("✅ Maths\n✅ Français\n✅ Allemand\n✅ Anglais\n✅ Histoire\n✅ Géographie\n✅ Sciences\n✅ Informatique")
-    if st.button("🗑️ Effacer"):
-        st.session_state.messages = []
-        st.rerun()
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
-def reponse_v2(q):
-    q = q.lower()
-    # ========== MATHS ==========
+st.set_page_config(page_title="Agent Ecole V2", page_icon="🎓")
+st.title("🎓 Agent Ecole V2 - Toutes Branches")
+st.write("Ecris un mot et je te donne la reponse.")
+question = st.text_input("Ta question :")
+bouton = st.button("Donner la reponse !")
+if bouton:
+    q = question.lower()
+    reponse = ""
+    # MATHS
     if "moyenne" in q:
-        return """**📐 Maths - Moyenne**
-```python
-notes = [12, 15, 18]
-moyenne = sum(notes) / len(notes)
-print(moyenne) # = 15.0
-n = 7
-for i in range(1, 11):
-    print(f"{n} x {i} = {n*i}")
-    print(10 * 5) # 50
-```"""
-    if "périmètre" in q or "perimetre" in q:
-        return """**📐 Maths - Périmètre**
-- Carré : `4 x côté`
-- Rectangle : `2 x (longueur + largeur)`
-- Cercle : `2 x pi x rayon`"""
-    if "pythagore" in q:
-        return """**📐 Maths - Pythagore**
-Dans un triangle rectangle : `a² + b² = c²`
-```python
-# Exemple : a=3, b=4 -> c=5
-import math
-c = math.sqrt(3**2 + 4**2)
-print(c) # 5.0
-```"""
-    if "pair" in q or "impair" in q:
-        return """**📐 Maths - Pair / Impair**
-```python
-n = 7
-if n % 2 == 0:
-    print("Pair")
-else:
-    print("Impair")
-    capitales = {"France": "Paris", "Suisse": "Berne"}
-print(capitales["France"])
-```"""
-    if "suisse" in q and "canton" in q:
-        return """**🌍 Suisse - Cantons**
-Il y a 26 cantons. Les plus grands : Zurich, Berne, Vaud, Genève, Fribourg.
-Fribourg, ton canton, sa capitale est Fribourg."""
-    if "seconde guerre" in q or "guerre" in q:
-        return """**📜 Histoire - 2ème Guerre Mondiale**
-1939-1945. C'est la guerre la plus meurtrière.
-- 1939 : L'Allemagne envahit la Pologne
-- 1945 : Fin de la guerre
-La Suisse est restée neutre pendant la guerre."""
-    # ========== SCIENCES ==========
-    if "photosynth" in q:
-        return """**🔬 Sciences - Photosynthèse**
-La plante fabrique sa nourriture avec :
-`Soleil + Eau + CO2 = Oxygène + Sucre`
-C'est grâce à ça qu'on peut respirer !"""
-    if "eau" in q and "formule" in q:
-        return """**🔬 Sciences - Formules**
-- Eau : H2O
-- Sel : NaCl
-- Oxygène : O2
-- Dioxyde de carbone : CO2"""
-    if "planète" in q or "système solaire" in q:
-        return """**🔬 Sciences - Système solaire**
-Dans l'ordre : Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune.
-**Astuce :** Me Voici Tout Mouillé, J'ai Suivi Un Nuage."""
-    # ========== INFORMATIQUE / CODE ==========
-    if "bonjour" in q or "prenom" in q or "code" in q and "bonjour" in q:
-        return """**💻 Code - Demander le prénom**
-```python
-prenom = input("Ton prénom ? ")
-print(f"Bonjour {prenom} !")
-for i in range(1, 6):
-    print(f"Nombre {i}")
-    age = 13
-if age >= 18:
-    print("Majeur")
-else:
-    print("Mineur")
-    
+        reponse = "Moyenne = (note1 + note2 + note3) / 3. Exemple : (12+15+18)/3 = 15"
+    elif "table" in q or "multiplication" in q:
+        reponse = "Table de 7 : 7x1=7, 7x2=14, 7x3=21, 7x4=28, 7x5=35, 7x6=42, 7x7=49, 7x8=56, 7x9=63, 7x10=70"
+    elif "aire" in q:
+        reponse = "Aire rectangle = longueur x largeur. Aire carre = cote x cote. Aire triangle = (base x hauteur) / 2"
+    elif "pythagore" in q:
+        reponse = "Pythagore : a2 + b2 = c2. Exemple : 3-4-5 car 9+16=25"
+    elif "pair" in q:
+        reponse = "Pair = reste 0 quand on divise par 2. Exemple : 8 est pair, 7 est impair."
+    # FRANCAIS
+    elif "conjuguer" in q or "etre" in q:
+        reponse = "ETRE present : je suis, tu es, il est, nous sommes, vous etes, ils sont"
+    elif "avoir" in q:
+        reponse = "AVOIR present : j'ai, tu as, il a, nous avons, vous avez, ils ont"
+    elif "pluriel" in q:
+        reponse = "Pluriel : on ajoute s. Exemple : un chat -> des chats. Exception : cheval -> chevaux"
+    elif "adjectif" in q:
+        reponse = "Adjectif s'accorde : grand garcon / grande fille / grands garcons"
+    # ALLEMAND
+    elif "allemand" in q or "der" in q:
+        reponse = "Allemand : der = masculin, die = feminin, das = neutre. Exemple : der Hund, die Katze, das Haus"
+    elif "sein" in q:
+        reponse = "SEIN : ich bin, du bist, er ist, wir sind, ihr seid, sie sind"
+    # ANGLAIS
+    elif "anglais" in q or "to be" in q:
+        reponse = "TO BE : I am, You are, He is, We are, You are, They are. Exemple : I am 13"
+    # GEO / HISTOIRE
+    elif "capitale" in q:
+        reponse = "Capitales : France=Paris, Suisse=Berne, Allemagne=Berlin, Italie=Rome, Espagne=Madrid, Angleterre=Londres, Japon=Tokyo"
+    elif "canton" in q:
+        reponse = "Suisse : 26 cantons. Les plus connus : Zurich, Berne, Vaud, Geneve, Fribourg"
+    elif "guerre" in q:
+        reponse = "2eme Guerre Mondiale : 1939-1945. La Suisse est restee neutre."
+    # SCIENCES
+    elif "photosynthese" in q:
+        reponse = "Photosynthese : Soleil + Eau + CO2 = Oxygene + Sucre. C'est comme ca qu'on respire."
+    elif "planete" in q:
+        reponse = "Planetes : Mercure, Venus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune"
+    elif "eau" in q:
+        reponse = "Eau = H2O. Sel = NaCl. Oxygene = O2. CO2 = dioxyde de carbone"
+    # CODE
+    elif "bonjour" in q or "prenom" in q:
+        reponse = "Code Python : prenom = input('Ton prenom ? ') puis print(f'Bonjour {prenom} !')"
+    elif "boucle" in q:
+        reponse = "Code boucle : for i in range(1,6): print(i) -> affiche 1,2,3,4,5"
+    elif "condition" in q or "if" in q:
+        reponse = "Code if : if age >= 18: print('Majeur') else: print('Mineur')"
+    else:
+        reponse = "Je ne connais pas encore ce mot. Essaie : moyenne, table, aire, pythagore, conjuguer, avoir, pluriel, allemand, anglais, capitale, canton, guerre, photosynthese, planete, bonjour, boucle"
+    st.success(reponse)
+st.write("---")
+st.write("Mots qui marchent : moyenne, table, aire, pythagore, pair, conjuguer, avoir, pluriel, adjectif, allemand, anglais, capitale, canton, guerre, photosynthese, planete, eau, bonjour, boucle, condition"
