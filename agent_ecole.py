@@ -4,21 +4,20 @@ st.set_page_config(page_title="Agent IA V5", page_icon="💙", layout="wide")
 
 st.markdown("""
 <style>
-.stApp { background-color: #000a1a; color: white; }
-[data-testid="stSidebar"] { background: linear-gradient(180deg, #001a4d, #000a1a); }
+.stApp { background-color: #0a0018; color: white; }
+[data-testid="stSidebar"] { background: linear-gradient(180deg, #001a4d, #4d001a, #0a0018); }
 [data-testid="stSidebar"] * { color: white !important; }
-.stChatMessage { background-color: #001133 !important; color: white !important; border: 1px solid #00d4ff; border-radius: 15px; box-shadow: 0 0 15px #00d4ff; }
-h1 { color: #00d4ff !important; text-shadow: 0 0 20px #00d4ff, 0 0 40px #0088ff; }
-.stChatInput input { background-color: #001133 !important; color: white !important; border: 1px solid #00d4ff !important; }
-button { background-color: #00d4ff !important; color: black !important; font-weight: bold !important; border-radius: 12px !important; box-shadow: 0 0 12px #00d4ff; }
-button:hover { background-color: #00aaff !important; }
+.stChatMessage { background-color: #150a2e !important; color: white !important; border: 1px solid #ff1493; border-radius: 15px; box-shadow: 0 0 15px #00d4ff, 0 0 15px #ff1493; }
+h1 { background: linear-gradient(90deg, #00d4ff, #ff1493, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px #00d4ff; }
+.stChatInput input { background-color: #150a2e !important; color: white !important; border: 1px solid #00d4ff !important; box-shadow: 0 0 10px #ff1493; }
+button { background: linear-gradient(90deg, #00d4ff, #ff1493) !important; color: white !important; font-weight: bold !important; border-radius: 12px !important; box-shadow: 0 0 15px #00d4ff, 0 0 15px #ff1493; border: none !important; }
+button:hover { background: linear-gradient(90deg, #ff1493, #00d4ff) !important; }
 </style>
 """, unsafe_allow_html=True)
 
 if "theme" not in st.session_state:
     st.session_state.theme = "📐 Ecole"
 
-# TOUTES LES MATIERES ECOLE
 MATIERES = {
     "📐 Maths": ["C'est quoi le théorème de Pythagore ?", "Table de 7", "Toutes les tables de multiplication", "Table de division de 8", "C'est quoi Thales ?", "C'est quoi la moyenne ?", "C'est quoi l'aire ?", "C'est quoi le perimetre ?", "C'est quoi une fraction ?", "C'est quoi le pourcentage ?"],
     "🇫🇷 Français": ["Conjugue ETRE", "Conjugue AVOIR", "Conjugue ALLER", "C'est quoi le passe compose ?", "C'est quoi l'imparfait ?", "C'est quoi le futur ?", "C'est quoi le pluriel ?", "C'est quoi un adjectif ?"],
@@ -33,7 +32,7 @@ MATIERES = {
 THEMES = {
     "📐 Ecole": ["Voir toutes les matières 👇"],
     "🌍 Capitales": ["Capitale du Japon ?", "Capitale du Bresil ?", "Capitale de l'Egypte ?"],
-    "✈️ Avions": ["Quel est l'avion de chasse le plus performant ?", "C'est quoi le F-22 ?", "C'est quoi le F-35 ?"],
+    "✈️ Avions": ["Quel est l'avion de chasse le plus performant ?", "C'est quoi le F-22 ?", "C'est quoi le 【entity-F-35¦canonical_name=F-35】 ?"],
     "💻 PC": ["C'est quoi le meilleur rapport qualite prix ?", "C'est quoi la meilleure GPU ?", "C'est quoi le meilleur CPU ?", "PC 2000 CHF", "PC 1300 CHF", "PC 900 CHF"],
     "⚽ Foot / Sport": ["C'est qui 【entity-Messi¦canonical_name=Messi】 ?", "C'est qui 【entity-Ronaldo¦canonical_name=Ronaldo】 ?", "C'est qui 【entity-Mbappe¦canonical_name=Mbappe】 ?"],
     "🎮 Jeux Video": ["C'est quoi 【entity-Minecraft¦canonical_name=Minecraft】 ?", "C'est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C'est quoi 【entity-Roblox¦canonical_name=Roblox】 ?"],
@@ -43,7 +42,7 @@ THEMES = {
 }
 
 with st.sidebar:
-    st.title("💙 Agent IA V5")
+    st.title("💙💖 Agent IA V5")
     st.write("Clique sur un thème 👇")
     for t in THEMES.keys():
         if st.button(t, key="side_"+t, use_container_width=True):
@@ -60,10 +59,9 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
 
-st.title("💙 Agent IA V5")
-st.caption("BLEU NEON - Clique sur Ecole = toutes les matières !")
+st.title("💙💖 Agent IA V5")
+st.caption("BLEU + ROSE NEON - Version Parfaite !")
 
-# Boutons themes en haut
 cols = st.columns(3)
 for i, t in enumerate(list(THEMES.keys())):
     with cols[i % 3]:
@@ -71,7 +69,6 @@ for i, t in enumerate(list(THEMES.keys())):
             st.session_state.theme = t
             st.rerun()
 
-# SI ON CLIQUE SUR ECOLE -> AFFICHE TOUTES LES MATIERES
 if st.session_state.theme == "📐 Ecole":
     st.subheader("📚 TOUTES LES MATIERES ECOLE 👇 Clique sur une matière :")
     cols2 = st.columns(4)
@@ -80,9 +77,8 @@ if st.session_state.theme == "📐 Ecole":
             if st.button(m, key="mat_"+m, use_container_width=True):
                 st.session_state.theme = m
                 st.rerun()
-    st.info("👆 Clique sur une matière pour voir ses questions ! Ex : Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code")
+    st.info("👆 Clique sur une matière pour voir ses questions ! Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code")
 else:
-    # Si theme est une matiere, on affiche ses questions
     if st.session_state.theme in MATIERES:
         st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
         for q in MATIERES[st.session_state.theme]:
@@ -102,7 +98,7 @@ else:
                 st.rerun()
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙 Clique sur Ecole pour voir toutes les matières : Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code !"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙💖 Version Parfaite Bleu + Rose ! Clique sur Ecole pour voir toutes les matières, ou sur un autre thème !"}]
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -145,18 +141,18 @@ PC = {
     "rtx 5090": "RTX 5090 : Plus puissante du monde, 32 Go, 4K Ultra, 2500 CHF.",
     "rtx 5080": "RTX 5080 : 2eme, 16 Go, 4K fluide, 1200 CHF.",
     "rtx 5070": "RTX 5070 : MEILLEUR RAPPORT GPU ! 12 Go, 1440p Ultra, 600 CHF.",
-    "rtx 4060": "RTX 4060 : Pour commencer, 8 Go, 【entity-Fortnite¦canonical_name=Fortnite】 144 FPS, 350 CHF.",
+    "rtx 4060": "RTX 4060 : Pour commencer, 8 Go, Fortnite 144 FPS, 350 CHF.",
     "meilleur cpu": "MEILLEUR CPU 2026 : 1. Ryzen 9 9950X3D - ROI JEUX. 2. Ryzen 7 9800X3D. 3. Meilleur rapport = Ryzen 7 7800X3D (350 CHF) !",
     "cpu": "CPU = Processeur, cerveau du PC. Meilleur rapport = Ryzen 7 7800X3D (350 CHF).",
-    "meilleur ssd": "MEILLEUR SSD : 1. Samsung 990 PRO 2 To - 7450 Mo/s. 2. Meilleur rapport = WD Black SN850X 1 To (70 CHF) !",
+    "meilleur ssd": "MEILLEUR SSD : 1. 【entity-Samsung¦canonical_name=Samsung】 990 PRO 2 To - 7450 Mo/s. 2. Meilleur rapport = WD Black SN850X 1 To (70 CHF) !",
     "ssd": "SSD = Stocke Windows + jeux. Meilleur rapport = WD Black SN850X 1 To (70 CHF).",
-    "meilleure ram": "MEILLEURE RAM : 32 Go DDR5 6000 MHz CL30. Meilleur rapport = 32 Go 【entity-Corsair¦canonical_name=Corsair】 (120 CHF).",
+    "meilleure ram": "MEILLEURE RAM : 32 Go DDR5 6000 MHz CL30. Meilleur rapport = 32 Go Corsair (120 CHF).",
     "ram": "RAM = Memoire vive. 16 Go minimum, 32 Go DDR5 parfait.",
     "meilleur pc": "MEILLEUR PC : RTX 5090 + Ryzen 9 9950X3D = 4000 CHF. MEILLEUR RAPPORT = PC 1300 CHF : RTX 5070 + 7800X3D = 1300 CHF !",
     "pc gamer": "PC GAMER : 900 CHF = RTX 4060 = 144 FPS. 1300 CHF = RTX 5070 = 180 FPS, LE MEILLEUR RAPPORT. 2000 CHF = RTX 5070 Ti = 240 FPS.",
     "ecran": "MEILLEUR ECRAN RAPPORT : 27 pouces 1440p 180Hz IPS (250 CHF) = parfait.",
     "clavier": "MEILLEUR CLAVIER RAPPORT : Redragon K552 (40 CHF) = mecanique pas cher et tres bon.",
-    "souris": "MEILLEURE SOURIS RAPPORT : Logitech G305 (40 CHF) = sans fil, legere, parfaite.",
+    "souris": "MEILLEURE SOURIS RAPPORT : 【entity-Logitech¦canonical_name=Logitech】 G305 (40 CHF) = sans fil, legere, parfaite.",
     "fps": "FPS = Images par seconde. 60 = fluide, 144 = super fluide, 240 = pro.",
 }
 
@@ -222,21 +218,21 @@ TOUT = {
     "python": "PYTHON : Langage facile, celui de ton agent.",
     "html": "HTML : <h1>Titre</h1> <p>Texte</p>",
     "css": "CSS : body { background-color: black; color: white; }",
-    " 【entity-messi¦canonical_name=Messi】": " 【entity-Messi¦canonical_name=Messi】 : Argentin, 8 Ballons d'Or, meilleur de tous les temps. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, Miami.",
-    " 【entity-ronaldo¦canonical_name=Ronaldo】": " 【entity-CR7¦canonical_name=CR7】 : Portugais, 5 Ballons d'Or, 【entity-Real¦canonical_name=Real Madrid】, Man United, 【entity-Al-Nassr¦canonical_name=Al-Nassr】.",
-    " 【entity-mbappe¦canonical_name=Mbappe】": " 【entity-Mbappe¦canonical_name=Mbappe】 : Francais, 36 km/h ! 【entity-Real Madrid¦canonical_name=Real Madrid】, Champion du monde 2018.",
-    "ballon d'or": "BALLON D'OR : 【entity-Messi¦canonical_name=Messi】 en a 8, record !",
+    " messi": " Messi : Argentin, 8 Ballons d'Or, meilleur de tous les temps. Barca, PSG, Miami.",
+    " ronaldo": " CR7 : Portugais, 5 Ballons d'Or, Real, Man United, Al-Nassr.",
+    " mbappe": " Mbappe : Francais, 36 km/h ! Real Madrid, Champion du monde 2018.",
+    "ballon d'or": "BALLON D'OR : Messi en a 8, record !",
     "coupe du monde": "COUPE DU MONDE : Tous les 4 ans. 2022 = Argentine. 2026 = USA / Canada / Mexique. 48 equipes !",
-    "ligue des champions": "LIGUE DES CHAMPIONS : 【entity-Real Madrid¦canonical_name=Real Madrid】 a gagne 15 fois !",
+    "ligue des champions": "LIGUE DES CHAMPIONS : Real Madrid a gagne 15 fois !",
     "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. NBA aux USA.",
-    "tennis": "TENNIS : Federer, Nadal, Djokovic = 3 meilleurs de l'histoire.",
-    "formule 1": "FORMULE 1 : 350 km/h ! Verstappen, Hamilton, Leclerc.",
+    "tennis": "TENNIS : 【entity-Federer¦canonical_name=Roger Federer】, 【entity-Nadal¦canonical_name=Nadal】, 【entity-Djokovic¦canonical_name=Djokovic】 = 3 meilleurs de l'histoire.",
+    "formule 1": "FORMULE 1 : 350 km/h ! 【entity-Verstappen¦canonical_name=Verstappen】, 【entity-Hamilton¦canonical_name=Hamilton】, 【entity-Leclerc¦canonical_name=Leclerc】.",
     " 【entity-minecraft¦canonical_name=Minecraft】": " 【entity-MINECRAFT¦canonical_name=Minecraft】 : Jeu de cubes, 300M de copies ! Construis, mine, survis aux creepers.",
     " 【entity-fortnite¦canonical_name=Fortnite】": " 【entity-FORTNITE¦canonical_name=Fortnite】 : Battle Royale 100 joueurs, dernier vivant gagne.",
     " 【entity-roblox¦canonical_name=Roblox】": " 【entity-ROBLOX¦canonical_name=Roblox】 : Des millions de jeux crees par les joueurs.",
     "gta": "GTA V : 190M de copies ! Monde ouvert.",
-    " mario": " MARIO : Plombier Nintendo, sauve Peach.",
-    " pokemon": " POKEMON : Attrape-les tous ! Pikachu = mascotte.",
+    " 【entity-mario¦canonical_name=MARIO】": " 【entity-MARIO¦canonical_name=MARIO】 : Plombier Nintendo, sauve Peach.",
+    " 【entity-pokemon¦canonical_name=POKEMON】": " 【entity-POKEMON¦canonical_name=POKEMON】 : Attrape-les tous ! Pikachu = mascotte.",
     "tour eiffel": "TOUR EIFFEL : Paris, 330m, 1889, Gustave Eiffel.",
     "pyramide": "PYRAMIDES : Egypte, 4500 ans, Pharaons.",
     " 【entity-titanic¦canonical_name=Titanic】": " 【entity-TITANIC¦canonical_name=Titanic】 : Coule en 1912, iceberg. Film 1997.",
@@ -248,7 +244,7 @@ TOUT = {
 
 AVIONS = {
     "f-22": "F-22 Raptor (USA) - LE PLUS PERFORMANT EN COMBAT. Mach 2.25 (2400 km/h). Furtif, jamais battu.",
-    " f-35": " F-35 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
+    " 【entity-f-35¦canonical_name=F-35】": " 【entity-F-35¦canonical_name=F-35】 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
     "su-57": "Su-57 Felon (Russie). Mach 2.0. Chasseur furtif russe.",
     "j-20": "J-20 (Chine). Mach 2.0. Chasseur furtif chinois.",
     "rafale": "Rafale (France). Mach 1.8. Polyvalent : air, sol, mer.",
