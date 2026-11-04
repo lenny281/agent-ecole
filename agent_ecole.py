@@ -1,17 +1,19 @@
+
 import streamlit as st
 
-st.set_page_config(page_title="Agent IA V5", page_icon="💙", layout="wide")
+st.set_page_config(page_title="Agent IA V5", page_icon="🖤", layout="wide")
 
 st.markdown("""
 <style>
-.stApp { background-color: #0a0018; color: white; }
-[data-testid="stSidebar"] { background: linear-gradient(180deg, #001a4d, #4d001a, #0a0018); }
-[data-testid="stSidebar"] * { color: white !important; }
-.stChatMessage { background-color: #150a2e !important; color: white !important; border: 1px solid #ff1493; border-radius: 15px; box-shadow: 0 0 15px #00d4ff, 0 0 15px #ff1493; }
-h1 { background: linear-gradient(90deg, #00d4ff, #ff1493, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px #00d4ff; }
-.stChatInput input { background-color: #150a2e !important; color: white !important; border: 1px solid #00d4ff !important; box-shadow: 0 0 10px #ff1493; }
-button { background: linear-gradient(90deg, #00d4ff, #ff1493) !important; color: white !important; font-weight: bold !important; border-radius: 12px !important; box-shadow: 0 0 15px #00d4ff, 0 0 15px #ff1493; border: none !important; }
-button:hover { background: linear-gradient(90deg, #ff1493, #00d4ff) !important; }
+.stApp { background-color: #0a0a0a; color: #e5e5e5; }
+[data-testid="stSidebar"] { background-color: #111111; border-right: 1px solid #222222; }
+[data-testid="stSidebar"] * { color: #e5e5e5 !important; }
+.stChatMessage { background-color: #161616 !important; color: #e5e5e5 !important; border: 1px solid #2a2a2a; border-radius: 12px; }
+h1 { color: #f0f0f0 !important; }
+.stChatInput input { background-color: #161616 !important; color: #e5e5e5 !important; border: 1px solid #2a2a2a !important; }
+button { background-color: #1e1e1e !important; color: #e5e5e5 !important; border: 1px solid #2e2e2e !important; border-radius: 10px !important; box-shadow: none !important; font-weight: 500 !important; }
+button:hover { background-color: #2a2a2a !important; border-color: #3a3a3a !important; color: white !important; }
+[data-testid="stCaption"] { color: #888888 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -38,29 +40,30 @@ THEMES = {
     "🎮 Jeux Video": ["C'est quoi 【entity-Minecraft¦canonical_name=Minecraft】 ?", "C'est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C'est quoi 【entity-Roblox¦canonical_name=Roblox】 ?"],
     "🚀 Espace": ["C'est quoi un trou noir ?", "C'est quoi le Big Bang ?", "C'est quoi Mars ?"],
     "🧪 Science": ["Comment calculer la masse volumique ?", "C'est quoi un atome ?", "C'est quoi la gravite ?"],
-    "🧠 Culture G": ["C'est quoi la Tour Eiffel ?", "C'est quoi les pyramides ?", "C'est quoi le 【entity-Titanic¦canonical_name=Titanic】 ?"],
+    "🧠 Culture G": ["C'est qui Werenoi ?", "C'est qui Ninho ?", "C'est qui Jul ?", "C'est qui 【entity-Gazo¦canonical_name=Gazo】 ?", "C'est qui 【entity-Tiakola¦canonical_name=Tiakola】 ?", "C'est qui 【entity-PNL¦canonical_name=PNL】 ?", "C'est qui SDM ?", "C'est quoi la Tour Eiffel ?", "C'est quoi le 【entity-Titanic¦canonical_name=Titanic】 ?"],
+    "🎤 Chanteurs": ["C'est qui Werenoi ?", "C'est qui Ninho ?", "C'est qui Jul ?", "C'est qui 【entity-Gazo¦canonical_name=Gazo】 ?", "C'est qui 【entity-Tiakola¦canonical_name=Tiakola】 ?", "C'est qui 【entity-PNL¦canonical_name=PNL】 ?", "C'est qui SDM ?", "C'est qui 【entity-Maes¦canonical_name=Maes】 ?", "C'est qui SCH ?", "C'est qui Booba ?", "C'est qui 【entity-Taylor Swift¦canonical_name=Taylor Swift】 ?", "C'est qui 【entity-Drake¦canonical_name=Drake】 ?"],
 }
 
 with st.sidebar:
-    st.title("💙💖 Agent IA V5")
-    st.write("Clique sur un thème 👇")
+    st.title("Agent IA V5")
+    st.write("Clique sur un thème")
     for t in THEMES.keys():
         if st.button(t, key="side_"+t, use_container_width=True):
             st.session_state.theme = t
             st.rerun()
     st.divider()
-    st.write("📚 MATIERES ECOLE :")
+    st.write("MATIERES ECOLE :")
     for m in MATIERES.keys():
         if st.button(m, key="side_m_"+m, use_container_width=True):
             st.session_state.theme = m
             st.rerun()
     st.divider()
-    if st.button("🗑️ Effacer"):
+    if st.button("Effacer"):
         st.session_state.messages = []
         st.rerun()
 
-st.title("💙💖 Agent IA V5")
-st.caption("BLEU + ROSE NEON - Version Parfaite !")
+st.title("Agent IA V5")
+st.caption("Fond noir - discret - Ecole + Capitales + Avions + PC + Chanteurs")
 
 cols = st.columns(3)
 for i, t in enumerate(list(THEMES.keys())):
@@ -70,27 +73,27 @@ for i, t in enumerate(list(THEMES.keys())):
             st.rerun()
 
 if st.session_state.theme == "📐 Ecole":
-    st.subheader("📚 TOUTES LES MATIERES ECOLE 👇 Clique sur une matière :")
+    st.subheader("TOUTES LES MATIERES ECOLE - Clique sur une matière :")
     cols2 = st.columns(4)
     for i, m in enumerate(list(MATIERES.keys())):
         with cols2[i % 4]:
             if st.button(m, key="mat_"+m, use_container_width=True):
                 st.session_state.theme = m
                 st.rerun()
-    st.info("👆 Clique sur une matière pour voir ses questions ! Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code")
+    st.info("Clique sur une matière pour voir ses questions : Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code")
 else:
     if st.session_state.theme in MATIERES:
-        st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
+        st.subheader(f"Questions {st.session_state.theme} - Clique :")
         for q in MATIERES[st.session_state.theme]:
             if st.button(q, key="q_"+q, use_container_width=True):
                 st.session_state.messages.append({"role": "user", "content": q})
                 st.session_state.auto_q = q
                 st.rerun()
-        if st.button("⬅️ Retour à toutes les matières", use_container_width=True):
+        if st.button("Retour à toutes les matières", use_container_width=True):
             st.session_state.theme = "📐 Ecole"
             st.rerun()
     else:
-        st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
+        st.subheader(f"Questions {st.session_state.theme} - Clique :")
         for q in THEMES.get(st.session_state.theme, []):
             if st.button(q, key="q_"+q, use_container_width=True):
                 st.session_state.messages.append({"role": "user", "content": q})
@@ -98,7 +101,7 @@ else:
                 st.rerun()
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙💖 Version Parfaite Bleu + Rose ! Clique sur Ecole pour voir toutes les matières, ou sur un autre thème !"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Salut ! Clique sur Chanteurs pour voir Werenoi, Ninho, Jul, 【entity-Gazo¦canonical_name=Gazo】... ou sur Ecole pour les matières !"}]
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -141,7 +144,7 @@ PC = {
     "rtx 5090": "RTX 5090 : Plus puissante du monde, 32 Go, 4K Ultra, 2500 CHF.",
     "rtx 5080": "RTX 5080 : 2eme, 16 Go, 4K fluide, 1200 CHF.",
     "rtx 5070": "RTX 5070 : MEILLEUR RAPPORT GPU ! 12 Go, 1440p Ultra, 600 CHF.",
-    "rtx 4060": "RTX 4060 : Pour commencer, 8 Go, Fortnite 144 FPS, 350 CHF.",
+    "rtx 4060": "RTX 4060 : Pour commencer, 8 Go, 【entity-Fortnite¦canonical_name=Fortnite】 144 FPS, 350 CHF.",
     "meilleur cpu": "MEILLEUR CPU 2026 : 1. Ryzen 9 9950X3D - ROI JEUX. 2. Ryzen 7 9800X3D. 3. Meilleur rapport = Ryzen 7 7800X3D (350 CHF) !",
     "cpu": "CPU = Processeur, cerveau du PC. Meilleur rapport = Ryzen 7 7800X3D (350 CHF).",
     "meilleur ssd": "MEILLEUR SSD : 1. 【entity-Samsung¦canonical_name=Samsung】 990 PRO 2 To - 7450 Mo/s. 2. Meilleur rapport = WD Black SN850X 1 To (70 CHF) !",
@@ -154,6 +157,37 @@ PC = {
     "clavier": "MEILLEUR CLAVIER RAPPORT : Redragon K552 (40 CHF) = mecanique pas cher et tres bon.",
     "souris": "MEILLEURE SOURIS RAPPORT : 【entity-Logitech¦canonical_name=Logitech】 G305 (40 CHF) = sans fil, legere, parfaite.",
     "fps": "FPS = Images par seconde. 60 = fluide, 144 = super fluide, 240 = pro.",
+}
+
+CHANTEURS = {
+    "werenoi": "WERENOI : Rappeur francais, le plus ecoute en France en 2024 et 2025 ! Album : Pyramide, Diamant Noir. Son style : drill melodique, voix grave. Il a commence en 2021, il a explose avec Solitaire. Decede en mai 2025, il reste une legende.",
+    "ninho": "NINHO : Rappeur francais, record de disques d'or et de diamant en France ! Album : M.I.L.S, Jefe, NI. Il vient de Nemours. Son feat avec 【entity-Niska¦canonical_name=Niska】, Lettre a une femme = diamant.",
+    "jul": "JUL : Rappeur de Marseille, le plus productif ! Il sort 2 albums par an. Album : La machine, C'est pas des LOL, Decennie. Son signe : la main. Il a fait plus de 100 feats avec des jeunes.",
+    "【entity-gazo¦canonical_name=Gazo】": "【entity-GAZO¦canonical_name=Gazo】 : Rappeur francais, roi de la drill en France ! Il a fait la drill francaise avec 【entity-Freeze Corleone¦canonical_name=Freeze Corleone】. Album : KMT, Apocalypse. Son son : Drill sombre, voix grave. Feat avec 【entity-Tiakola¦canonical_name=Tiakola】 : La Melo = enorme tube.",
+    "【entity-tiakola¦canonical_name=Tiakola】": "【entity-TIAKOLA¦canonical_name=Tiakola】 : Chanteur / rappeur francais, membre de 【entity-4Keus¦canonical_name=4Keus】. Album : Melo, BDLM. Sa voix melodique est unique. Son feat avec 【entity-Gazo¦canonical_name=Gazo】 : La Melo, avec Ninho : ... Il fait du afro / melodique.",
+    "【entity-pnl¦canonical_name=PNL】": "【entity-PNL¦canonical_name=PNL】 : Duo de freres Ademo et N.O.S, de Corbeil-Essonnes. Album : Le monde Chico, Dans la legende, Deux freres. Style : cloud rap, planant, autotune. Ils ne font presque jamais d'interviews.",
+    "sdm": "SDM : Rappeur francais, signe chez Booba (92i). Album : Ocho, A vie, A nos corps. Il a explose avec le feat Bolide allemand avec Ninho. Flow rapide, technique.",
+    "【entity-maes¦canonical_name=Maes】": "【entity-MAES¦canonical_name=Maes】 : Rappeur de Sevran. Album : Pure, Les derniers salopards, Omerta. Son style : trap melodique. Son son : Street, Dybala...",
+    "sch": "SCH : Rappeur de Marseille. Album : Anarchie, JVLIVS, Autobahn. Son style : sombre, technique, imaginaire mafieux. Son son : Bande organisee avec Jul = tube de l'ete 2020.",
+    "booba": "BOOBA : Le Duc de Boulogne, legende du rap francais depuis 1995 avec Lunatic. Album : Temps mort, Ouest Side, Ultra. Il a lance plein de rappeurs : Ninho, SDM, Gazo...",
+    "koba la d": "KOBA LA D : Rappeur francais, flow rapide, argot. Album : VII, L'Affranchi. Son son : Train de vie, Dernier jour...",
+    "【entity-damso¦canonical_name=DAMSO】": "【entity-DAMSO¦canonical_name=DAMSO】 : Rappeur belge / congolais. Album : Batterie Faible, Ipséité, Lithopédion, QALF. Son style : sombre, technique, punchlines. Son son : Macarena = diamant.",
+    "dinos": "DINOS : Rappeur francais, tres technique. Album : Imany, Taciturne, Stamina. Son son : Presque, Ciel pleure...",
+    "【entity-laylow¦canonical_name=LAYLOW】": "【entity-LAYLOW¦canonical_name=LAYLOW】 : Rappeur francais, univers futuriste. Album : Trinity, L'Etrange Histoire de Mr Anderson. Son style : autotune, electrique.",
+    "nekfeu": "NEKFEU : Rappeur francais, membre de 1995 et S-Crew. Album : Feu, Cyborg, Les etoiles vagabondes. Son son : On verra, Tricheur...",
+    "【entity-taylor swift¦canonical_name=Taylor Swift】": "【entity-TAYLOR SWIFT¦canonical_name=Taylor Swift】 : Chanteuse americaine, la plus ecoutee au monde ! Album : 1989, Midnights, The Tortured Poets Department. Elle a gagne 14 Grammy. Ses fans = les Swifties.",
+    "【entity-drake¦canonical_name=Drake】": "【entity-DRAKE¦canonical_name=Drake】 : Rappeur canadien, le plus streamé au monde ! Album : Take Care, Scorpion, Her Loss. Son son : God's Plan, One Dance, Hotline Bling.",
+    "weeknd": "THE WEEKND : Chanteur canadien. Album : After Hours, Starboy. Son son : Blinding Lights = chanson la plus ecoutee de tous les temps sur Spotify !",
+    "bad bunny": "BAD BUNNY : Chanteur portoricain, roi du reggaeton. Album : Un Verano Sin Ti. Son son : Tití Me Preguntó...",
+    "billie eilish": "BILLIE EILISH : Chanteuse americaine, elle a commence a 14 ans ! Album : When We All Fall Asleep, Happier Than Ever. Son son : Bad Guy, Birds of a Feather.",
+    "ed sheeran": "ED SHEERAN : Chanteur anglais, guitare + loop. Album : Divide, =. Son son : Shape of You, Perfect, Thinking Out Loud.",
+    "rihanna": "RIHANNA : Chanteuse de la Barbade. Album : Anti, Good Girl Gone Bad. Son son : Diamonds, Umbrella, Work. Elle a aussi sa marque Fenty.",
+    "beyonce": "BEYONCE : Queen B, chanteuse americaine, ex Destiny's Child. Album : Renaissance, Lemonade. 32 Grammy, record !",
+    "eminem": "EMINEM : Rappeur americain, legende. Album : The Slim Shady LP, The Marshall Mathers LP, Recovery. Son son : Lose Yourself, Rap God, Mockingbird. Le plus rapide : 7 mots par seconde !",
+    "soprano": "SOPRANO : Chanteur / rappeur de Marseille. Album : La Colombe, L'Everest, Chasseur d'etoiles. Son son : Cosmo, En feu, A la vie, a l'amour. Tres positif.",
+    "m pokora": "M. POKORA : Chanteur francais, ex Popstars. Album : R.E.D, Pyramide, Epicentre. Son son : Juste une photo de toi, Les planetes...",
+    "stromae": "STROMAE : Chanteur belge. Album : Racine carree, Multitude. Son son : Papaoutai, Formidable, Alors on danse, L'enfer. Il melange electro et chansons tristes.",
+    "aura": "AURA / 【entity-LACRIM¦canonical_name=LACRIM】 : 【entity-LACRIM¦canonical_name=LACRIM】 : Rappeur francais, style street. Album : Force et Honneur, R.I.P.R.O. Son son : Corleone, Oh bah oui...",
 }
 
 TOUT = {
@@ -221,21 +255,21 @@ TOUT = {
     " messi": " Messi : Argentin, 8 Ballons d'Or, meilleur de tous les temps. Barca, PSG, Miami.",
     " ronaldo": " CR7 : Portugais, 5 Ballons d'Or, Real, Man United, Al-Nassr.",
     " mbappe": " Mbappe : Francais, 36 km/h ! Real Madrid, Champion du monde 2018.",
-    "ballon d'or": "BALLON D'OR : Messi en a 8, record !",
+    "ballon d'or": "BALLON D'OR : 【entity-Messi¦canonical_name=Messi】 en a 8, record !",
     "coupe du monde": "COUPE DU MONDE : Tous les 4 ans. 2022 = Argentine. 2026 = USA / Canada / Mexique. 48 equipes !",
     "ligue des champions": "LIGUE DES CHAMPIONS : Real Madrid a gagne 15 fois !",
     "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. NBA aux USA.",
-    "tennis": "TENNIS : 【entity-Federer¦canonical_name=Roger Federer】, 【entity-Nadal¦canonical_name=Nadal】, 【entity-Djokovic¦canonical_name=Djokovic】 = 3 meilleurs de l'histoire.",
-    "formule 1": "FORMULE 1 : 350 km/h ! 【entity-Verstappen¦canonical_name=Verstappen】, 【entity-Hamilton¦canonical_name=Hamilton】, 【entity-Leclerc¦canonical_name=Leclerc】.",
-    " 【entity-minecraft¦canonical_name=Minecraft】": " 【entity-MINECRAFT¦canonical_name=Minecraft】 : Jeu de cubes, 300M de copies ! Construis, mine, survis aux creepers.",
-    " 【entity-fortnite¦canonical_name=Fortnite】": " 【entity-FORTNITE¦canonical_name=Fortnite】 : Battle Royale 100 joueurs, dernier vivant gagne.",
-    " 【entity-roblox¦canonical_name=Roblox】": " 【entity-ROBLOX¦canonical_name=Roblox】 : Des millions de jeux crees par les joueurs.",
+    "tennis": "TENNIS : Federer, Nadal, Djokovic = 3 meilleurs de l'histoire.",
+    "formule 1": "FORMULE 1 : 350 km/h ! Verstappen, Hamilton, Leclerc.",
+    " minecraft": " MINECRAFT : Jeu de cubes, 300M de copies ! Construis, mine, survis aux creepers.",
+    " fortnite": " FORTNITE : Battle Royale 100 joueurs, dernier vivant gagne.",
+    " roblox": " ROBLOX : Des millions de jeux crees par les joueurs.",
     "gta": "GTA V : 190M de copies ! Monde ouvert.",
-    " 【entity-mario¦canonical_name=MARIO】": " 【entity-MARIO¦canonical_name=MARIO】 : Plombier Nintendo, sauve Peach.",
-    " 【entity-pokemon¦canonical_name=POKEMON】": " 【entity-POKEMON¦canonical_name=POKEMON】 : Attrape-les tous ! Pikachu = mascotte.",
+    " mario": " MARIO : Plombier Nintendo, sauve Peach.",
+    " pokemon": " POKEMON : Attrape-les tous ! Pikachu = mascotte.",
     "tour eiffel": "TOUR EIFFEL : Paris, 330m, 1889, Gustave Eiffel.",
     "pyramide": "PYRAMIDES : Egypte, 4500 ans, Pharaons.",
-    " 【entity-titanic¦canonical_name=Titanic】": " 【entity-TITANIC¦canonical_name=Titanic】 : Coule en 1912, iceberg. Film 1997.",
+    " titanic": " TITANIC : Coule en 1912, iceberg. Film 1997.",
     " harry potter": " HARRY POTTER : Sorcier avec cicatrice en eclair. Par J.K. Rowling.",
     "one piece": "ONE PIECE : Manga le plus vendu au monde. Luffy veut devenir Roi des Pirates.",
     "naruto": "NARUTO : Ninja qui veut devenir Hokage. Rasengan !",
@@ -244,7 +278,7 @@ TOUT = {
 
 AVIONS = {
     "f-22": "F-22 Raptor (USA) - LE PLUS PERFORMANT EN COMBAT. Mach 2.25 (2400 km/h). Furtif, jamais battu.",
-    " 【entity-f-35¦canonical_name=F-35】": " 【entity-F-35¦canonical_name=F-35】 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
+    " f-35": " F-35 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
     "su-57": "Su-57 Felon (Russie). Mach 2.0. Chasseur furtif russe.",
     "j-20": "J-20 (Chine). Mach 2.0. Chasseur furtif chinois.",
     "rafale": "Rafale (France). Mach 1.8. Polyvalent : air, sol, mer.",
@@ -264,13 +298,13 @@ AVIONS = {
 }
 
 def toutes_tables():
-    txt = "📐 TOUTES LES TABLES DE MULTIPLICATION 1 a 12 :\n\n"
+    txt = "TOUTES LES TABLES DE MULTIPLICATION 1 a 12 :\n\n"
     for n in range(1, 13):
         txt += f"Table de {n} : " + ", ".join([f"{n}x{i}={n*i}" for i in range(1, 11)]) + "\n\n"
     return txt
 
 def table_division(n):
-    txt = f"➗ TABLE DE DIVISION DE {n} :\n"
+    txt = f"TABLE DE DIVISION DE {n} :\n"
     for i in range(1, 11):
         txt += f"{n*i} / {n} = {i}  |  "
     return txt
@@ -304,17 +338,20 @@ def trouver(q_orig):
         return "J'ai 195 capitales ! Essaie : capitale du Japon..."
     for cle, rep in PC.items():
         if cle in q:
-            return "💻 " + rep
+            return rep
+    for cle, rep in CHANTEURS.items():
+        if cle in q:
+            return rep
     for cle, rep in AVIONS.items():
         if cle in q:
-            return "✈️ " + rep
+            return rep
     for mot, rep in TOUT.items():
         if mot in q:
             return rep
     for pays, cap in CAPITALES.items():
         if q == pays:
             return pays.capitalize() + " -> Capitale = " + cap
-    return "Je ne connais pas encore : " + q_orig + ". Essaie : clique sur une matiere !"
+    return "Je ne connais pas encore : " + q_orig + ". Essaie : C'est qui Werenoi ?, C'est qui Ninho ?..."
 
 if "auto_q" in st.session_state and st.session_state.auto_q:
     q_auto = st.session_state.auto_q
