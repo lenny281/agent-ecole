@@ -1,15 +1,19 @@
 import streamlit as st
-st.set_page_config(page_title="Agent Ecole V2", page_icon="🎓", layout="wide")
-# --- STYLE V2 ---
+st.set_page_config(page_title="Agent Ecole V2 Noir", page_icon="🖤", layout="wide")
+# --- STYLE NOIR ---
 st.markdown("""
 <style>
-.stApp { background-color: #f0f2f6; }
+.stApp { background-color: #000000; color: white; }
+[data-testid="stSidebar"] { background-color: #111111; }
+[data-testid="stSidebar"] * { color: white !important; }
+.stChatMessage { background-color: #1a1a1a !important; color: white !important; border: 1px solid #333333; }
+input { background-color: #222222 !important; color: white !important; }
+h1, h2, h3, p { color: white !important; }
 </style>
 """, unsafe_allow_html=True)
-# --- BARRE DE GAUCHE V2 ---
 with st.sidebar:
-    st.title("🎓 Agent Ecole V2")
-    st.write("**Toutes les branches**")
+    st.title("🖤 Agent Ecole V2")
+    st.write("**Mode Noir**")
     st.write("✅ Maths")
     st.write("✅ Français")
     st.write("✅ Allemand")
@@ -18,46 +22,43 @@ with st.sidebar:
     st.write("✅ Sciences")
     st.write("✅ Code")
     st.divider()
-    st.caption("Sans IA, sans token, juste du code.")
-    if st.button("🗑️ Effacer la conversation"):
+    st.caption("Sans IA, juste du code.")
+    if st.button("🗑️ Effacer"):
         st.session_state.messages = []
         st.rerun()
-st.title("🎓 Mon Agent Ecole - V2 Style")
-st.caption("Pose ta question en bas, comme sur ChatGPT")
-# --- MEMOIRE POUR LES BULLES ---
+st.title("🖤 Mon Agent Ecole - Mode Noir")
+st.caption("Pose ta question en bas")
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Salut ! 👋 Je connais toutes les branches. Essaie : `moyenne`, `capitale`, `conjuguer`, `photosynthese`, `bonjour`..."}
+        {"role": "assistant", "content": "Salut ! 👋 Mode noir activé. Essaie : moyenne, capitale, conjuguer, photosynthese, bonjour..."}
     ]
-# --- AFFICHER LES BULLES ---
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
-# --- FONCTION REPONSE ---
 def trouver_reponse(q):
     q = q.lower()
     if "moyenne" in q:
-        return "📐 **Moyenne** = (12+15+18) / 3 = 15. On additionne et on divise par le nombre de notes."
+        return "📐 **Moyenne** = (12+15+18) / 3 = 15"
     if "table" in q or "multiplication" in q:
         return "📐 **Table de 7 :** 7, 14, 21, 28, 35, 42, 49, 56, 63, 70"
     if "aire" in q:
-        return "📐 **Aire :** Rectangle = longueur x largeur. Carré = côté x côté. Triangle = (base x hauteur) / 2"
+        return "📐 **Aire :** Rectangle = longueur x largeur. Triangle = (base x hauteur) / 2"
     if "pythagore" in q:
-        return "📐 **Pythagore :** a² + b² = c². Exemple : 3-4-5 car 9+16=25"
+        return "📐 **Pythagore :** a² + b² = c². Exemple : 3-4-5"
     if "pair" in q:
-        return "📐 **Pair :** 8 est pair, 7 est impair. Si le reste de /2 = 0, c'est pair."
+        return "📐 **Pair :** 8 est pair, 7 est impair."
     if "conjuguer" in q or "etre" in q:
         return "🇫🇷 **ÊTRE :** je suis, tu es, il est, nous sommes, vous êtes, ils sont"
     if "avoir" in q:
         return "🇫🇷 **AVOIR :** j'ai, tu as, il a, nous avons, vous avez, ils ont"
     if "pluriel" in q:
-        return "🇫🇷 **Pluriel :** un chat -> des chats. Exception : cheval -> chevaux"
+        return "🇫🇷 **Pluriel :** un chat -> des chats. cheval -> chevaux"
     if "allemand" in q or "der" in q:
-        return "🇩🇪 **Allemand :** der = masculin, die = féminin, das = neutre. der Hund, die Katze, das Haus"
+        return "🇩🇪 **Allemand :** der = masculin, die = féminin, das = neutre"
     if "anglais" in q or "to be" in q:
         return "🇬🇧 **TO BE :** I am, You are, He is, We are, You are, They are"
     if "capitale" in q:
-        return "🌍 **Capitales :** France=Paris, Suisse=Berne, Allemagne=Berlin, Italie=Rome, Espagne=Madrid, Japon=Tokyo"
+        return "🌍 **Capitales :** France=Paris, Suisse=Berne, Allemagne=Berlin, Italie=Rome"
     if "canton" in q:
         return "🌍 **Suisse :** 26 cantons. Zurich, Berne, Vaud, Genève, Fribourg."
     if "guerre" in q:
@@ -67,14 +68,13 @@ def trouver_reponse(q):
     if "planete" in q:
         return "🔬 **Planètes :** Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune"
     if "bonjour" in q or "prenom" in q:
-        return "💻 **Code :** `prenom = input('Ton prénom ?')` puis `print(f'Bonjour {prenom} !')`"
+        return "💻 **Code :** prenom = input('Ton prénom ?') puis print(f'Bonjour {prenom} !')"
     if "boucle" in q:
-        return "💻 **Boucle :** `for i in range(1,6): print(i)` -> affiche 1,2,3,4,5"
+        return "💻 **Boucle :** for i in range(1,6): print(i)"
     if "condition" in q:
-        return "💻 **Condition :** `if age >= 18: print('Majeur') else: print('Mineur')`"
-    return "Je ne connais pas encore ce mot. Essaie : moyenne, table, aire, pythagore, conjuguer, avoir, pluriel, allemand, anglais, capitale, canton, guerre, photosynthese, planete, bonjour, boucle"
-# --- ZONE DE SAISIE EN BAS COMME CHATGPT ---
-if question := st.chat_input("Pose ta question pour n'importe quelle branche..."):
+        return "💻 **Condition :** if age >= 18: print('Majeur') else: print('Mineur')"
+    return "Je ne connais pas ce mot. Essaie : moyenne, table, aire, pythagore, conjuguer, avoir, pluriel, allemand, anglais, capitale, canton, guerre, photosynthese, planete, bonjour, boucle"
+if question := st.chat_input("Pose ta question..."):
     st.session_state.messages.append({"role": "user", "content": question})
     with st.chat_message("user"):
         st.write(question)
