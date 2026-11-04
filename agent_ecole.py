@@ -60,4 +60,5 @@ if bouton:
         reponse = "Je ne connais pas encore ce mot. Essaie : moyenne, table, aire, pythagore, conjuguer, avoir, pluriel, allemand, anglais, capitale, canton, guerre, photosynthese, planete, bonjour, boucle"
     st.success(reponse)
 st.write("---")
-st.write("Mots qui marchent : moyenne, table, aire, pythagore, pair, conjuguer, avoir, pluriel, adjectif, allemand, anglais, capitale, canton, guerre, photosynthese, planete, eau, bonjour, boucle, condition"
+st.write("Mots qui marchent : moyenne, table, aire, pythagore, pair, conjuguer, avoir, pluriel, adjectif, allemand, anglais, capitale, canton, guerre, photosynthese, planete, eau, bonjour, boucle, condition")
+
