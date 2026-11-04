@@ -16,15 +16,27 @@ button:hover { background-color: #00aaff !important; }
 """, unsafe_allow_html=True)
 
 if "theme" not in st.session_state:
-    st.session_state.theme = "Ecole"
+    st.session_state.theme = "📐 Ecole"
+
+# TOUTES LES MATIERES ECOLE
+MATIERES = {
+    "📐 Maths": ["C'est quoi le théorème de Pythagore ?", "Table de 7", "Toutes les tables de multiplication", "Table de division de 8", "C'est quoi Thales ?", "C'est quoi la moyenne ?", "C'est quoi l'aire ?", "C'est quoi le perimetre ?", "C'est quoi une fraction ?", "C'est quoi le pourcentage ?"],
+    "🇫🇷 Français": ["Conjugue ETRE", "Conjugue AVOIR", "Conjugue ALLER", "C'est quoi le passe compose ?", "C'est quoi l'imparfait ?", "C'est quoi le futur ?", "C'est quoi le pluriel ?", "C'est quoi un adjectif ?"],
+    "🇩🇪 Allemand": ["C'est quoi der die das ?", "Conjugue SEIN", "Conjugue HABEN", "C'est quoi GEHEN ?"],
+    "🇬🇧 Anglais": ["Conjugue TO BE", "Conjugue TO HAVE", "C'est quoi TO GO ?", "C'est quoi le present perfect ?"],
+    "📜 Histoire / Géo": ["C'est quoi la 2eme Guerre ?", "C'est quoi la Revolution ?", "C'est quoi Rome ?", "C'est quoi le Moyen Age ?", "C'est quoi l'Egypte ?", "C'est quoi Napoleon ?", "C'est quoi les continents ?", "C'est quoi les oceans ?"],
+    "🔬 Sciences": ["Comment calculer la masse volumique ?", "C'est quoi la photosynthese ?", "C'est quoi la gravite ?", "C'est quoi le coeur ?", "C'est quoi un volcan ?", "C'est quoi les saisons ?", "C'est quoi la foudre ?"],
+    "🧪 Chimie / Physique": ["C'est quoi un atome ?", "C'est quoi l'oxygene ?", "C'est quoi la chimie ?", "C'est quoi l'electricite ?", "C'est quoi la masse volumique ?", "C'est quoi la densite ?"],
+    "💻 Code": ["C'est quoi une variable ?", "C'est quoi une boucle ?", "C'est quoi une condition ?", "C'est quoi Python ?", "C'est quoi HTML ?", "C'est quoi CSS ?"],
+}
 
 THEMES = {
-    "📐 Ecole": ["C'est quoi le théorème de Pythagore ?", "Comment calculer la masse volumique ?", "Table de 7", "Toutes les tables de multiplication", "Table de division de 8", "C'est quoi la photosynthese ?", "Conjugue ETRE"],
-    "🌍 Capitales": ["Capitale du Japon ?", "Capitale du Bresil ?", "Capitale de l'Egypte ?", "Capitale de la France ?"],
-    "✈️ Avions": ["Quel est l'avion de chasse le plus performant ?", "C'est quoi le F-22 ?", "C'est quoi le 【entity-F-35¦canonical_name=F-35】 ?", "C'est quoi le Rafale ?"],
-    "💻 PC": ["C'est quoi la meilleure GPU ?", "C'est quoi le meilleur CPU ?", "C'est quoi le meilleur SSD ?", "PC 2000 CHF"],
-    "⚽ Foot / Sport": ["C'est qui 【entity-Messi¦canonical_name=Messi】 ?", "C'est qui 【entity-Ronaldo¦canonical_name=Ronaldo】 ?", "C'est qui 【entity-Mbappe¦canonical_name=Mbappe】 ?", "C'est quoi la Coupe du Monde ?"],
-    "🎮 Jeux Video": ["C'est quoi 【entity-Minecraft¦canonical_name=Minecraft】 ?", "C'est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C'est quoi 【entity-Roblox¦canonical_name=Roblox】 ?", "C'est quoi GTA ?"],
+    "📐 Ecole": ["Voir toutes les matières 👇"],
+    "🌍 Capitales": ["Capitale du Japon ?", "Capitale du Bresil ?", "Capitale de l'Egypte ?"],
+    "✈️ Avions": ["Quel est l'avion de chasse le plus performant ?", "C'est quoi le F-22 ?", "C'est quoi le F-35 ?"],
+    "💻 PC": ["C'est quoi le meilleur rapport qualite prix ?", "C'est quoi la meilleure GPU ?", "C'est quoi le meilleur CPU ?", "PC 2000 CHF", "PC 1300 CHF", "PC 900 CHF"],
+    "⚽ Foot / Sport": ["C'est qui 【entity-Messi¦canonical_name=Messi】 ?", "C'est qui 【entity-Ronaldo¦canonical_name=Ronaldo】 ?", "C'est qui 【entity-Mbappe¦canonical_name=Mbappe】 ?"],
+    "🎮 Jeux Video": ["C'est quoi 【entity-Minecraft¦canonical_name=Minecraft】 ?", "C'est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C'est quoi 【entity-Roblox¦canonical_name=Roblox】 ?"],
     "🚀 Espace": ["C'est quoi un trou noir ?", "C'est quoi le Big Bang ?", "C'est quoi Mars ?"],
     "🧪 Science": ["Comment calculer la masse volumique ?", "C'est quoi un atome ?", "C'est quoi la gravite ?"],
     "🧠 Culture G": ["C'est quoi la Tour Eiffel ?", "C'est quoi les pyramides ?", "C'est quoi le 【entity-Titanic¦canonical_name=Titanic】 ?"],
@@ -38,13 +50,20 @@ with st.sidebar:
             st.session_state.theme = t
             st.rerun()
     st.divider()
+    st.write("📚 MATIERES ECOLE :")
+    for m in MATIERES.keys():
+        if st.button(m, key="side_m_"+m, use_container_width=True):
+            st.session_state.theme = m
+            st.rerun()
+    st.divider()
     if st.button("🗑️ Effacer"):
         st.session_state.messages = []
         st.rerun()
 
 st.title("💙 Agent IA V5")
-st.caption("BLEU NEON - Toutes les tables + Tout ce qu'on a dit")
+st.caption("BLEU NEON - Clique sur Ecole = toutes les matières !")
 
+# Boutons themes en haut
 cols = st.columns(3)
 for i, t in enumerate(list(THEMES.keys())):
     with cols[i % 3]:
@@ -52,15 +71,38 @@ for i, t in enumerate(list(THEMES.keys())):
             st.session_state.theme = t
             st.rerun()
 
-st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
-for q in THEMES[st.session_state.theme]:
-    if st.button(q, key="q_"+q, use_container_width=True):
-        st.session_state.messages.append({"role": "user", "content": q})
-        st.session_state.auto_q = q
-        st.rerun()
+# SI ON CLIQUE SUR ECOLE -> AFFICHE TOUTES LES MATIERES
+if st.session_state.theme == "📐 Ecole":
+    st.subheader("📚 TOUTES LES MATIERES ECOLE 👇 Clique sur une matière :")
+    cols2 = st.columns(4)
+    for i, m in enumerate(list(MATIERES.keys())):
+        with cols2[i % 4]:
+            if st.button(m, key="mat_"+m, use_container_width=True):
+                st.session_state.theme = m
+                st.rerun()
+    st.info("👆 Clique sur une matière pour voir ses questions ! Ex : Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code")
+else:
+    # Si theme est une matiere, on affiche ses questions
+    if st.session_state.theme in MATIERES:
+        st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
+        for q in MATIERES[st.session_state.theme]:
+            if st.button(q, key="q_"+q, use_container_width=True):
+                st.session_state.messages.append({"role": "user", "content": q})
+                st.session_state.auto_q = q
+                st.rerun()
+        if st.button("⬅️ Retour à toutes les matières", use_container_width=True):
+            st.session_state.theme = "📐 Ecole"
+            st.rerun()
+    else:
+        st.subheader(f"Questions {st.session_state.theme} 👇 Clique :")
+        for q in THEMES.get(st.session_state.theme, []):
+            if st.button(q, key="q_"+q, use_container_width=True):
+                st.session_state.messages.append({"role": "user", "content": q})
+                st.session_state.auto_q = q
+                st.rerun()
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙 J'ai TOUTES les tables : 1 a 12, multiplications + divisions. Essaie : Table de 7, Toutes les tables, Table de division de 8"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙 Clique sur Ecole pour voir toutes les matières : Maths, Français, Allemand, Anglais, Histoire, Sciences, Chimie, Code !"}]
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -88,25 +130,33 @@ CAPITALES = {
 }
 
 PC = {
-    "meilleure gpu": "MEILLEURE GPU 2026 : 1. RTX 5090 - LA PLUS PUISSANTE, 32 Go, 4K Ultra, 2500 CHF. 2. RTX 5080 - 1200 CHF. 3. RTX 5070 Ti - meilleur rapport, 850 CHF. Pour debuter : RTX 4060, 350 CHF.",
-    "gpu": "GPU = Carte Graphique. Elle fait les images / jeux. 【entity-NVIDIA¦canonical_name=NVIDIA】 = RTX, 【entity-AMD¦canonical_name=AMD】 = RX. Meilleure = RTX 5090.",
+    "rapport qualite prix": "MEILLEUR RAPPORT QUALITE / PRIX PC 2026 : 1. GAGNANT 1300 CHF : RTX 5070 (600) + Ryzen 7 7800X3D (350) + 32 Go (120) + SSD 1 To (70) = 1300 CHF, 1440p Ultra 180 FPS ! 2. PETIT BUDGET 900 CHF : RTX 4060 + Ryzen 5 7600 + 16 Go = 900 CHF, Fortnite 144 FPS. 3. GROS BUDGET 2000 CHF : RTX 5070 Ti + 9800X3D = 2000 CHF, 240 FPS. Mon conseil : prends le 1300 CHF !",
+    "meilleur rapport": "MEILLEUR RAPPORT QUALITE / PRIX : GAGNANT = PC 1300 CHF : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF, 1440p Ultra 180 FPS.",
+    "qualite prix": "MEILLEUR RAPPORT : 1300 CHF = RTX 5070 + 7800X3D = meilleur ! 900 CHF = RTX 4060 = pour debuter. 2000 CHF = RTX 5070 Ti = le roi.",
+    "pc 900": "PC 900 CHF : RTX 4060 (350) + Ryzen 5 7600 (180) + 16 Go (60) + SSD 1 To (70) = 900 CHF. Fortnite 144 FPS !",
+    "pc 1300": "PC 1300 CHF - MEILLEUR RAPPORT : RTX 5070 (600) + Ryzen 7 7800X3D (350) + 32 Go (120) + SSD 1 To (70) = 1300 CHF. 1440p Ultra 180 FPS !",
+    "pc 2000": "PC 2000 CHF : RTX 5070 Ti (850) + Ryzen 7 9800X3D (450) + 32 Go (120) + SSD 2 To (180) + Carte mere (180) + Alim (110) + Boitier (110) = 2000 CHF. Fortnite 240 FPS !",
+    "budget 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. Fortnite 240 FPS !",
+    "2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. Fortnite 240 FPS !",
+    "900": "PC 900 CHF : RTX 4060 + Ryzen 5 7600 + 16 Go + SSD 1 To = 900 CHF. Fortnite 144 FPS !",
+    "1300": "PC 1300 CHF - MEILLEUR RAPPORT : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS !",
+    "meilleure gpu": "MEILLEURE GPU 2026 : 1. RTX 5090 - LA PLUS PUISSANTE, 32 Go, 2500 CHF. 2. RTX 5080 - 1200 CHF. 3. RTX 5070 Ti - meilleur rapport, 850 CHF. Meilleur rapport GPU = RTX 5070 (600 CHF) !",
+    "gpu": "GPU = Carte Graphique. Meilleure = RTX 5090. Meilleur rapport = RTX 5070.",
     "rtx 5090": "RTX 5090 : Plus puissante du monde, 32 Go, 4K Ultra, 2500 CHF.",
     "rtx 5080": "RTX 5080 : 2eme, 16 Go, 4K fluide, 1200 CHF.",
-    "rtx 5070": "RTX 5070 Ti : Meilleur pour 2000 CHF, 16 Go, 850 CHF.",
+    "rtx 5070": "RTX 5070 : MEILLEUR RAPPORT GPU ! 12 Go, 1440p Ultra, 600 CHF.",
     "rtx 4060": "RTX 4060 : Pour commencer, 8 Go, 【entity-Fortnite¦canonical_name=Fortnite】 144 FPS, 350 CHF.",
-    "meilleur cpu": "MEILLEUR CPU 2026 : 1. Ryzen 9 9950X3D - ROI JEUX. 2. 【entity-Intel¦canonical_name=Intel】 Core Ultra 9 285K. 3. Ryzen 7 9800X3D - meilleur rapport jeux.",
-    "cpu": "CPU = Processeur, cerveau du PC. 【entity-AMD¦canonical_name=AMD】 Ryzen ou 【entity-Intel¦canonical_name=Intel】 Core. Meilleur jeux = Ryzen 9 9950X3D / Ryzen 7 9800X3D.",
-    "meilleur ssd": "MEILLEUR SSD : 1. 【entity-Samsung¦canonical_name=Samsung】 990 PRO 2 To - 7450 Mo/s, PC demarre en 5 sec. 2. WD Black SN850X 2 To - meilleur jeux.",
-    "ssd": "SSD = Stocke Windows + jeux. NVMe = plus rapide. 【entity-Samsung¦canonical_name=Samsung】 990 PRO = meilleur. 1 To = 100 CHF.",
-    "meilleure ram": "MEILLEURE RAM : 32 Go DDR5 6000 MHz CL30. Parfait pour jouer + streamer + coder. 16 Go = minimum. 64 Go = montage pro.",
-    "ram": "RAM = Memoire vive. 16 Go minimum, 32 Go DDR5 parfait en 2026.",
-    "meilleur pc": "MEILLEUR PC : RTX 5090 + Ryzen 9 9950X3D + 32 Go DDR5 + SSD 990 PRO 2 To + Alim 1000W = 4000 CHF, tout en 4K Ultra.",
-    "pc 2000": "PC 2000 CHF PARFAIT : RTX 5070 Ti (850) + Ryzen 7 9800X3D (450) + RAM 32 Go DDR5 (120) + SSD 990 PRO 2 To (180) + Carte mere B850 (180) + Alim 850W Gold (110) + Boitier (110) = 2000 CHF. Fortnite 240 FPS !",
-    "budget 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To + Alim 850W = 2000 CHF. Fortnite 240 FPS !",
-    "2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. Fortnite 240 FPS !",
-    "ecran": "MEILLEUR ECRAN : 27 pouces 1440p 180Hz IPS = parfait. 1080p 144Hz = pas cher. 4K 240Hz OLED = top mais 800 CHF.",
-    "clavier": "MEILLEUR CLAVIER : Mecanique, switches rouges ou bleus. Logitech G Pro X, Razer BlackWidow, 【entity-Keychron¦canonical_name=Keychron】.",
-    "souris": "MEILLEURE SOURIS : Logitech G Pro X Superlight 2 - 60g, sans fil, souris des pros.",
+    "meilleur cpu": "MEILLEUR CPU 2026 : 1. Ryzen 9 9950X3D - ROI JEUX. 2. Ryzen 7 9800X3D. 3. Meilleur rapport = Ryzen 7 7800X3D (350 CHF) !",
+    "cpu": "CPU = Processeur, cerveau du PC. Meilleur rapport = Ryzen 7 7800X3D (350 CHF).",
+    "meilleur ssd": "MEILLEUR SSD : 1. Samsung 990 PRO 2 To - 7450 Mo/s. 2. Meilleur rapport = WD Black SN850X 1 To (70 CHF) !",
+    "ssd": "SSD = Stocke Windows + jeux. Meilleur rapport = WD Black SN850X 1 To (70 CHF).",
+    "meilleure ram": "MEILLEURE RAM : 32 Go DDR5 6000 MHz CL30. Meilleur rapport = 32 Go 【entity-Corsair¦canonical_name=Corsair】 (120 CHF).",
+    "ram": "RAM = Memoire vive. 16 Go minimum, 32 Go DDR5 parfait.",
+    "meilleur pc": "MEILLEUR PC : RTX 5090 + Ryzen 9 9950X3D = 4000 CHF. MEILLEUR RAPPORT = PC 1300 CHF : RTX 5070 + 7800X3D = 1300 CHF !",
+    "pc gamer": "PC GAMER : 900 CHF = RTX 4060 = 144 FPS. 1300 CHF = RTX 5070 = 180 FPS, LE MEILLEUR RAPPORT. 2000 CHF = RTX 5070 Ti = 240 FPS.",
+    "ecran": "MEILLEUR ECRAN RAPPORT : 27 pouces 1440p 180Hz IPS (250 CHF) = parfait.",
+    "clavier": "MEILLEUR CLAVIER RAPPORT : Redragon K552 (40 CHF) = mecanique pas cher et tres bon.",
+    "souris": "MEILLEURE SOURIS RAPPORT : Logitech G305 (40 CHF) = sans fil, legere, parfaite.",
     "fps": "FPS = Images par seconde. 60 = fluide, 144 = super fluide, 240 = pro.",
 }
 
@@ -132,7 +182,12 @@ TOUT = {
     "futur": "Futur : Je mangerai, tu mangeras",
     "der": "Allemand : der = masculin, die = feminin, das = neutre",
     "sein": "SEIN : ich bin, du bist, er ist, wir sind, ihr seid, sie sind",
+    "haben": "HABEN : ich habe, du hast, er hat, wir haben, ihr habt, sie haben",
+    "gehen": "GEHEN : ich gehe, du gehst, er geht, wir gehen, ihr geht, sie gehen",
     "to be": "TO BE : I am, You are, He is, We are, You are, They are",
+    "to have": "TO HAVE : I have, You have, He has, We have, You have, They have",
+    "to go": "TO GO : I go, You go, He goes, We go, You go, They go",
+    "present perfect": "Present Perfect : have + participe. I have eaten = J'ai mange.",
     "photosynthese": "Photosynthese : Soleil + Eau + CO2 = Oxygene + Sucre.",
     "planete": "Planetes : Mercure, Venus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune.",
     "gravite": "Gravite : nous attire vers la Terre. Newton + pomme.",
@@ -153,6 +208,7 @@ TOUT = {
     "chimie": "CHIMIE : Atome = brique de base. H2O = eau, CO2 = dioxyde de carbone, O2 = oxygene.",
     "atome": "ATOME : Proton (+), Neutron (0), Electron (-).",
     "oxygene": "OXYGENE : O2. On respire O2, on rejette CO2.",
+    "electricite": "ELECTRICITE : Volts, Amperes. Circuit = pile + lampe + interrupteur.",
     "trou noir": "TROU NOIR : Objet tellement lourd que meme la lumiere ne peut pas sortir.",
     "soleil": "SOLEIL : Etoile, 15 millions de degres au centre.",
     "galaxie": "GALAXIE : Notre galaxie = Voie Lactee, 200 milliards d'etoiles.",
@@ -164,14 +220,16 @@ TOUT = {
     "condition": "CONDITION : if age >= 18: print('Majeur') else: print('Mineur')",
     "variable": "VARIABLE : age = 13. Boite qui stocke une valeur.",
     "python": "PYTHON : Langage facile, celui de ton agent.",
-    " 【entity-messi¦canonical_name=Messi】": " 【entity-Messi¦canonical_name=Messi】 : Argentin, 8 Ballons d'Or, meilleur de tous les temps. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, 【entity-Miami¦canonical_name=Inter Miami CF】.",
+    "html": "HTML : <h1>Titre</h1> <p>Texte</p>",
+    "css": "CSS : body { background-color: black; color: white; }",
+    " 【entity-messi¦canonical_name=Messi】": " 【entity-Messi¦canonical_name=Messi】 : Argentin, 8 Ballons d'Or, meilleur de tous les temps. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, Miami.",
     " 【entity-ronaldo¦canonical_name=Ronaldo】": " 【entity-CR7¦canonical_name=CR7】 : Portugais, 5 Ballons d'Or, 【entity-Real¦canonical_name=Real Madrid】, Man United, 【entity-Al-Nassr¦canonical_name=Al-Nassr】.",
-    " 【entity-mbappe¦canonical_name=Mbappe】": " 【entity-Mbappe¦canonical_name=Mbappe】 : Francais, 36 km/h ! 【entity-Real¦canonical_name=Real Madrid】 Madrid, Champion du monde 2018.",
+    " 【entity-mbappe¦canonical_name=Mbappe】": " 【entity-Mbappe¦canonical_name=Mbappe】 : Francais, 36 km/h ! 【entity-Real Madrid¦canonical_name=Real Madrid】, Champion du monde 2018.",
     "ballon d'or": "BALLON D'OR : 【entity-Messi¦canonical_name=Messi】 en a 8, record !",
     "coupe du monde": "COUPE DU MONDE : Tous les 4 ans. 2022 = Argentine. 2026 = USA / Canada / Mexique. 48 equipes !",
-    "ligue des champions": "LIGUE DES CHAMPIONS : 【entity-Real¦canonical_name=Real Madrid】 Madrid a gagne 15 fois !",
-    "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. 【entity-NBA¦canonical_name=NBA】 aux USA.",
-    "tennis": "TENNIS : 【entity-Federer¦canonical_name=Roger Federer】, 【entity-Nadal¦canonical_name=Nadal】, 【entity-Djokovic¦canonical_name=Djokovic】 = 3 meilleurs de l'histoire.",
+    "ligue des champions": "LIGUE DES CHAMPIONS : 【entity-Real Madrid¦canonical_name=Real Madrid】 a gagne 15 fois !",
+    "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. NBA aux USA.",
+    "tennis": "TENNIS : Federer, Nadal, Djokovic = 3 meilleurs de l'histoire.",
     "formule 1": "FORMULE 1 : 350 km/h ! Verstappen, Hamilton, Leclerc.",
     " 【entity-minecraft¦canonical_name=Minecraft】": " 【entity-MINECRAFT¦canonical_name=Minecraft】 : Jeu de cubes, 300M de copies ! Construis, mine, survis aux creepers.",
     " 【entity-fortnite¦canonical_name=Fortnite】": " 【entity-FORTNITE¦canonical_name=Fortnite】 : Battle Royale 100 joueurs, dernier vivant gagne.",
@@ -190,7 +248,7 @@ TOUT = {
 
 AVIONS = {
     "f-22": "F-22 Raptor (USA) - LE PLUS PERFORMANT EN COMBAT. Mach 2.25 (2400 km/h). Furtif, jamais battu.",
-    " 【entity-f-35¦canonical_name=F-35】": " 【entity-F-35¦canonical_name=F-35】 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
+    " f-35": " F-35 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
     "su-57": "Su-57 Felon (Russie). Mach 2.0. Chasseur furtif russe.",
     "j-20": "J-20 (Chine). Mach 2.0. Chasseur furtif chinois.",
     "rafale": "Rafale (France). Mach 1.8. Polyvalent : air, sol, mer.",
@@ -213,7 +271,6 @@ def toutes_tables():
     txt = "📐 TOUTES LES TABLES DE MULTIPLICATION 1 a 12 :\n\n"
     for n in range(1, 13):
         txt += f"Table de {n} : " + ", ".join([f"{n}x{i}={n*i}" for i in range(1, 11)]) + "\n\n"
-    txt += "➡️ Astuce : Table de 9 = tes doigts ! 9x3 = 27 (2 doigts baisses, 7 restants)"
     return txt
 
 def table_division(n):
@@ -227,8 +284,7 @@ def trouver(q_orig):
     for mot in ["c'est quoi", "c est quoi", "c'est", "comment", "pourquoi", "donne-moi", "donne moi", "c'est qui", "qui est", "quel est", "quelle est", "comment calculer", "?"]:
         q = q.replace(mot, " ")
     q = " ".join(q.split())
-
-    if "toutes les tables" in q or "toutes tables" in q or q.strip() == "tables":
+    if "toutes les tables" in q or "toutes tables" in q:
         return toutes_tables()
     if "division" in q:
         try:
@@ -240,7 +296,7 @@ def trouver(q_orig):
         try:
             n = int(''.join(filter(str.isdigit, q)))
             res = ", ".join([str(n) + "x" + str(i) + "=" + str(n*i) for i in range(1, 11)])
-            return "Table de " + str(n) + " : " + res + f" | Astuce : {n}x10 = {n}0"
+            return "Table de " + str(n) + " : " + res
         except:
             pass
     if "performant" in q or "meilleur avion" in q:
@@ -262,7 +318,7 @@ def trouver(q_orig):
     for pays, cap in CAPITALES.items():
         if q == pays:
             return pays.capitalize() + " -> Capitale = " + cap
-    return "Je ne connais pas encore : " + q_orig + ". Essaie : Toutes les tables, Table de 7, Table de division de 8..."
+    return "Je ne connais pas encore : " + q_orig + ". Essaie : clique sur une matiere !"
 
 if "auto_q" in st.session_state and st.session_state.auto_q:
     q_auto = st.session_state.auto_q
