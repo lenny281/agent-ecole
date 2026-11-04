@@ -1,15 +1,15 @@
 import streamlit as st
-st.set_page_config(page_title="Agent IA V5", page_icon="💖", layout="wide")
+st.set_page_config(page_title="Agent IA V5", page_icon="💙", layout="wide")
 st.markdown("""
 <style>
-.stApp { background-color: #1a0010; color: white; }
-[data-testid="stSidebar"] { background: linear-gradient(180deg, #4d001a, #1a0010); }
+.stApp { background-color: #000a1a; color: white; }
+[data-testid="stSidebar"] { background: linear-gradient(180deg, #001a4d, #000a1a); }
 [data-testid="stSidebar"] * { color: white !important; }
-.stChatMessage { background-color: #2a0018 !important; color: white !important; border: 1px solid #ff1493; border-radius: 15px; box-shadow: 0 0 15px #ff1493; }
-h1 { color: #ff1493 !important; text-shadow: 0 0 20px #ff1493, 0 0 40px #ff00ff; }
-.stChatInput input { background-color: #2a0018 !important; color: white !important; border: 1px solid #ff1493 !important; }
-button { background-color: #ff1493 !important; color: white !important; font-weight: bold !important; border-radius: 12px !important; box-shadow: 0 0 12px #ff1493; }
-button:hover { background-color: #ff69b4 !important; }
+.stChatMessage { background-color: #001133 !important; color: white !important; border: 1px solid #00d4ff; border-radius: 15px; box-shadow: 0 0 15px #00d4ff; }
+h1 { color: #00d4ff !important; text-shadow: 0 0 20px #00d4ff, 0 0 40px #0088ff; }
+.stChatInput input { background-color: #001133 !important; color: white !important; border: 1px solid #00d4ff !important; }
+button { background-color: #00d4ff !important; color: black !important; font-weight: bold !important; border-radius: 12px !important; box-shadow: 0 0 12px #00d4ff; }
+button:hover { background-color: #00aaff !important; }
 </style>
 """, unsafe_allow_html=True)
 if "theme" not in st.session_state:
@@ -26,7 +26,7 @@ THEMES = {
     "🧠 Culture G": ["C'est quoi la Tour Eiffel ?", "C'est quoi les pyramides ?", "C'est quoi le Titanic ?", "C'est quoi 【entity-Harry Potter¦canonical_name=Harry Potter】 ?", "C'est quoi One Piece ?"],
 }
 with st.sidebar:
-    st.title("💖 Agent IA V5")
+    st.title("💙 Agent IA V5")
     st.write("Clique sur un thème 👇")
     for t in THEMES.keys():
         if st.button(t, key="side_"+t, use_container_width=True):
@@ -36,12 +36,10 @@ with st.sidebar:
     if st.button("🗑️ Effacer"):
         st.session_state.messages = []
         st.rerun()
-st.title("💖 Agent IA V5")
-st.caption("ROSE NEON - Clique sur un thème, puis sur une question !")
-# Boutons themes en haut aussi
+st.title("💙 Agent IA V5")
+st.caption("BLEU NEON - Clique sur un thème, puis sur une question !")
 cols = st.columns(3)
-themes_list = list(THEMES.keys())
-for i, t in enumerate(themes_list):
+for i, t in enumerate(list(THEMES.keys())):
     with cols[i % 3]:
         if st.button(t, key="top_"+t, use_container_width=True):
             st.session_state.theme = t
@@ -49,13 +47,11 @@ for i, t in enumerate(themes_list):
 st.subheader(f"Questions {st.session_state.theme} 👇 Clique pour poser :")
 for q in THEMES[st.session_state.theme]:
     if st.button(q, key="q_"+q, use_container_width=True):
-        # On pose la question automatiquement
         st.session_state.messages.append({"role": "user", "content": q})
-        # On va calculer la reponse plus bas via un flag
         st.session_state.auto_q = q
         st.rerun()
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💖 Clique sur un thème en haut, puis sur une question. Ou ecris ta question en bas !"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Salut ! 💙 Clique sur un thème en haut, puis sur une question. Ou ecris ta question en bas !"}]
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
@@ -89,18 +85,18 @@ PC = {
     "meilleur cpu": "MEILLEUR CPU 2026 : 1. Ryzen 9 9950X3D - ROI JEUX. 2. 【entity-Intel¦canonical_name=Intel】 Core Ultra 9 285K. 3. Ryzen 7 9800X3D - meilleur rapport jeux.",
     "cpu": "CPU = Processeur, cerveau du PC. 【entity-AMD¦canonical_name=AMD】 Ryzen ou 【entity-Intel¦canonical_name=Intel】 Core. Meilleur jeux = Ryzen 9 9950X3D / Ryzen 7 9800X3D.",
     "ryzen": "Ryzen = 【entity-AMD¦canonical_name=AMD】. Meilleur jeux = 9800X3D et 9950X3D avec cache 3D, +30 FPS.",
-    "meilleur ssd": "MEILLEUR SSD : 1. Samsung 990 PRO 2 To - 7450 Mo/s, PC demarre en 5 sec. 2. WD Black SN850X 2 To - meilleur jeux.",
-    "ssd": "SSD = Stocke Windows + jeux. NVMe = plus rapide. Samsung 990 PRO = meilleur. 1 To = 100 CHF.",
+    "meilleur ssd": "MEILLEUR SSD : 1. 【entity-Samsung¦canonical_name=Samsung】 990 PRO 2 To - 7450 Mo/s, PC demarre en 5 sec. 2. WD Black SN850X 2 To - meilleur jeux.",
+    "ssd": "SSD = Stocke Windows + jeux. NVMe = plus rapide. 【entity-Samsung¦canonical_name=Samsung】 990 PRO = meilleur. 1 To = 100 CHF.",
     "meilleure ram": "MEILLEURE RAM : 32 Go DDR5 6000 MHz CL30. Parfait pour jouer + streamer + coder. 16 Go = minimum. 64 Go = montage pro.",
     "ram": "RAM = Memoire vive. 16 Go minimum, 32 Go DDR5 parfait en 2026.",
     "meilleur pc": "MEILLEUR PC : RTX 5090 + Ryzen 9 9950X3D + 32 Go DDR5 + SSD 990 PRO 2 To + Alim 1000W = 4000 CHF, tout en 4K Ultra.",
-    "pc 2000": "PC 2000 CHF PARFAIT : RTX 5070 Ti (850) + Ryzen 7 9800X3D (450) + RAM 32 Go DDR5 (120) + SSD 990 PRO 2 To (180) + Carte mere B850 (180) + Alim 850W Gold (110) + Boitier (110) = 2000 CHF. Fortnite 240 FPS !",
-    "budget 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To + Alim 850W = 2000 CHF. Fortnite 240 FPS !",
+    "pc 2000": "PC 2000 CHF PARFAIT : RTX 5070 Ti (850) + Ryzen 7 9800X3D (450) + RAM 32 Go DDR5 (120) + SSD 990 PRO 2 To (180) + Carte mere B850 (180) + Alim 850W Gold (110) + Boitier (110) = 2000 CHF. 【entity-Fortnite¦canonical_name=Fortnite】 240 FPS !",
+    "budget 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To + Alim 850W = 2000 CHF. 【entity-Fortnite¦canonical_name=Fortnite】 240 FPS !",
     "2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. Fortnite 240 FPS !",
     "pc gamer": "PC GAMER : 900 CHF = RTX 4060 + Ryzen 5 7600 + 16 Go + SSD 1 To = 144 FPS. 2000 CHF = RTX 5070 Ti + 9800X3D + 32 Go + 2 To = 240 FPS.",
     "ecran": "MEILLEUR ECRAN : 27 pouces 1440p 180Hz IPS = parfait. 1080p 144Hz = pas cher. 4K 240Hz OLED = top mais 800 CHF.",
-    "clavier": "MEILLEUR CLAVIER : Mecanique, switches rouges ou bleus. Logitech G Pro X, Razer BlackWidow, Keychron.",
-    "souris": "MEILLEURE SOURIS : Logitech G Pro X Superlight 2 - 60g, sans fil, souris des pros. Razer Viper V3 Pro aussi top.",
+    "clavier": "MEILLEUR CLAVIER : Mecanique, switches rouges ou bleus. 【entity-Logitech¦canonical_name=Logitech】 G Pro X, Razer BlackWidow, 【entity-Keychron¦canonical_name=Keychron】.",
+    "souris": "MEILLEURE SOURIS : 【entity-Logitech¦canonical_name=Logitech】 G Pro X Superlight 2 - 60g, sans fil, souris des pros. Razer Viper V3 Pro aussi top.",
     "fps": "FPS = Images par seconde. 60 = fluide, 144 = super fluide, 240 = pro.",
 }
 TOUT = {
@@ -160,16 +156,16 @@ TOUT = {
     "condition": "CONDITION : if age >= 18: print('Majeur') else: print('Mineur')",
     "variable": "VARIABLE : age = 13. Boite qui stocke une valeur.",
     "python": "PYTHON : Langage facile, celui de ton agent.",
-    " 【entity-messi¦canonical_name=Messi】": " 【entity-Messi¦canonical_name=Messi】 : Argentin, 8 Ballons d'Or, meilleur de tous les temps. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, 【entity-Miami¦canonical_name=Inter Miami CF】.",
+    " 【entity-messi¦canonical_name=Messi】": " 【entity-Messi¦canonical_name=Messi】 : Argentin, 8 Ballons d'Or, meilleur de tous les temps. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, Miami.",
     " 【entity-ronaldo¦canonical_name=Ronaldo】": " 【entity-CR7¦canonical_name=CR7】 : Portugais, 5 Ballons d'Or, 【entity-Real¦canonical_name=Real Madrid】, Man United, 【entity-Al-Nassr¦canonical_name=Al-Nassr】.",
-    " 【entity-mbappe¦canonical_name=Mbappe】": " 【entity-Mbappe¦canonical_name=Mbappe】 : Francais, 36 km/h ! 【entity-Real¦canonical_name=Real Madrid】 Madrid, Champion du monde 2018.",
+    " 【entity-mbappe¦canonical_name=Mbappe】": " 【entity-Mbappe¦canonical_name=Mbappe】 : Francais, 36 km/h ! 【entity-Real Madrid¦canonical_name=Real Madrid】, Champion du monde 2018.",
     " 【entity-neymar¦canonical_name=Neymar】": " 【entity-Neymar¦canonical_name=Neymar】 : Bresilien, dribbleur fou. 【entity-Barca¦canonical_name=Barca】, 【entity-PSG¦canonical_name=PSG】, Bresil.",
     "ballon d'or": "BALLON D'OR : 【entity-Messi¦canonical_name=Messi】 en a 8, record !",
     "coupe du monde": "COUPE DU MONDE : Tous les 4 ans. 2022 = Argentine. 2026 = USA / Canada / Mexique. 48 equipes !",
-    "ligue des champions": "LIGUE DES CHAMPIONS : 【entity-Real¦canonical_name=Real Madrid】 Madrid a gagne 15 fois !",
-    "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. NBA aux USA.",
-    "tennis": "TENNIS : Federer, Nadal, Djokovic = 3 meilleurs de l'histoire.",
-    "formule 1": "FORMULE 1 : 350 km/h ! Verstappen, Hamilton, Leclerc.",
+    "ligue des champions": "LIGUE DES CHAMPIONS : 【entity-Real Madrid¦canonical_name=Real Madrid】 a gagne 15 fois !",
+    "basket": "BASKET : 5 vs 5, Michael Jordan = GOAT. 【entity-NBA¦canonical_name=NBA】 aux USA.",
+    "tennis": "TENNIS : 【entity-Federer¦canonical_name=Roger Federer】, 【entity-Nadal¦canonical_name=Nadal】, 【entity-Djokovic¦canonical_name=Djokovic】 = 3 meilleurs de l'histoire.",
+    "formule 1": "FORMULE 1 : 350 km/h ! 【entity-Verstappen¦canonical_name=Verstappen】, 【entity-Hamilton¦canonical_name=Hamilton】, 【entity-Leclerc¦canonical_name=Leclerc】.",
     " 【entity-minecraft¦canonical_name=Minecraft】": " 【entity-MINECRAFT¦canonical_name=Minecraft】 : Jeu de cubes, 300M de copies ! Construis, mine, survis aux creepers.",
     " 【entity-fortnite¦canonical_name=Fortnite】": " 【entity-FORTNITE¦canonical_name=Fortnite】 : Battle Royale 100 joueurs, dernier vivant gagne.",
     " 【entity-roblox¦canonical_name=Roblox】": " 【entity-ROBLOX¦canonical_name=Roblox】 : Des millions de jeux crees par les joueurs.",
@@ -186,7 +182,7 @@ TOUT = {
 }
 AVIONS = {
     "f-22": "F-22 Raptor (USA) - LE PLUS PERFORMANT EN COMBAT. Mach 2.25 (2400 km/h). Furtif, jamais battu.",
-    " f-35": " F-35 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
+    " 【entity-f-35¦canonical_name=F-35】": " 【entity-F-35¦canonical_name=F-35】 Lightning II (USA) - LE PLUS MODERNE. Mach 1.6. La Suisse en a achete 36 !",
     "su-57": "Su-57 Felon (Russie). Mach 2.0. Chasseur furtif russe.",
     "j-20": "J-20 (Chine). Mach 2.0. Chasseur furtif chinois.",
     "rafale": "Rafale (France). Mach 1.8. Polyvalent : air, sol, mer.",
@@ -236,7 +232,6 @@ def trouver(q_orig):
         if q == pays:
             return pays.capitalize() + " -> Capitale = " + cap
     return "Je ne connais pas encore : " + q_orig + ". Essaie : clique sur un theme en haut !"
-# Si on a clique sur une question proposee, on repond
 if "auto_q" in st.session_state and st.session_state.auto_q:
     q_auto = st.session_state.auto_q
     st.session_state.auto_q = ""
