@@ -3,19 +3,16 @@ import random
 import datetime
 import re
 
-st.set_page_config(page_title="Agent IA V5 - ULTIME 1000 - 10H", page_icon="🖤", layout="wide")
-
+st.set_page_config(page_title="Agent IA V5 - ULTIME + JEUX", page_icon="🎮", layout="wide")
 st.markdown("""
 <style>
 .stApp { background-color: #0a0a0a; color: #e5e5e5; }
-[data-testid="stSidebar"] { background-color: #111111; border-right: 1px solid #222222; }
+[data-testid="stSidebar"] { background-color: #111111; }
 [data-testid="stSidebar"] * { color: #e5e5e5 !important; }
 .stChatMessage { background-color: #161616 !important; color: #e5e5e5 !important; border: 1px solid #2a2a2a; border-radius: 12px; }
 h1 { color: #f0f0f0 !important; }
-.stChatInput input { background-color: #161616 !important; color: #e5e5e5 !important; border: 1px solid #2a2a2a !important; }
-button { background-color: #1e1e1e !important; color: #e5e5e5 !important; border: 1px solid #2e2e2e !important; border-radius: 10px !important; box-shadow: none !important; font-weight: 500 !important; }
-button:hover { background-color: #2a2a2a !important; border-color: #3a3a3a !important; color: white !important; }
-[data-testid="stCaption"] { color: #888888 !important; }
+button { background-color: #1e1e1e !important; color: #e5e5e5 !important; border: 1px solid #2e2e2e !important; border-radius: 10px !important; }
+button:hover { background-color: #2a2a2a !important; color: white !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -44,9 +41,21 @@ if "mode_train" not in st.session_state:
 if "niveau" not in st.session_state:
     st.session_state.niveau = "moyen"
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Salut ! Version FINALE 1000 lignes - 10H Suisse avec PI ! Clique sur MODE ENTRAINEMENT ou choisis : 10H Maths -> Geometrie -> C est quoi PI ?"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Salut ! Agent V5 ULTIME + JEUX ! Choisis : Ecole, Jeux, Entrainement. Essaie : C est quoi PI ?"}]
 if "auto_q" not in st.session_state:
     st.session_state.auto_q = ""
+if "cookies" not in st.session_state:
+    st.session_state.cookies = 0
+if "click_power" not in st.session_state:
+    st.session_state.click_power = 1
+if "nombre_secret" not in st.session_state:
+    st.session_state.nombre_secret = random.randint(1, 100)
+if "coups" not in st.session_state:
+    st.session_state.coups = 0
+if "dernier_jeu" not in st.session_state:
+    st.session_state.dernier_jeu = None
+if "snake_score" not in st.session_state:
+    st.session_state.snake_score = 0
 
 MATIERES_GENRES = {
     "📐 10H Maths": {
@@ -123,6 +132,7 @@ MATIERES_GENRES = {
 
 THEMES = {
     "📐 Ecole": ["Voir toutes les matieres"],
+    "🎮 Jeux": ["Jeu Clicker", "Jeu Devine le nombre", "Jeu Pierre Papier Ciseaux", "Jeu Reflexe"],
     "👋 Bases": ["Bonjour", "Ca va ?", "Merci", "Au revoir", "Tu t appelles comment ?", "Raconte une blague", "Motive moi", "Conseil pour reviser"],
     "🧮 Calculatrice": ["Calcule 12+8", "Calcule 15x7", "Calcule 144/12", "Calcule 9x9"],
     "🌍 Traductions": ["Traduis bonjour en anglais", "Traduis merci en anglais", "Traduis bonjour en allemand", "Traduis bonjour en espagnol"],
@@ -130,8 +140,8 @@ THEMES = {
     "🌍 Capitales": ["Capitale du Japon ?", "Capitale du Bresil ?", "Capitale de l Egypte ?", "Capitale de la Suisse ?", "Capitale de la France ?"],
     "✈️ Avions": ["Quel est l avion de chasse le plus performant ?", "C est quoi le F-22 ?", "C est quoi le 【entity-F-35¦canonical_name=F-35】 ?", "C est quoi le Rafale ?", "C est quoi le SR-71 ?", "C est quoi le Concorde ?", "C est quoi le A380 ?", "Comment vole un avion ?"],
     "💻 PC": ["C est quoi le meilleur rapport qualite prix ?", "C est quoi la meilleure GPU ?", "C est quoi le meilleur CPU ?", "C est quoi le meilleur SSD ?", "PC 2000 CHF", "PC 1300 CHF", "PC 900 CHF", "C est quoi les FPS ?", "C est quoi le ping ?"],
-    "⚽ Foot / Sport": ["C est qui 【entity-Messi¦canonical_name=Messi】 ?", "C est qui 【entity-Ronaldo¦canonical_name=RONALDO】 ?", "C est qui 【entity-Mbappe¦canonical_name=MBAPPE】 ?", "C est quoi la Coupe du Monde ?", "C est quoi la Ligue des Champions ?", "C est quoi le Ballon d Or ?"],
-    "🎮 Jeux Video": ["C est quoi Minecraft ?", "C est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C est quoi Roblox ?", "C est quoi GTA ?", "C est quoi Brawl Stars ?", "C est quoi Pokemon ?", "C est quoi Mario ?", "C est quoi One Piece ?", "C est quoi Naruto ?", "C est quoi Dragon Ball ?"],
+    "⚽ Foot / Sport": ["C est qui 【entity-Messi¦canonical_name=Messi】 ?", "C est qui 【entity-Ronaldo¦canonical_name=Ronaldo】 ?", "C est qui 【entity-Mbappe¦canonical_name=Mbappe】 ?", "C est quoi la Coupe du Monde ?", "C est quoi la Ligue des Champions ?", "C est quoi le Ballon d Or ?"],
+    "🎮 Jeux Video": ["C est quoi 【entity-Minecraft¦canonical_name=Minecraft】 ?", "C est quoi 【entity-Fortnite¦canonical_name=Fortnite】 ?", "C est quoi Roblox ?", "C est quoi GTA ?", "C est quoi Brawl Stars ?", "C est quoi Pokemon ?", "C est quoi Mario ?", "C est quoi One Piece ?", "C est quoi Naruto ?", "C est quoi Dragon Ball ?"],
     "🚀 Espace": ["C est quoi un trou noir ?", "C est quoi le Big Bang ?", "C est quoi Mars ?", "C est quoi l ISS ?", "C est quoi le Soleil ?"],
     "🎤 Chanteurs": ["C est qui Werenoi ?", "C est qui Ninho ?", "C est qui Jul ?", "C est qui Gazo ?", "C est qui Tiakola ?", "C est qui PNL ?", "C est qui SDM ?", "C est qui Drake ?", "C est qui Taylor Swift ?", "C est qui Eminem ?", "C est qui Stromae ?", "C est qui Soprano ?"],
     "💰 Argent / Metiers": ["Comment devenir millionnaire ?", "C est quoi un salaire ?", "C est quoi un entrepreneur ?", "Comment gagner de l argent a 13 ans ?", "C est quoi la bourse ?"],
@@ -140,7 +150,7 @@ THEMES = {
 }
 
 TRAIN_FACILE = [("C est quoi 2+2 ?", "4"), ("C est quoi 5x2 ?", "10"), ("C est quoi la capitale de la France ?", "paris"), ("C est quoi 3x3 ?", "9"), ("C est quoi 10-3 ?", "7"), ("Conjugue ETRE : je ... ?", "suis"), ("C est quoi PI ?", "3.14")]
-TRAIN_MOYEN = [("C est quoi 7x8 ?", "56"), ("C est quoi la capitale du Japon ?", "tokyo"), ("C est quoi 15+25 ?", "40"), ("Qui a gagne la Coupe du Monde 2022 ?", "argentine"), ("C est quoi la capitale de la Suisse ?", "berne"), ("C est quoi 9x9 ?", "81")]
+TRAIN_MOYEN = [("C est quoi 7x8 ?", "56"), ("C est quoi la capitale du Japon ?", "tokyo"), ("C est quoi 15+25 ?", "40"), ("Qui a gagne la Coupe du Monde 2022 ?", "【entity-argentine¦canonical_name=Argentine】"), ("C est quoi la capitale de la Suisse ?", "berne"), ("C est quoi 9x9 ?", "81")]
 TRAIN_DIFFICILE = [("C est quoi 12x12 ?", "144"), ("C est quoi la capitale de l Australie ?", "canberra"), ("C est quoi 144 / 12 ?", "12"), ("Combien de Ballons d Or a 【entity-Messi¦canonical_name=Messi】 ?", "8"), ("En quelle annee a coule le Titanic ?", "1912")]
 TRAIN_VERBES = [("Conjugue ETRE au present : je ... ?", "suis"), ("Conjugue AVOIR au present : tu ... ?", "as"), ("Conjugue TO BE : I ... ?", "am"), ("Conjugue SEIN : ich ... ?", "bin"), ("Conjugue ALLER : il ... ?", "va")]
 TRAIN_MATHS = [("C est quoi 7x8 ?", "56"), ("C est quoi 9x9 ?", "81"), ("C est quoi 12+15 ?", "27"), ("C est quoi PI ?", "3.14"), ("C est quoi 100-37 ?", "63")]
@@ -158,12 +168,17 @@ def lancer_entrainement(niveau, liste):
     st.rerun()
 
 with st.sidebar:
-    st.title("Agent IA V5 - ULTIME 1000")
-    st.write("10H Suisse - Toutes branches")
+    st.title("Agent IA V5 + JEUX 🎮")
+    st.write("10H Suisse - Toutes branches + Jeux")
     st.write("Appris : " + str(len(st.session_state.learned)))
     st.write("Score : " + str(st.session_state.score) + " / " + str(st.session_state.total_quiz))
-    st.write("Streak : " + str(st.session_state.streak) + " | Best : " + str(st.session_state.best_streak))
+    st.write("Cookies : " + str(st.session_state.cookies) + " 🍪")
     st.divider()
+    if st.button("🎮 JEUX", key="side_jeux_big", use_container_width=True):
+        st.session_state.theme = "🎮 Jeux"
+        st.session_state.matiere = None
+        st.session_state.genre = None
+        st.rerun()
     if not st.session_state.mode_train:
         if st.button("🎯 MODE ENTRAINEMENT", key="side_train_start", use_container_width=True):
             lancer_entrainement("moyen", TRAIN_MOYEN)
@@ -173,7 +188,7 @@ with st.sidebar:
         if st.button("❌ QUITTER ENTRAINEMENT", key="side_train_stop", use_container_width=True):
             st.session_state.mode_train = False
             st.session_state.train_q = None
-            st.session_state.messages.append({"role": "assistant", "content": "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " | Meilleur streak : " + str(st.session_state.best_streak) + " ! Bravo !"})
+            st.session_state.messages.append({"role": "assistant", "content": "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " ! Bravo !"})
             st.rerun()
     st.divider()
     st.write("MATIERES 10H :")
@@ -186,7 +201,7 @@ with st.sidebar:
     st.divider()
     st.write("AUTRES :")
     for t in THEMES.keys():
-        if t != "📐 Ecole":
+        if t not in ["📐 Ecole", "🎮 Jeux"]:
             if st.button(t, key="side_" + t, use_container_width=True):
                 st.session_state.theme = t
                 st.session_state.matiere = None
@@ -197,8 +212,8 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
 
-st.title("Agent IA V5 - ULTIME 1000 LIGNES - 10H SUISSE 🇨🇭")
-st.caption("1000 lignes | 10H Toutes branches | PI inclus | Appris : " + str(len(st.session_state.learned)) + " | Score : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz))
+st.title("Agent IA V5 - ULTIME + JEUX 🎮 - 10H SUISSE 🇨🇭")
+st.caption("Agent + Jeux en 1 seul code | PI inclus | Appris : " + str(len(st.session_state.learned)) + " | Score : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " | Cookies : " + str(st.session_state.cookies))
 
 if not st.session_state.mode_train:
     st.subheader("🎯 MODE ENTRAINEMENT - Je te pose les questions, tu reponds !")
@@ -229,15 +244,83 @@ if not st.session_state.mode_train:
         if st.button("🇨🇭 10H", key="train_10h", use_container_width=True):
             lancer_entrainement("10h", TRAIN_10H)
 else:
-    st.success("🎯 TU ES EN MODE ENTRAINEMENT " + st.session_state.niveau.upper() + " - Score : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " - Streak : " + str(st.session_state.streak))
-    st.info("❓ QUESTION ACTUELLE : " + str(st.session_state.train_q) + " - Ecris ta reponse en bas dans le chat !")
+    st.success("🎯 TU ES EN MODE ENTRAINEMENT " + st.session_state.niveau.upper() + " - Score : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz))
+    st.info("❓ QUESTION ACTUELLE : " + str(st.session_state.train_q))
     if st.button("❌ QUITTER ENTRAINEMENT", key="main_train_stop", use_container_width=True):
         st.session_state.mode_train = False
         st.session_state.train_q = None
-        st.session_state.messages.append({"role": "assistant", "content": "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " | Meilleur streak : " + str(st.session_state.best_streak) + " ! Bravo !"})
+        st.session_state.messages.append({"role": "assistant", "content": "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " ! Bravo !"})
         st.rerun()
 
-if st.session_state.theme == "📐 Ecole":
+if st.session_state.theme == "🎮 Jeux":
+    st.subheader("🎮 ZONE JEUX - 4 jeux en 1 code !")
+    jeu = st.selectbox("Choisis ton jeu :", ["Jeu Clicker", "Jeu Devine le nombre", "Jeu Pierre Papier Ciseaux", "Jeu Reflexe"])
+    if jeu == "Jeu Clicker":
+        st.write("🍪 COOKIES : " + str(st.session_state.cookies))
+        st.write("💪 Puissance : +" + str(st.session_state.click_power) + " par clic")
+        if st.button("🍪 CLIQUER !", key="clicker_btn", use_container_width=True):
+            st.session_state.cookies += st.session_state.click_power
+            st.rerun()
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Acheter +1 puissance - 50 cookies", key="clicker_buy", use_container_width=True):
+                if st.session_state.cookies >= 50:
+                    st.session_state.cookies -= 50
+                    st.session_state.click_power += 1
+                    st.rerun()
+                else:
+                    st.warning("Pas assez de cookies !")
+        with col2:
+            if st.button("Reset cookies", key="clicker_reset", use_container_width=True):
+                st.session_state.cookies = 0
+                st.session_state.click_power = 1
+                st.rerun()
+    if jeu == "Jeu Devine le nombre":
+        st.write("Je pense a un nombre entre 1 et 100. Devine ! Coups : " + str(st.session_state.coups))
+        guess = st.number_input("Ton nombre :", min_value=1, max_value=100, value=50, key="devine_input")
+        if st.button("DEVINER !", key="devine_btn", use_container_width=True):
+            st.session_state.coups += 1
+            if guess < st.session_state.nombre_secret:
+                st.warning("C est PLUS grand !")
+            elif guess > st.session_state.nombre_secret:
+                st.warning("C est PLUS petit !")
+            else:
+                st.success("BRAVO ! Tu as trouve en " + str(st.session_state.coups) + " coups !")
+                st.session_state.nombre_secret = random.randint(1, 100)
+                st.session_state.coups = 0
+            st.rerun()
+    if jeu == "Jeu Pierre Papier Ciseaux":
+        c1, c2, c3 = st.columns(3)
+        choix_ordi = random.choice(["Pierre", "Papier", "Ciseaux"])
+        with c1:
+            if st.button("🪨 Pierre", key="ppc_pierre", use_container_width=True):
+                st.session_state.dernier_jeu = ("Pierre", choix_ordi)
+        with c2:
+            if st.button("📄 Papier", key="ppc_papier", use_container_width=True):
+                st.session_state.dernier_jeu = ("Papier", choix_ordi)
+        with c3:
+            if st.button("✂️ Ciseaux", key="ppc_ciseaux", use_container_width=True):
+                st.session_state.dernier_jeu = ("Ciseaux", choix_ordi)
+        if st.session_state.dernier_jeu:
+            toi, ordi = st.session_state.dernier_jeu
+            st.write("Toi : " + toi + " | Ordi : " + ordi)
+            if toi == ordi:
+                st.info("EGALITE !")
+            elif (toi == "Pierre" and ordi == "Ciseaux") or (toi == "Papier" and ordi == "Pierre") or (toi == "Ciseaux" and ordi == "Papier"):
+                st.success("TU GAGNES ! 🔥")
+            else:
+                st.error("TU PERDS... Rejoue !")
+    if jeu == "Jeu Reflexe":
+        st.write("Clique le plus vite possible quand tu vois le bouton !")
+        if st.button("⚡ CLIQUE VITE !", key="reflexe_btn", use_container_width=True):
+            st.session_state.snake_score += 1
+            st.success("Bien joue ! Score reflexe : " + str(st.session_state.snake_score))
+            st.rerun()
+        if st.button("Reset reflexe", key="reflexe_reset", use_container_width=True):
+            st.session_state.snake_score = 0
+            st.rerun()
+
+elif st.session_state.theme == "📐 Ecole":
     st.subheader("1 - Choisis ta MATIERE 10H :")
     cols2 = st.columns(4)
     liste_matieres = list(MATIERES_GENRES.keys())
@@ -268,23 +351,24 @@ if st.session_state.theme == "📐 Ecole":
                 st.session_state.auto_q = q
                 st.rerun()
 else:
-    cols = st.columns(3)
-    liste_themes = list(THEMES.keys())
-    for i in range(len(liste_themes)):
-        t = liste_themes[i]
-        with cols[i % 3]:
-            if st.button(t, key="top_" + t, use_container_width=True):
-                st.session_state.theme = t
-                st.session_state.matiere = None
-                st.session_state.genre = None
-                st.rerun()
-    if st.session_state.theme != "📐 Ecole":
-        st.subheader("Questions - Clique :")
-        for q in THEMES.get(st.session_state.theme, []):
-            if st.button(q, key="q2_" + q, use_container_width=True):
-                st.session_state.messages.append({"role": "user", "content": q})
-                st.session_state.auto_q = q
-                st.rerun()
+    if st.session_state.theme != "🎮 Jeux":
+        cols = st.columns(3)
+        liste_themes = list(THEMES.keys())
+        for i in range(len(liste_themes)):
+            t = liste_themes[i]
+            with cols[i % 3]:
+                if st.button(t, key="top_" + t, use_container_width=True):
+                    st.session_state.theme = t
+                    st.session_state.matiere = None
+                    st.session_state.genre = None
+                    st.rerun()
+        if st.session_state.theme not in ["📐 Ecole", "🎮 Jeux"]:
+            st.subheader("Questions - Clique :")
+            for q in THEMES.get(st.session_state.theme, []):
+                if st.button(q, key="q2_" + q, use_container_width=True):
+                    st.session_state.messages.append({"role": "user", "content": q})
+                    st.session_state.auto_q = q
+                    st.rerun()
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -298,33 +382,33 @@ def nettoyer(txt):
     return txt
 
 BASES = {
-    "bonjour": "Bonjour ! Version FINALE 1000 lignes 10H avec PI ! Clique sur MODE ENTRAINEMENT ou choisis ta matiere 10H en haut.",
-    "salut": "Salut ! Ca va ? Clique sur MODE ENTRAINEMENT ou pose-moi ta question 10H !",
+    "bonjour": "Bonjour ! Version FINALE + JEUX ! Clique sur JEUX ou choisis ta matiere 10H !",
+    "salut": "Salut ! Ca va ? Clique sur JEUX ou pose-moi ta question 10H !",
     "slt": "Slt ! Ca va ?",
-    "yo": "Yo ! Ca va ? Tu veux reviser quoi en 10H ?",
+    "yo": "Yo ! Ca va ? Tu veux reviser ou jouer ?",
     "coucou": "Coucou ! Ca va bien ?",
     "hello": "Hello ! Ca va ? I can help you in English too !",
     "merci": "De rien ! Avec plaisir ! Tu as une autre question ?",
     "mrc": "De rien !",
-    "ca va": "Ca va super bien merci ! Et toi, ca va ? Tu revises quelle matiere 10H ?",
+    "ca va": "Ca va super bien merci ! Et toi, ca va ? Tu revises ou tu joues ?",
     "au revoir": "Au revoir ! A tres vite !",
     "bye": "Bye ! A tres vite !",
     "bonne nuit": "Bonne nuit ! Dors bien ! A demain !",
-    "t appelles comment": "Moi je m appelle Agent IA V5 - ULTIME 1000 LIGNES 10H ! Et toi ?",
-    "qui es tu": "Moi je suis Agent IA V5 ULTIME 1000 LIGNES ! Programme 10H Suisse complet avec PI : Maths, Francais, Allemand, Anglais, Histoire, Geo, Sciences, Chimie, Physique, Bio, Eco, Droit, Info, Sport, Arts... + 85 verbes, 100+ capitales, PC, avions, chanteurs, entrainement, apprentissage !",
-    "aide moi": "Oui bien sur ! Clique sur MODE ENTRAINEMENT en haut, ou choisis une matiere 10H !",
+    "t appelles comment": "Moi je m appelle Agent IA V5 + JEUX ! Et toi ?",
+    "qui es tu": "Moi je suis Agent IA V5 ULTIME + JEUX ! Programme 10H Suisse complet avec PI + 4 jeux : Clicker, Devine le nombre, Pierre Papier Ciseaux, Reflexe !",
+    "aide moi": "Oui bien sur ! Clique sur JEUX ou MODE ENTRAINEMENT en haut, ou choisis une matiere 10H !",
     "j ai pas compris": "T inquiete ! Dis-moi ce que tu n as pas compris, je vais te reexpliquer plus simplement, avec un autre exemple.",
     "t es trop fort": "Merciii ! Ca me fait trop plaisir !",
     "quelle heure": "Il est " + datetime.datetime.now().strftime("%H:%M") + " !",
     "quelle date": "On est le " + datetime.datetime.now().strftime("%d/%m/%Y") + " !",
-    "devinette": "Devinette : Je suis toujours devant toi mais tu ne peux jamais me voir. Qui suis-je ? Reponse : Ton avenir ! Une autre : Qu est-ce qui monte mais ne descend jamais ? Reponse : Ton age !",
+    "devinette": "Devinette : Je suis toujours devant toi mais tu ne peux jamais me voir. Qui suis-je ? Reponse : Ton avenir !",
 }
 BLAGUES = ["Pourquoi les plongeurs plongent-ils toujours en arriere ? Parce que sinon, ils tombent dans le bateau !", "Que dit un zero a un huit ? Belle ceinture !", "Pourquoi les maths sont tristes ? Parce qu elles ont trop de problemes !", "Pourquoi les poissons n aiment pas jouer au foot ? Parce qu ils ont peur des filets !", "Que fait une fraise sur un cheval ? Tagada tagada !", "Pourquoi PI est trop fort ? Parce qu il ne s arrete jamais !"]
-MOTIVATIONS = ["Tu peux le faire ! Chaque erreur, c est une lecon. Ne lache rien !", "N abandonne jamais ! 10 minutes par jour, tous les jours, et dans 1 mois tu seras trop fort !", "Tu es capable de beaucoup plus que tu crois ! Commence petit, 1 exercice, et ca va venir !"]
+MOTIVATIONS = ["Tu peux le faire ! Chaque erreur, c est une lecon. Ne lache rien !", "N abandonne jamais ! 10 minutes par jour, tous les jours, et dans 1 mois tu seras trop fort !", "Tu es capable de beaucoup plus que tu crois !"]
 TRADUCTIONS = {"bonjour en anglais": "Bonjour en anglais = Hello / Good morning !", "bonjour en allemand": "Bonjour en allemand = Hallo / Guten Tag !", "bonjour en espagnol": "Bonjour en espagnol = Hola / Buenos dias !", "bonjour en italien": "Bonjour en italien = Ciao / Buongiorno !", "merci en anglais": "Merci en anglais = Thank you / Thanks !", "merci en allemand": "Merci en allemand = Danke !", "merci en espagnol": "Merci en espagnol = Gracias !", "merci en italien": "Merci en italien = Grazie !", "ecole en anglais": "Ecole en anglais = School !", "chien en anglais": "Chien en anglais = Dog !", "ecole en allemand": "Ecole en allemand = Schule !", "chien en allemand": "Chien en allemand = Hund !", "ecole en espagnol": "Ecole en espagnol = Escuela !"}
-CAPITALES = {"france": "Paris - Tour Eiffel, Louvre.", "suisse": "Berne - Capitale de la Suisse depuis 1848.", "allemagne": "Berlin - Mur de Berlin tombe en 1989.", "italie": "Rome - Colisee, Vatican.", "espagne": "Madrid - 【entity-Real Madrid¦canonical_name=Real Madrid】.", "angleterre": "Londres - Big Ben.", "japon": "Tokyo - Plus grande ville du monde !", "usa": "Washington D.C. - Maison Blanche.", "canada": "Ottawa - Toronto = plus grande ville.", "chine": "Pekin - Grande Muraille.", "russie": "Moscou - Place Rouge.", "bresil": "Brasilia - Rio = plus connue.", "inde": "New Delhi - Taj Mahal.", "australie": "Canberra - Sydney = plus connue.", "egypte": "Le Caire - Pyramides de Gizeh.", "maroc": "Rabat - Maroc.", "portugal": "Lisbonne - 【entity-Cristiano Ronaldo¦canonical_name=Cristiano Ronaldo】 !", "belgique": "Bruxelles - Frites, Chocolat !", "pays-bas": "Amsterdam - Canaux, Velos.", "suede": "Stockholm - 【entity-IKEA¦canonical_name=IKEA】, 【entity-ABBA¦canonical_name=ABBA】.", "norvege": "Oslo - Fjords, 【entity-Haaland¦canonical_name=Haaland】 !", "grece": "Athenes - Democratie, Jeux Olympiques.", "mexique": "Mexico - Tacos, Azteques.", "argentine": "Buenos Aires - Tango, 【entity-Messi¦canonical_name=Messi】.", "monaco": "Monaco - 2 km2, Grand Prix F1.", "qatar": "Doha - Qatar, Coupe du Monde 2022 !", "nepal": "Katmandou - Nepal, Everest, 8848m !", "jamaique": "Kingston - Jamaique, Bob Marley, 【entity-Usain Bolt¦canonical_name=Usain Bolt】 !", "turquie": "Ankara - Turquie, Istanbul = plus grande ville.", "coree": "Seoul - Coree du Sud, K-Pop, 【entity-Samsung¦canonical_name=Samsung】.", "colombie": "Bogota - Colombie, Cafe.", "senegal": "Dakar - Senegal, 【entity-Sadio Mane¦canonical_name=Sadio Mane】.", "madagascar": "Antananarivo - Madagascar, Lemuriens.", "indonesie": "Jakarta - Indonesie, 17000 iles !", "singapour": "Singapour - Ville-pays, la plus propre !", "nouvelle-zelande": "Wellington - Nouvelle-Zelande, Seigneur des Anneaux !", "irlande": "Dublin - Irlande, Saint-Patrick.", "islande": "Reykjavik - Islande, Volcans, Aurores boreales.", "finlande": "Helsinki - Finlande, Pere Noel.", "pologne": "Varsovie - Pologne, Lewandowski.", "danemark": "Copenhague - Danemark, 【entity-LEGO¦canonical_name=LEGO】.", "autriche": "Vienne - Autriche, Mozart.", "cuba": "La Havane - Cuba, Salsa."}
+CAPITALES = {"france": "Paris - Tour Eiffel, Louvre.", "suisse": "Berne - Capitale de la Suisse depuis 1848.", "allemagne": "Berlin - Mur de Berlin tombe en 1989.", "italie": "Rome - Colisee, Vatican.", "espagne": "Madrid - 【entity-Real Madrid¦canonical_name=Real Madrid】.", "angleterre": "Londres - Big Ben.", "japon": "Tokyo - Plus grande ville du monde !", "usa": "Washington D.C. - Maison Blanche.", "canada": "Ottawa - Toronto = plus grande ville.", "chine": "Pekin - Grande Muraille.", "russie": "Moscou - Place Rouge.", "bresil": "Brasilia - Rio = plus connue.", "inde": "New Delhi - Taj Mahal.", "australie": "Canberra - Sydney = plus connue.", "egypte": "Le Caire - Pyramides de Gizeh.", "maroc": "Rabat - Maroc.", "portugal": "Lisbonne - Cristiano 【entity-Ronaldo¦canonical_name=Ronaldo】 !", "belgique": "Bruxelles - Frites, Chocolat !", "pays-bas": "Amsterdam - Canaux, Velos.", "suede": "Stockholm - 【entity-IKEA¦canonical_name=IKEA】, 【entity-ABBA¦canonical_name=ABBA】.", "norvege": "Oslo - Fjords, 【entity-Haaland¦canonical_name=Haaland】 !", "grece": "Athenes - Democratie, 【entity-Jeux Olympiques¦canonical_name=Jeux Olympiques】.", "mexique": "Mexico - Tacos, Azteques.", "argentine": "Buenos Aires - Tango, 【entity-Messi¦canonical_name=Messi】.", "monaco": "Monaco - 2 km2, Grand Prix F1.", "qatar": "Doha - Qatar, Coupe du Monde 2022 !", "nepal": "Katmandou - Nepal, Everest, 8848m !", "jamaique": "Kingston - Jamaique, Bob Marley, 【entity-Usain Bolt¦canonical_name=Usain Bolt】 !", "turquie": "Ankara - Turquie, Istanbul = plus grande ville.", "coree": "Seoul - Coree du Sud, K-Pop, 【entity-Samsung¦canonical_name=Samsung】.", "colombie": "Bogota - Colombie, Cafe.", "senegal": "Dakar - Senegal, 【entity-Sadio Mane¦canonical_name=Sadio Mane】.", "madagascar": "Antananarivo - Madagascar, Lemuriens.", "indonesie": "Jakarta - Indonesie, 17000 iles !", "singapour": "Singapour - Ville-pays, la plus propre !", "nouvelle-zelande": "Wellington - Nouvelle-Zelande, Seigneur des Anneaux !", "irlande": "Dublin - Irlande, Saint-Patrick.", "islande": "Reykjavik - Islande, Volcans, Aurores boreales.", "finlande": "Helsinki - Finlande, Pere Noel.", "pologne": "Varsovie - Pologne, 【entity-Lewandowski¦canonical_name=Lewandowski】.", "danemark": "Copenhague - Danemark, 【entity-LEGO¦canonical_name=LEGO】.", "autriche": "Vienne - Autriche, Mozart.", "cuba": "La Havane - Cuba, Salsa."}
 PC = {
-    "rapport qualite prix": "MEILLEUR RAPPORT PC 2026 : GAGNANT 1300 CHF : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS. PETIT BUDGET 900 CHF : RTX 4060 + Ryzen 5 7600 = 900 CHF. GROS BUDGET 2000 CHF : RTX 5070 Ti + 9800X3D = 2000 CHF.",
+    "rapport qualite prix": "MEILLEUR RAPPORT PC : GAGNANT 1300 CHF : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS. PETIT BUDGET 900 CHF : RTX 4060 + Ryzen 5 7600 = 900 CHF. GROS BUDGET 2000 CHF : RTX 5070 Ti + 9800X3D = 2000 CHF.",
     "pc 900": "PC 900 CHF : RTX 4060 + Ryzen 5 7600 + 16 Go + SSD 1 To = 900 CHF. 【entity-Fortnite¦canonical_name=Fortnite】 144 FPS !",
     "pc 1300": "PC 1300 CHF - MEILLEUR RAPPORT : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS !",
     "pc 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. 240 FPS, 4K !",
@@ -338,7 +422,7 @@ PC = {
     "ping": "PING = Temps de reponse internet. 10 ms = parfait, 30 ms = tres bien, 100 ms = ca lag, 200 ms = injouable.",
 }
 CHANTEURS = {
-    "werenoi": "WERENOI : Vrai nom Jeremy Bana Owona. Ne en 1994 a Melun. Il a explose en 2023 avec Pyramide et Solitaire. Albums : Pyramide, Diamant Noir. Le plus ecoute en France en 2024 et 2025 !",
+    "werenoi": "WERENOI : Vrai nom Jeremy Bana Owona. Ne en 1994 a Melun. Il a explose en 2023 avec Pyramide et Solitaire. Albums : Pyramide, Diamant Noir.",
     "ninho": "NINHO : Vrai nom William Nzobazola. Le rappeur avec le plus de disques d or et de diamant en France ! Albums : Jefe, NI.",
     "jul": "JUL : Vrai nom Julien Mari. Ne en 1990 a Marseille. Le plus productif : 2 albums par an ! Sons : Tchikita, Bande organisee.",
     "gazo": "GAZO : Roi de la drill en France ! Albums : KMT, Apocalypse. Sons : La Melo avec Tiakola.",
@@ -442,45 +526,45 @@ VERBES = {
 }
 
 TOUT = {
-    "pi": "PI = 3.14 ! PI c est le nombre qui sert pour tous les cercles. Valeur exacte : 3.14159265... Ca ne s arrete jamais, c est infini ! FORMULES AVEC PI : Perimetre du cercle = 2 x PI x rayon. Aire du cercle = PI x rayon x rayon. Ex : Rayon = 5. Perimetre = 2 x 3.14 x 5 = 31.4 cm. Aire = 3.14 x 5 x 5 = 78.5 cm2. Ex : Rayon = 10. Perimetre = 62.8 cm. Aire = 314 cm2. Volume du cylindre = PI x rayon2 x hauteur. Ex : rayon 3, hauteur 10 : 3.14 x 9 x 10 = 282.6 cm3. ASTUCE : Pour retenir PI : 3.14159 = 3 - 1 - 4 - 1 - 5 - 9. Le 14 mars, c est la journee de PI (3/14 aux USA) !",
-    "fonction": "FONCTION 10H : Une fonction, c est une machine : tu mets un nombre x, elle te sort un nombre y. Ex : f(x) = 2x + 3. Si x = 2, f(2) = 7. On note f : x -> 2x+3.",
-    "fonction affine": "FONCTION AFFINE 10H : f(x) = a x + b. a = pente, b = ordonnee a l origine. Ex : f(x) = 2x + 1. Pente = 2, ca monte. Si x=0, y=1. Si a > 0 ca monte, si a < 0 ca descend.",
-    "pente": "PENTE 10H : La pente, c est a dans f(x) = a x + b. Formule : pente = (y2 - y1) / (x2 - x1). Ex : Points (0,1) et (2,5) : pente = (5-1)/(2-0) = 2.",
+    "pi": "PI = 3.14 ! PI c est le nombre qui sert pour tous les cercles. Valeur exacte : 3.14159265... Ca ne s arrete jamais, c est infini ! FORMULES AVEC PI : Perimetre du cercle = 2 x PI x rayon. Aire du cercle = PI x rayon x rayon. Ex : Rayon = 5. Perimetre = 2 x 3.14 x 5 = 31.4 cm. Aire = 3.14 x 5 x 5 = 78.5 cm2. Ex : Rayon = 10. Perimetre = 62.8 cm. Aire = 314 cm2. Volume du cylindre = PI x rayon2 x hauteur. Ex : rayon 3, hauteur 10 : 3.14 x 9 x 10 = 282.6 cm3. Le 14 mars, c est la journee de PI !",
+    "fonction": "FONCTION 10H : Une fonction, c est une machine : tu mets un nombre x, elle te sort un nombre y. Ex : f(x) = 2x + 3. Si x = 2, f(2) = 7.",
+    "fonction affine": "FONCTION AFFINE 10H : f(x) = a x + b. a = pente, b = ordonnee a l origine. Ex : f(x) = 2x + 1. Pente = 2, ca monte.",
+    "pente": "PENTE 10H : La pente, c est a dans f(x) = a x + b. Formule : pente = (y2 - y1) / (x2 - x1). Ex : Points (0,1) et (2,5) : pente = 2.",
     "ordonnee a l origine": "ORDONNEE A L ORIGINE 10H : C est b dans f(x) = a x + b. C est ou la droite coupe l axe y quand x = 0. Ex : f(x) = 3x + 2. Quand x=0, y=2.",
-    "graphique": "GRAPHIQUE 10H : Pour tracer f(x) = 2x + 1 : Tableau : x=0 -> y=1, x=1 -> y=3, x=2 -> y=5. Mets les points (0,1), (1,3), (2,5). Relie avec une regle.",
+    "graphique": "GRAPHIQUE 10H : Pour tracer f(x) = 2x + 1 : x=0 -> y=1, x=1 -> y=3, x=2 -> y=5. Mets les points et relie.",
     "image": "IMAGE 10H : L image, c est le resultat. Si f(x) = 2x + 3 et x = 4, l image de 4 c est f(4) = 11.",
-    "antecedent": "ANTECEDENT 10H : L antecedent, c est le x de depart. Si f(x) = 2x + 3 et f(x) = 11, l antecedent de 11 c est 4 car 2x4+3=11.",
-    "fonction lineaire": "FONCTION LINEAIRE 10H : f(x) = a x. Elle passe toujours par (0,0). Ex : f(x) = 3x. C est une proportionnalite.",
-    "proportionnalite": "PROPORTIONNALITE 10H : Deux grandeurs sont proportionnelles si quand l une double, l autre double. Tableau : 1 -> 5, 2 -> 10, 3 -> 15. Coefficient = 5.",
-    "pythagore": "THEOREME DE PYTHAGORE 10H : a2 + b2 = c2. UNIQUEMENT pour un triangle rectangle. c = hypotenuse. Ex : 3-4-5 car 9+16=25. Ex : Si a=6, b=8, c2 = 36+64=100, donc c=10.",
-    "thales": "THALES 10H : Si 2 droites paralleles coupent 2 secantes, rapports egaux. Formule : AB / AD = AC / AE = BC / DE.",
-    "similitude": "SIMILITUDE 10H : Deux figures sont semblables si elles ont la meme forme mais pas la meme taille. Les angles sont egaux, les cotes sont proportionnels.",
-    "cosinus": "COSINUS 10H : Dans un triangle rectangle : cos(angle) = cote adjacent / hypotenuse. Ex : Hypotenuse 10, adjacent 6, cos = 0.6. Sur ta calculatrice : cos-1(0.6) = 53 degres.",
-    "sinus": "SINUS 10H : sin(angle) = cote oppose / hypotenuse. Ex : Hypotenuse 10, oppose 8, sin = 0.8. Astuce : SOH-CAH-TOA : Sinus = Oppose / Hypotenuse, Cosinus = Adjacent / Hypotenuse, Tangente = Oppose / Adjacent.",
-    "tangente": "TANGENTE 10H : tan(angle) = cote oppose / cote adjacent. Ex : Oppose 6, adjacent 8, tan = 0.75. tan-1(0.75) = 37 degres.",
+    "antecedent": "ANTECEDENT 10H : L antecedent, c est le x de depart. Si f(x) = 2x + 3 et f(x) = 11, l antecedent de 11 c est 4.",
+    "fonction lineaire": "FONCTION LINEAIRE 10H : f(x) = a x. Elle passe toujours par (0,0). Ex : f(x) = 3x.",
+    "proportionnalite": "PROPORTIONNALITE 10H : Deux grandeurs sont proportionnelles si quand l une double, l autre double. Ex : 1 -> 5, 2 -> 10, 3 -> 15.",
+    "pythagore": "THEOREME DE PYTHAGORE 10H : a2 + b2 = c2. UNIQUEMENT pour un triangle rectangle. Ex : 3-4-5 car 9+16=25. Si a=6, b=8, c=10.",
+    "thales": "THALES 10H : Si 2 droites paralleles coupent 2 secantes, rapports egaux. AB / AD = AC / AE = BC / DE.",
+    "similitude": "SIMILITUDE 10H : Deux figures sont semblables si elles ont la meme forme mais pas la meme taille.",
+    "cosinus": "COSINUS 10H : cos(angle) = cote adjacent / hypotenuse. Ex : Hypotenuse 10, adjacent 6, cos = 0.6.",
+    "sinus": "SINUS 10H : sin(angle) = cote oppose / hypotenuse. Ex : Hypotenuse 10, oppose 8, sin = 0.8. SOH-CAH-TOA !",
+    "tangente": "TANGENTE 10H : tan(angle) = cote oppose / cote adjacent. Ex : Oppose 6, adjacent 8, tan = 0.75.",
     "trigonometrie": "TRIGONOMETRIE 10H : SOH-CAH-TOA. Sinus = Oppose / Hypotenuse, Cosinus = Adjacent / Hypotenuse, Tangente = Oppose / Adjacent.",
-    "puissances": "PUISSANCES 10H : 2 puissance 3 = 2x2x2 = 8. 2 puissance 0 = 1. 2 puissance -1 = 1/2 = 0.5. Regles : a^m x a^n = a^(m+n). a^m / a^n = a^(m-n).",
-    "racines": "RACINES 10H : Racine de 9 = 3 car 3x3 = 9. Racine de 16 = 4. Racine de 2 = 1.41...",
+    "puissances": "PUISSANCES 10H : 2 puissance 3 = 2x2x2 = 8. 2 puissance 0 = 1. 2 puissance -1 = 0.5.",
+    "racines": "RACINES 10H : Racine de 9 = 3 car 3x3 = 9. Racine de 16 = 4.",
     "notation scientifique": "NOTATION SCIENTIFIQUE 10H : 3 000 000 = 3 x 10^6. 0.000005 = 5 x 10^-6.",
-    "equation du 1er degre": "EQUATION DU 1ER DEGRE 10H : 2x + 3 = 7. Tu enleves 3 : 2x = 4. Tu divises par 2 : x = 2. Verif : 2x2+3 = 7.",
-    "inequation": "INEQUATION 10H : Comme une equation mais avec < ou >. Ex : 2x + 3 < 7. 2x < 4. x < 2. ATTENTION : Si tu multiplies par un nombre negatif, tu dois retourner le signe !",
+    "equation du 1er degre": "EQUATION DU 1ER DEGRE 10H : 2x + 3 = 7. Tu enleves 3 : 2x = 4. Tu divises par 2 : x = 2.",
+    "inequation": "INEQUATION 10H : Comme une equation mais avec < ou >. Ex : 2x + 3 < 7. 2x < 4. x < 2. Si tu multiplies par un nombre negatif, tu retournes le signe !",
     "produit en croix": "PRODUIT EN CROIX 10H : Si 2/3 = x/9, alors 2x9 = 3x x. Donc 18 = 3x, x = 6.",
-    "moyenne": "MOYENNE 10H : Moyenne = somme / nombre. Ex : Notes 12, 15, 18. Somme = 45. Nombre = 3. Moyenne = 15.",
+    "moyenne": "MOYENNE 10H : Moyenne = somme / nombre. Ex : Notes 12, 15, 18. Somme = 45. Moyenne = 15.",
     "mediane": "MEDIANE 10H : C est le nombre du milieu quand tu ranges dans l ordre. Ex : 5, 8, 12, 15, 20. Mediane = 12.",
     "mode": "MODE 10H : C est la valeur qui revient le plus souvent. Ex : Notes 12, 15, 12, 18, 12. Mode = 12.",
     "etendue": "ETENDUE 10H : Etendue = plus grand - plus petit. Ex : Notes 8, 12, 15, 20. Etendue = 12.",
-    "frequence": "FREQUENCE 10H : Frequence = effectif / total. Ex : Dans une classe de 20, 5 ont 12. Frequence = 5/20 = 0.25 = 25%.",
-    "probabilite": "PROBABILITE 10H : Probabilite = cas favorables / cas possibles. Ex : De a 6 faces, proba d avoir 6 = 1/6. Proba d avoir un nombre pair = 3/6 = 1/2 = 50%.",
+    "frequence": "FREQUENCE 10H : Frequence = effectif / total. Ex : Dans une classe de 20, 5 ont 12. Frequence = 5/20 = 25%.",
+    "probabilite": "PROBABILITE 10H : Probabilite = cas favorables / cas possibles. Ex : De a 6 faces, proba d avoir 6 = 1/6.",
     "diagramme en batons": "DIAGRAMME EN BATONS 10H : Tu fais des batons, plus le baton est haut, plus il y en a.",
     "diagramme circulaire": "DIAGRAMME CIRCULAIRE 10H : C est un camembert. 360 degres = 100%. Si 50% aiment le foot, ca fait 180 degres.",
-    "aire": "AIRE 10H : Rectangle = L x l, Carre = cote x cote, Triangle = (base x hauteur) / 2, Cercle = PI x rayon2. PI = 3.14. Ex : Cercle rayon 5 = 3.14 x 25 = 78.5 cm2. Parallelogramme = base x hauteur.",
-    "perimetre": "PERIMETRE 10H : Carre = 4 x cote, Rectangle = 2 x (L+l), Cercle = 2 x PI x rayon. PI = 3.14. Ex : Cercle rayon 5 = 2 x 3.14 x 5 = 31.4 cm. Triangle = somme des 3 cotes.",
-    "volume": "VOLUME 10H : Cube = cote3, Pave = L x l x h, Cylindre = PI x r2 x h. Ex : Boite 2x3x4 = 24 cm3. Cylindre rayon 3 hauteur 10 = 3.14 x 9 x 10 = 282.6 cm3.",
+    "aire": "AIRE 10H : Rectangle = L x l, Carre = cote x cote, Triangle = (base x hauteur) / 2, Cercle = PI x rayon2. PI = 3.14. Ex : Cercle rayon 5 = 78.5 cm2.",
+    "perimetre": "PERIMETRE 10H : Carre = 4 x cote, Rectangle = 2 x (L+l), Cercle = 2 x PI x rayon. PI = 3.14. Ex : Cercle rayon 5 = 31.4 cm.",
+    "volume": "VOLUME 10H : Cube = cote3, Pave = L x l x h, Cylindre = PI x r2 x h. Ex : Boite 2x3x4 = 24 cm3.",
     "angle": "ANGLES 10H : Droit = 90 degres, Plat = 180 degres, Plein = 360 degres. Triangle = 180 degres au total.",
     "triangle": "TRIANGLE 10H : 3 cotes, 3 angles, somme = 180 degres. Types : Equilateral, Isocele, Rectangle, Scalene. Aire = (base x hauteur) / 2.",
     "cercle": "CERCLE 10H : Centre, rayon, diametre = 2 x rayon. Perimetre = 2 x PI x rayon. Aire = PI x rayon2. PI = 3.14. Ex : Rayon 7 : Perimetre = 43.96 cm, Aire = 153.86 cm2.",
-    "fraction": "FRACTION 10H : 1/2 = la moitie, 1/4 = le quart. 1/2 + 1/4 = 2/4 + 1/4 = 3/4.",
-    "pourcentage": "POURCENTAGE 10H : (partie / total) x 100. Ex : 20% de 50 = 10. Tu as 15/20 : (15/20) x 100 = 75%.",
+    "fraction": "FRACTION 10H : 1/2 = la moitie, 1/4 = le quart. 1/2 + 1/4 = 3/4.",
+    "pourcentage": "POURCENTAGE 10H : (partie / total) x 100. Ex : 20% de 50 = 10. Tu as 15/20 : 75%.",
     "equation": "EQUATION 10H : 2x + 3 = 7. Tu enleves 3 : 2x = 4. Tu divises par 2 : x = 2.",
     "racine carree": "RACINE CARREE 10H : Racine de 9 = 3 car 3x3 = 9. Racine de 16 = 4. Racine de 25 = 5.",
     "division": "DIVISION 10H : 12 / 3 = 4. 13 / 4 = 3 reste 1.",
@@ -492,27 +576,27 @@ TOUT = {
     "verbe": "VERBE 10H : C est l action dans la phrase. Ex : Je mange, Tu cours, Il dort.",
     "pronom": "PRONOM 10H : Il remplace un nom. Ex : Lenny mange. Il mange.",
     "complement circonstanciel": "COMPLEMENT CIRCONSTANCIEL 10H : Il repond a Ou ? Quand ? Comment ? Pourquoi ? Ex : Je vais a l ecole (ou), demain (quand), en bus (comment).",
-    "proposition subordonnee": "PROPOSITION SUBORDONNEE 10H : Proposition qui depend d une autre. Ex : Je sais que tu viens. Que tu viens = subordonnee.",
+    "proposition subordonnee": "PROPOSITION SUBORDONNEE 10H : Proposition qui depend d une autre. Ex : Je sais que tu viens.",
     "proposition relative": "PROPOSITION RELATIVE 10H : Elle complete un nom, introduite par qui, que, dont, ou. Ex : Le garcon qui joue au foot est mon ami.",
-    "groupe nominal": "GROUPE NOMINAL 10H : Groupe avec un nom au centre. Ex : Le grand chien noir. Nom = chien, Determinant = Le, Adjectifs = grand, noir.",
-    "attribut du sujet": "ATTRIBUT DU SUJET 10H : Apres un verbe d etat (etre, sembler, devenir...), il decrit le sujet. Ex : Lenny est content. Content = attribut du sujet.",
+    "groupe nominal": "GROUPE NOMINAL 10H : Groupe avec un nom au centre. Ex : Le grand chien noir.",
+    "attribut du sujet": "ATTRIBUT DU SUJET 10H : Apres un verbe d etat (etre, sembler, devenir...), il decrit le sujet. Ex : Lenny est content.",
     "participe passe": "PARTICIPE PASSE 10H : Forme du verbe au passe. Ex : mange, fini, pris, vu, ecrit. Avec etre, il s accorde avec le sujet : Elle est allee.",
-    "accord du participe passe": "ACCORD DU PARTICIPE PASSE 10H : Avec ETRE : il s accorde avec le sujet. Elle est allee. Avec AVOIR : il s accorde avec le COD si le COD est avant. Les lettres que j ai ecrites.",
+    "accord du participe passe": "ACCORD DU PARTICIPE PASSE 10H : Avec ETRE : il s accorde avec le sujet. Elle est allee. Avec AVOIR : il s accorde avec le COD si le COD est avant.",
     "passe compose": "PASSE COMPOSE 10H : Auxiliaire ETRE ou AVOIR au present + participe passe. Ex : J ai mange, Je suis alle.",
     "imparfait": "IMPARFAIT 10H : Pour une action longue, repetee, ou une description dans le passe. Ex : Quand j etais petit, je jouais au foot.",
     "passe simple": "PASSE SIMPLE 10H : Pour une action courte, terminee dans le passe, surtout dans les livres. Ex : Il entra, il vit, il prit.",
-    "futur simple": "FUTUR SIMPLE 10H : Pour le futur. Ex : Je mangerai, Tu iras, Il sera. Formation : infinitif + -ai, -as, -a, -ons, -ez, -ont.",
+    "futur simple": "FUTUR SIMPLE 10H : Pour le futur. Ex : Je mangerai, Tu iras, Il sera.",
     "conditionnel": "CONDITIONNEL 10H : Pour dire ce qui pourrait arriver, ou pour etre poli. Ex : Je voudrais un jus. Si j avais de l argent, j acheterais un velo.",
-    "subjonctif": "SUBJONCTIF 10H : Apres il faut que, je veux que, je suis content que... Ex : Il faut que tu viennes, Je veux que tu fasses tes devoirs.",
+    "subjonctif": "SUBJONCTIF 10H : Apres il faut que, je veux que... Ex : Il faut que tu viennes.",
     "plus-que-parfait": "PLUS-QUE-PARFAIT 10H : Pour une action qui s est passee avant une autre action au passe. Ex : Quand je suis arrive, il avait deja mange.",
     "infinitif": "INFINITIF 10H : Forme non conjuguee du verbe. Ex : manger, finir, prendre, etre, avoir.",
     "synonyme": "SYNONYME 10H : Mot qui veut dire la meme chose. Ex : content = heureux.",
     "antonyme": "ANTONYME 10H : Mot qui veut dire le contraire. Ex : grand = petit, chaud = froid.",
     "homonyme": "HOMONYME 10H : Mots qui se prononcent pareil mais s ecrivent differemment. Ex : a / a, et / est, son / sont.",
     "famille de mots": "FAMILLE DE MOTS 10H : Mots qui ont la meme racine. Ex : fleur, fleuri, fleuriste.",
-    "metaphore": "METAPHORE 10H : Comparaison sans comme. Ex : Lenny est un lion. La mer est un miroir.",
-    "comparaison": "COMPARAISON 10H : Comparaison avec comme, tel, pareil a. Ex : Il est fort comme un lion.",
-    "personnification": "PERSONNIFICATION 10H : Donner des qualites humaines a un objet ou un animal. Ex : Le vent chantait. La lune nous regardait.",
+    "metaphore": "METAPHORE 10H : Comparaison sans comme. Ex : Lenny est un lion.",
+    "comparaison": "COMPARAISON 10H : Comparaison avec comme. Ex : Il est fort comme un lion.",
+    "personnification": "PERSONNIFICATION 10H : Donner des qualites humaines a un objet. Ex : Le vent chantait.",
     "hyperbole": "HYPERBOLE 10H : Exageration. Ex : Je t ai dit 1000 fois ! J ai une faim de loup !",
     "champ lexical": "CHAMP LEXICAL 10H : Tous les mots qui parlent du meme theme. Ex : Champ lexical de l ecole : professeur, eleve, cahier, tableau, devoir, note, classe...",
     "registre de langue": "REGISTRE DE LANGUE 10H : Familier (wesh, trop cool), Courant (salut, c est bien), Soutenu (bonjour, c est excellent).",
@@ -520,214 +604,214 @@ TOUT = {
     "these": "THESE 10H : C est ton avis, ton idee principale. Ex : Je pense que les devoirs sont utiles.",
     "argument": "ARGUMENT 10H : C est une raison pour prouver ta these. Ex : These : Le sport est bon. Argument : Ca rend en forme.",
     "resume": "RESUME 10H : Raconter un texte en plus court, avec tes mots, sans changer le sens, sans donner ton avis.",
-    "lettre": "LETTRE 10H : Structure : Ton adresse + date en haut a droite. Bonjour. Introduction. Developpement. Conclusion + Formule de politesse. Signature.",
-    "texte narratif": "TEXTE NARRATIF 10H : Il raconte une histoire. Structure : Situation initiale, Element declencheur, Peripeties, Denouement, Situation finale.",
+    "lettre": "LETTRE 10H : Ton adresse + date en haut a droite. Bonjour. Introduction. Developpement. Conclusion + Formule de politesse. Signature.",
+    "texte narratif": "TEXTE NARRATIF 10H : Il raconte une histoire. Situation initiale, Element declencheur, Peripeties, Denouement, Situation finale.",
     "texte descriptif": "TEXTE DESCRIPTIF 10H : Il decrit un lieu, une personne, un objet. On utilise des adjectifs, des comparaisons, des details.",
-    "texte explicatif": "TEXTE EXPLICATIF 10H : Il explique comment ca marche, pourquoi. Ex : Comment vole un avion ? Pourquoi il y a des saisons ?",
+    "texte explicatif": "TEXTE EXPLICATIF 10H : Il explique comment ca marche, pourquoi. Ex : Comment vole un avion ?",
     "der": "DER DIE DAS 10H : der = masculin, die = feminin, das = neutre. Pluriel = die.",
     "accusatif": "ACCUSATIF 10H : C est le cas du COD. der devient den. Ex : Ich sehe den Hund.",
     "datif": "DATIF 10H : C est le cas du COI. der devient dem, die devient der, das devient dem.",
     "nominatif": "NOMINATIF 10H : C est le cas du sujet. der, die, das.",
-    "genitif": "GENITIF 10H : C est le cas de la possession. der devient des, die devient der, das devient des. Ex : Das Buch des Mannes = Le livre de l homme.",
-    "prepositions": "PREPOSITIONS 10H - ALLEMAND : Accusatif : durch, fur, gegen, ohne, um. Datif : mit, nach, bei, von, zu, aus, seit. Accusatif ou Datif : in, an, auf, vor, hinter, uber, unter, neben, zwischen.",
-    "verbes modaux": "VERBES MODAUX 10H - ALLEMAND : konnen, mussen, wollen, sollen, durfen, mogen. Ex : Ich kann schwimmen, Ich muss lernen.",
-    "perfekt": "PERFEKT 10H - ALLEMAND : Passe compose. Auxiliaire HABEN ou SEIN + participe passe a la fin. Ex : Ich habe gespielt, Ich bin gegangen.",
-    "prateritum": "PRATERITUM 10H - ALLEMAND : Passe simple, surtout a l ecrit. Ex : Ich war, Ich hatte, Ich konnte, Ich musste.",
-    "futur en allemand": "FUTUR EN ALLEMAND 10H : werden + infinitif a la fin. Ex : Ich werde lernen, Du wirst kommen.",
-    "comparatif en allemand": "COMPARATIF EN ALLEMAND 10H : Plus... que = -er + als. Ex : grosser als = plus grand que. gut -> besser als.",
-    "weil / dass / wenn": "WEIL / DASS / WENN 10H : weil = parce que. dass = que. wenn = quand / si. Ex : Ich bleibe zu Hause, weil ich krank bin.",
-    "present simple": "PRESENT SIMPLE 10H - ANGLAIS : Pour les habitudes. I play, He plays (avec -s !). Ex : He plays football every day.",
-    "present perfect": "PRESENT PERFECT 10H - ANGLAIS : have / has + participe passe. Ex : I have lived here for 5 years. I have just eaten.",
-    "present continu": "PRESENT CONTINU 10H - ANGLAIS : be + -ing. Ex : I am playing now. I am going to school tomorrow.",
-    "preterit": "PRETERIT 10H - ANGLAIS : Pour le passe termine. Verbes reguliers +ed : I played. Verbes irreguliers : I went, I saw, I ate.",
-    "comparatif": "COMPARATIF 10H - ANGLAIS : Plus... que = -er + than. Ex : bigger than = plus grand que. More + adjectif long : more beautiful than.",
+    "genitif": "GENITIF 10H : C est le cas de la possession. der devient des, die devient der, das devient des.",
+    "prepositions": "PREPOSITIONS 10H - ALLEMAND : Accusatif : durch, fur, gegen, ohne, um. Datif : mit, nach, bei, von, zu, aus, seit.",
+    "verbes modaux": "VERBES MODAUX 10H - ALLEMAND : konnen, mussen, wollen, sollen, durfen, mogen. Ex : Ich kann schwimmen.",
+    "perfekt": "PERFEKT 10H - ALLEMAND : Passe compose. Auxiliaire HABEN ou SEIN + participe passe a la fin. Ex : Ich habe gespielt.",
+    "prateritum": "PRATERITUM 10H - ALLEMAND : Passe simple, surtout a l ecrit. Ex : Ich war, Ich hatte.",
+    "futur en allemand": "FUTUR EN ALLEMAND 10H : werden + infinitif a la fin. Ex : Ich werde lernen.",
+    "comparatif en allemand": "COMPARATIF EN ALLEMAND 10H : Plus... que = -er + als. Ex : grosser als = plus grand que.",
+    "weil / dass / wenn": "WEIL / DASS / WENN 10H : weil = parce que. dass = que. wenn = quand / si.",
+    "present simple": "PRESENT SIMPLE 10H - ANGLAIS : Pour les habitudes. I play, He plays (avec -s !).",
+    "present perfect": "PRESENT PERFECT 10H - ANGLAIS : have / has + participe passe. Ex : I have lived here for 5 years.",
+    "present continu": "PRESENT CONTINU 10H - ANGLAIS : be + -ing. Ex : I am playing now.",
+    "preterit": "PRETERIT 10H - ANGLAIS : Pour le passe termine. Reguliers +ed : I played. Irreguliers : I went, I saw, I ate.",
+    "comparatif": "COMPARATIF 10H - ANGLAIS : Plus... que = -er + than. Ex : bigger than = plus grand que.",
     "past perfect": "PAST PERFECT 10H - ANGLAIS : had + participe passe. Ex : When I arrived, he had already eaten.",
-    "futur will / going to": "FUTUR WILL / GOING TO 10H : Will = decision spontanee. I will help you. Going to = deja prevu. I am going to play football tomorrow.",
-    "conditionnel en anglais": "CONDITIONNEL EN ANGLAIS 10H : If + present, will + infinitif. Ex : If it rains, I will stay home. If + preterit, would + infinitif. Ex : If I had money, I would buy a bike.",
-    "passif en anglais": "PASSIF EN ANGLAIS 10H : be + participe passe. Ex : The book is read by Lenny. Present : is read, Preterit : was read, Futur : will be read.",
-    "verbes irreguliers": "VERBES IRREGULIERS 10H - ANGLAIS : be-was-been, have-had-had, go-went-gone, do-did-done, see-saw-seen, come-came-come, take-took-taken, give-gave-given.",
-    "some / any": "SOME / ANY 10H - ANGLAIS : Some = phrases affirmatives. I have some apples. Any = phrases negatives et questions. I do not have any apples.",
-    "much / many": "MUCH / MANY 10H - ANGLAIS : Much = pour ce qu on ne peut pas compter (much water). Many = pour ce qu on peut compter (many books).",
-    "for / since": "FOR / SINCE 10H - ANGLAIS : For = depuis une duree. I have lived here for 5 years. Since = depuis un moment precis. I have lived here since 2020.",
-    "phrasal verbs": "PHRASAL VERBS 10H - ANGLAIS : Verbe + particule = nouveau sens. Ex : get up = se lever, look for = chercher, turn off = eteindre, give up = abandonner.",
-    "vocabulaire allemand ecole": "VOCABULAIRE ALLEMAND - ECOLE 10H : die Schule = ecole, der Lehrer = prof, die Klasse = classe, das Buch = livre, das Heft = cahier, der Stift = crayon, die Prufung = test, die Hausaufgaben = devoirs, die Note = note.",
-    "vocabulaire allemand famille": "VOCABULAIRE ALLEMAND - FAMILLE 10H : die Familie = famille, der Vater = pere, die Mutter = mere, der Bruder = frere, die Schwester = soeur, der Onkel = oncle, die Tante = tante.",
-    "vocabulaire allemand maison": "VOCABULAIRE ALLEMAND - MAISON 10H : das Haus = maison, die Wohnung = appartement, das Zimmer = chambre, die Kuche = cuisine, das Bad = salle de bain, das Wohnzimmer = salon, der Garten = jardin.",
-    "vocabulaire allemand loisirs": "VOCABULAIRE ALLEMAND - LOISIRS 10H : Fussball spielen = jouer au foot, Musik horen = ecouter de la musique, lesen = lire, schwimmen = nager, Rad fahren = faire du velo.",
-    "vocabulaire allemand nourriture": "VOCABULAIRE ALLEMAND - NOURRITURE 10H : das Brot = pain, die Pizza = pizza, die Schokolade = chocolat, das Wasser = eau, die Milch = lait, der Apfel = pomme, die Banane = banane.",
-    "vocabulaire allemand voyage": "VOCABULAIRE ALLEMAND - VOYAGE 10H : reisen = voyager, der Zug = train, der Bus = bus, das Flugzeug = avion, das Hotel = hotel, der Bahnhof = gare, der Flughafen = aeroport.",
-    "vocabulaire allemand corps": "VOCABULAIRE ALLEMAND - CORPS 10H : der Kopf = tete, das Auge = oeil, die Nase = nez, der Mund = bouche, das Ohr = oreille, die Hand = main, der Fuss = pied, das Herz = coeur.",
-    "vocabulaire allemand metiers": "VOCABULAIRE ALLEMAND - METIERS 10H : der Lehrer = prof, der Arzt = medecin, der Polizist = policier, der Koch = cuisinier, der Fahrer = chauffeur, der Ingenieur = ingenieur.",
-    "vocabulaire anglais ecole": "VOCABULAIRE ANGLAIS - ECOLE 10H : school = ecole, teacher = prof, pupil = eleve, class = classe, book = livre, notebook = cahier, pen = stylo, test = test, homework = devoirs, mark = note, break = recreation.",
-    "vocabulaire anglais famille": "VOCABULAIRE ANGLAIS - FAMILLE 10H : family = famille, father = pere, mother = mere, brother = frere, sister = soeur, grandfather = grand-pere, grandmother = grand-mere, uncle = oncle, aunt = tante.",
-    "vocabulaire anglais maison": "VOCABULAIRE ANGLAIS - MAISON 10H : house = maison, flat = appartement, bedroom = chambre, kitchen = cuisine, bathroom = salle de bain, living room = salon, garden = jardin, table = table, chair = chaise, bed = lit.",
-    "vocabulaire anglais loisirs": "VOCABULAIRE ANGLAIS - LOISIRS 10H : play football = jouer au foot, listen to music = ecouter de la musique, read = lire, swim = nager, ride a bike = faire du velo, meet friends = voir des amis.",
-    "vocabulaire anglais nourriture": "VOCABULAIRE ANGLAIS - NOURRITURE 10H : bread = pain, pizza = pizza, chocolate = chocolat, water = eau, milk = lait, apple = pomme, banana = banane, meat = viande, vegetables = legumes, breakfast = petit-dejeuner.",
-    "vocabulaire anglais voyage": "VOCABULAIRE ANGLAIS - VOYAGE 10H : travel = voyager, train = train, bus = bus, plane = avion, hotel = hotel, station = gare, airport = aeroport, ticket = billet, holidays = vacances.",
-    "vocabulaire anglais corps": "VOCABULAIRE ANGLAIS - CORPS 10H : head = tete, eye = oeil, nose = nez, mouth = bouche, ear = oreille, hand = main, foot = pied, leg = jambe, arm = bras, heart = coeur.",
-    "vocabulaire anglais metiers": "VOCABULAIRE ANGLAIS - METIERS 10H : teacher = prof, doctor = medecin, policeman = policier, cook = cuisinier, driver = chauffeur, engineer = ingenieur, farmer = paysan.",
-    "suisse": "SUISSE 10H : 26 cantons, 4 langues : francais, allemand, italien, romanche. Capitale : Berne. Population : 8.9 millions. Monnaie : Franc suisse (CHF). Neutralite depuis 1515. Democratie directe : le peuple vote souvent. Federalisme : chaque canton a ses lois. Pacte de 1291 = naissance de la Suisse.",
-    "pacte de 1291": "PACTE DE 1291 10H : Le 1er aout 1291, 3 cantons (Uri, Schwyz, Unterwald) signent un pacte pour s entraider contre les Habsbourg. C est la naissance de la Suisse. Fete nationale : 1er aout.",
-    "guillaume tell": "GUILLAUME TELL 10H : Heros suisse legendaire. Il aurait refuse de saluer le chapeau du bailli Gessler. Gessler l oblige a tirer une pomme sur la tete de son fils. Il reussit ! Puis il tue Gessler. Symbole de liberte.",
-    "neutralite suisse": "NEUTRALITE SUISSE 10H : La Suisse ne fait pas la guerre depuis 1515. Elle ne prend pas parti. Elle accueille la Croix-Rouge, l ONU a Geneve. Elle a une armee, mais pour se defendre.",
+    "futur will / going to": "FUTUR WILL / GOING TO 10H : Will = decision spontanee. Going to = deja prevu.",
+    "conditionnel en anglais": "CONDITIONNEL EN ANGLAIS 10H : If + present, will + infinitif. Ex : If it rains, I will stay home.",
+    "passif en anglais": "PASSIF EN ANGLAIS 10H : be + participe passe. Ex : The book is read by Lenny.",
+    "verbes irreguliers": "VERBES IRREGULIERS 10H - ANGLAIS : be-was-been, have-had-had, go-went-gone, do-did-done, see-saw-seen.",
+    "some / any": "SOME / ANY 10H - ANGLAIS : Some = phrases affirmatives. Any = phrases negatives et questions.",
+    "much / many": "MUCH / MANY 10H - ANGLAIS : Much = pour ce qu on ne peut pas compter. Many = pour ce qu on peut compter.",
+    "for / since": "FOR / SINCE 10H - ANGLAIS : For = depuis une duree. Since = depuis un moment precis.",
+    "phrasal verbs": "PHRASAL VERBS 10H - ANGLAIS : Verbe + particule = nouveau sens. Ex : get up = se lever, look for = chercher.",
+    "vocabulaire allemand ecole": "VOCABULAIRE ALLEMAND - ECOLE 10H : die Schule = ecole, der Lehrer = prof, die Klasse = classe, das Buch = livre, das Heft = cahier.",
+    "vocabulaire allemand famille": "VOCABULAIRE ALLEMAND - FAMILLE 10H : die Familie = famille, der Vater = pere, die Mutter = mere, der Bruder = frere, die Schwester = soeur.",
+    "vocabulaire allemand maison": "VOCABULAIRE ALLEMAND - MAISON 10H : das Haus = maison, die Wohnung = appartement, das Zimmer = chambre, die Kuche = cuisine.",
+    "vocabulaire allemand loisirs": "VOCABULAIRE ALLEMAND - LOISIRS 10H : Fussball spielen = jouer au foot, Musik horen = ecouter de la musique, lesen = lire, schwimmen = nager.",
+    "vocabulaire allemand nourriture": "VOCABULAIRE ALLEMAND - NOURRITURE 10H : das Brot = pain, die Pizza = pizza, die Schokolade = chocolat, das Wasser = eau.",
+    "vocabulaire allemand voyage": "VOCABULAIRE ALLEMAND - VOYAGE 10H : reisen = voyager, der Zug = train, der Bus = bus, das Flugzeug = avion, das Hotel = hotel.",
+    "vocabulaire allemand corps": "VOCABULAIRE ALLEMAND - CORPS 10H : der Kopf = tete, das Auge = oeil, die Nase = nez, der Mund = bouche, das Ohr = oreille, die Hand = main.",
+    "vocabulaire allemand metiers": "VOCABULAIRE ALLEMAND - METIERS 10H : der Lehrer = prof, der Arzt = medecin, der Polizist = policier, der Koch = cuisinier.",
+    "vocabulaire anglais ecole": "VOCABULAIRE ANGLAIS - ECOLE 10H : school = ecole, teacher = prof, pupil = eleve, class = classe, book = livre, notebook = cahier.",
+    "vocabulaire anglais famille": "VOCABULAIRE ANGLAIS - FAMILLE 10H : family = famille, father = pere, mother = mere, brother = frere, sister = soeur.",
+    "vocabulaire anglais maison": "VOCABULAIRE ANGLAIS - MAISON 10H : house = maison, flat = appartement, bedroom = chambre, kitchen = cuisine, bathroom = salle de bain.",
+    "vocabulaire anglais loisirs": "VOCABULAIRE ANGLAIS - LOISIRS 10H : play football = jouer au foot, listen to music = ecouter de la musique, read = lire, swim = nager.",
+    "vocabulaire anglais nourriture": "VOCABULAIRE ANGLAIS - NOURRITURE 10H : bread = pain, pizza = pizza, chocolate = chocolat, water = eau, milk = lait, apple = pomme.",
+    "vocabulaire anglais voyage": "VOCABULAIRE ANGLAIS - VOYAGE 10H : travel = voyager, train = train, bus = bus, plane = avion, hotel = hotel, station = gare.",
+    "vocabulaire anglais corps": "VOCABULAIRE ANGLAIS - CORPS 10H : head = tete, eye = oeil, nose = nez, mouth = bouche, ear = oreille, hand = main, foot = pied.",
+    "vocabulaire anglais metiers": "VOCABULAIRE ANGLAIS - METIERS 10H : teacher = prof, doctor = medecin, policeman = policier, cook = cuisinier, driver = chauffeur.",
+    "suisse": "SUISSE 10H : 26 cantons, 4 langues : francais, allemand, italien, romanche. Capitale : Berne. Population : 8.9 millions. Monnaie : Franc suisse (CHF). Neutralite depuis 1515.",
+    "pacte de 1291": "PACTE DE 1291 10H : Le 1er aout 1291, 3 cantons (Uri, Schwyz, Unterwald) signent un pacte pour s entraider. C est la naissance de la Suisse. Fete nationale : 1er aout.",
+    "guillaume tell": "GUILLAUME TELL 10H : Heros suisse legendaire. Il aurait refuse de saluer le chapeau du bailli Gessler. Gessler l oblige a tirer une pomme sur la tete de son fils. Il reussit !",
+    "neutralite suisse": "NEUTRALITE SUISSE 10H : La Suisse ne fait pas la guerre depuis 1515. Elle ne prend pas parti. Elle accueille la Croix-Rouge, l ONU a Geneve.",
     "guerre froide": "GUERRE FROIDE 10H : 1947-1991. USA contre URSS, sans guerre directe, mais avec des espions, des armes nucleaires, la course a l espace. Fin : chute du mur de Berlin 1989.",
     "revolution industrielle": "REVOLUTION INDUSTRIELLE 10H : Au 19eme siecle, en Angleterre puis en Suisse. Machines a vapeur, usines, trains. Les gens quittent la campagne pour la ville.",
     "democratie directe": "DEMOCRATIE DIRECTE 10H - SUISSE : En Suisse, le peuple vote directement sur les lois (votations). Il peut lancer une initiative (100 000 signatures) ou un referendum (50 000 signatures).",
-    "federalisme": "FEDERALISME 10H - SUISSE : La Suisse est divisee en 26 cantons. Chaque canton a son gouvernement, ses lois, ses ecoles. Le gouvernement central (Berne) s occupe de l armee, de la monnaie.",
+    "federalisme": "FEDERALISME 10H - SUISSE : La Suisse est divisee en 26 cantons. Chaque canton a son gouvernement, ses lois, ses ecoles.",
     "constitution suisse": "CONSTITUTION SUISSE 10H : C est la loi la plus importante. Elle dit les droits, l organisation. Derniere version : 1999.",
-    "onu": "ONU 10H : Organisation des Nations Unies. Cree en 1945 apres la 2eme Guerre pour eviter une 3eme Guerre. Siege a New York, et a Geneve en Europe. 193 pays membres. La Suisse y est entree en 2002.",
-    "ue": "UE 10H : Union Europeenne. 27 pays en Europe qui cooperent : meme monnaie (euro) pour 20 pays, pas de frontieres (Schengen). La Suisse n est PAS dans l UE, mais elle a des accords avec elle.",
+    "onu": "ONU 10H : Organisation des Nations Unies. Cree en 1945 apres la 2eme Guerre pour eviter une 3eme Guerre. Siege a New York, et a Geneve en Europe.",
+    "ue": "UE 10H : Union Europeenne. 27 pays en Europe qui cooperent. La Suisse n est PAS dans l UE, mais elle a des accords avec elle.",
     "colonisation": "COLONISATION 10H : Au 19eme siecle, les pays europeens conquierent l Afrique, l Asie. Ils prennent les ressources, imposent leur langue, leur religion.",
-    "esclavage": "ESCLAVAGE 10H : Des millions d Africains ont ete deplaces de force en Amerique pour travailler dans les plantations du 16eme au 19eme siecle. Aboli en France en 1848, aux USA en 1865.",
-    "decolonisation": "DECOLONISATION 10H : Apres 1945, les pays colonises deviennent independants. Ex : Inde 1947, Algerie 1962, beaucoup de pays africains en 1960.",
-    "chute du mur de berlin": "CHUTE DU MUR DE BERLIN 10H : Le 9 novembre 1989, le mur qui separait Berlin en 2 tombe. L Allemagne est reunifiee en 1990. Fin de la Guerre Froide.",
-    "11 septembre": "11 SEPTEMBRE 10H : Le 11 septembre 2001, des terroristes detruisent les tours jumelles a New York avec 2 avions. 3000 morts. Les USA attaquent l Afghanistan.",
+    "esclavage": "ESCLAVAGE 10H : Des millions d Africains ont ete deplaces de force en Amerique pour travailler dans les plantations du 16eme au 19eme siecle.",
+    "decolonisation": "DECOLONISATION 10H : Apres 1945, les pays colonises deviennent independants. Ex : Inde 1947, Algerie 1962.",
+    "chute du mur de berlin": "CHUTE DU MUR DE BERLIN 10H : Le 9 novembre 1989, le mur qui separait Berlin en 2 tombe. L Allemagne est reunifiee en 1990.",
+    "11 septembre": "11 SEPTEMBRE 10H : Le 11 septembre 2001, des terroristes detruisent les tours jumelles a New York avec 2 avions. 3000 morts.",
     "cantons suisses": "CANTONS SUISSES 10H : Il y en a 26 : Zurich, Berne, Lucerne, Uri, Schwyz, Obwald, Nidwald, Glaris, Zoug, Fribourg, Soleure, Bale-Ville, Bale-Campagne, Schaffhouse, Appenzell, Saint-Gall, Grisons, Argovie, Thurgovie, Tessin, Vaud, Valais, Neuchatel, Geneve, Jura.",
     "alpes": "ALPES 10H : Chaine de montagnes en Suisse, France, Italie, Autriche. Plus haut sommet suisse : Pointe Dufour, 4634m. Plus haut d Europe : Mont-Blanc, 4808m.",
-    "climat suisse": "CLIMAT SUISSE 10H : Climat tempere. Ete : 20-25 degres, Hiver : 0-5 degres en plaine, -10 en montagne. Il pleut toute l annee, plus en ete. Avec le rechauffement, les etes sont plus chauds, les glaciers fondent.",
-    "relief": "RELIEF 10H : Relief = formes du terrain. En Suisse : Jura (ouest), Plateau (milieu, ou vivent la plupart des gens), Alpes (sud, hautes montagnes).",
+    "climat suisse": "CLIMAT SUISSE 10H : Climat tempere. Ete : 20-25 degres, Hiver : 0-5 degres en plaine, -10 en montagne.",
+    "relief": "RELIEF 10H : Relief = formes du terrain. En Suisse : Jura (ouest), Plateau (milieu), Alpes (sud, hautes montagnes).",
     "population suisse": "POPULATION SUISSE 10H : 8.9 millions d habitants. 25% sont etrangers. Les plus grandes villes : Zurich, Geneve, Bale, Lausanne, Berne.",
-    "migration": "MIGRATION 10H : Migration = deplacement de personnes. Immigration = arriver dans un pays, Emigration = quitter un pays. Raisons : travail, guerre, etudes, famille, climat.",
-    "urbanisation": "URBANISATION 10H : De plus en plus de gens vivent en ville. En Suisse, 85% vivent en ville. Consequences : plus de logements, plus de transports, moins de nature, pollution.",
-    "developpement durable": "DEVELOPPEMENT DURABLE 10H : Repondre aux besoins d aujourd hui sans empecher les generations futures de repondre aux leurs. 3 piliers : Economie, Social, Environnement. Ex : recycler, prendre le velo, acheter local, ne pas gaspiller.",
-    "rechaffement climatique": "RECHAUFFEMENT CLIMATIQUE 10H : La Terre se rechauffe a cause des gaz a effet de serre (CO2 des voitures, usines...). Consequences : glaciers qui fondent, mer qui monte, canicules, secheresses, inondations.",
-    "energies renouvelables": "ENERGIES RENOUVELABLES 10H : Energies qui ne s epuisent pas : solaire, eolien, hydraulique (barrages), geothermie, biomasse. En Suisse, l hydraulique fait plus de la moitie de l electricite.",
-    "mondialisation": "MONDIALISATION 10H : Le monde est de plus en plus connecte : commerce, Internet, voyages, films, musique. Ex : Un telephone est fabrique en Chine, avec des pieces du Japon, vendu en Suisse.",
-    "carte": "CARTE 10H : Representation d un territoire a plat. Elements : titre, legende, echelle, fleche du nord. Types : carte physique, carte politique, carte thematique.",
+    "migration": "MIGRATION 10H : Migration = deplacement de personnes. Immigration = arriver dans un pays, Emigration = quitter un pays.",
+    "urbanisation": "URBANISATION 10H : De plus en plus de gens vivent en ville. En Suisse, 85% vivent en ville.",
+    "developpement durable": "DEVELOPPEMENT DURABLE 10H : Repondre aux besoins d aujourd hui sans empecher les generations futures de repondre aux leurs. 3 piliers : Economie, Social, Environnement.",
+    "rechaffement climatique": "RECHAUFFEMENT CLIMATIQUE 10H : La Terre se rechauffe a cause des gaz a effet de serre (CO2 des voitures, usines...). Consequences : glaciers qui fondent, mer qui monte, canicules.",
+    "energies renouvelables": "ENERGIES RENOUVELABLES 10H : Energies qui ne s epuisent pas : solaire, eolien, hydraulique (barrages), geothermie, biomasse.",
+    "mondialisation": "MONDIALISATION 10H : Le monde est de plus en plus connecte : commerce, Internet, voyages, films, musique.",
+    "carte": "CARTE 10H : Representation d un territoire a plat. Elements : titre, legende, echelle, fleche du nord.",
     "echelle": "ECHELLE 10H : Echelle = rapport entre la carte et la realite. Ex : 1:25 000 = 1 cm sur la carte = 250 m en vrai.",
     "latitude": "LATITUDE 10H : Position nord-sud. Equateur = 0 degres, Pole Nord = 90 degres Nord, Pole Sud = 90 degres Sud. La Suisse est a environ 47 degres Nord.",
     "longitude": "LONGITUDE 10H : Position est-ouest. Greenwich (Londres) = 0 degre. La Suisse est a environ 7-8 degres Est.",
-    "climat": "CLIMAT 10H : Le temps qu il fait en moyenne sur une longue periode (30 ans) dans un endroit. Different de la meteo (temps d un jour).",
-    "meteo": "METEO 10H : Le temps qu il fait aujourd hui : pluie, soleil, vent, neige, temperature. On la prevoit avec des satellites, des radars, des modeles informatiques.",
-    "biome": "BIOME 10H : Grande zone avec le meme climat et les memes plantes / animaux. Ex : foret tropicale, desert, toundra, savane, foret temperee.",
-    "deforestation": "DEFORESTATION 10H : On coupe les forets, surtout en Amazonie, pour l agriculture, le bois, l huile de palme. Consequences : moins d oxygene, plus de CO2, animaux qui perdent leur maison.",
-    "digestion": "DIGESTION 10H : Transformer la nourriture en energie. Etapes : Bouche, Oesophage, Estomac, Intestin grele, Gros intestin, Anus. Ca dure 24-72h.",
-    "respiration": "RESPIRATION 10H : On inspire O2, on expire CO2. Air -> Nez / Bouche -> Trachee -> Bronches -> Poumons -> Sang. On respire environ 20 000 fois par jour.",
-    "reproduction": "REPRODUCTION 10H : Pour avoir un bebe, il faut un spermatozoide (homme) + un ovule (femme). Ca forme un oeuf qui grandit dans l uterus pendant 9 mois. Pose tes questions a ton prof ou a tes parents pour les details.",
-    "puberte": "PUBERTE 10H : Periode ou le corps change pour devenir adulte. En general entre 10 et 15 ans. Changements : grandir vite, voix qui change, poils, regles, boutons. C est normal, tout le monde passe par la, a son rythme.",
-    "systeme immunitaire": "SYSTEME IMMUNITAIRE 10H : L armee de ton corps. Globules blancs = soldats qui tuent les microbes. Anticorps = memoire. Vaccins = entrainent ton systeme immunitaire sans te rendre malade.",
-    "microbes": "MICROBES 10H : Petits etres vivants qu on ne voit pas a l oeil nu. Bons microbes : yaourts, pain, digestion. Mauvais microbes : angine, gastro. Pour se proteger : se laver les mains.",
-    "virus": "VIRUS 10H : Plus petit qu une bacterie, il a besoin d une cellule pour se multiplier. Ex : grippe, rhume, COVID. Antibiotiques = contre les bacteries, pas contre les virus.",
-    "evolution": "EVOLUTION 10H : Les especes changent avec le temps. Darwin : les mieux adaptes survivent et se reproduisent. Ex : Girafes avec un long cou = atteignent les feuilles hautes.",
-    "biodiversite": "BIODIVERSITE 10H : Diversite du vivant : especes, genes, ecosystemes. Plus il y a de biodiversite, plus la nature est forte. Menaces : pollution, deforestation, rechauffement, pesticides.",
-    "chaine alimentaire": "CHAINE ALIMENTAIRE 10H : Qui mange qui. Ex : Herbe -> Sauterelle -> Grenouille -> Serpent -> Aigle. Producteur, Consommateurs, Decomposeurs.",
+    "climat": "CLIMAT 10H : Le temps qu il fait en moyenne sur une longue periode (30 ans) dans un endroit. Different de la meteo.",
+    "meteo": "METEO 10H : Le temps qu il fait aujourd hui : pluie, soleil, vent, neige, temperature.",
+    "biome": "BIOME 10H : Grande zone avec le meme climat et les memes plantes / animaux. Ex : foret tropicale, desert, toundra, savane.",
+    "deforestation": "DEFORESTATION 10H : On coupe les forets, surtout en Amazonie, pour l agriculture, le bois, l huile de palme.",
+    "digestion": "DIGESTION 10H : Transformer la nourriture en energie. Etapes : Bouche, Oesophage, Estomac, Intestin grele, Gros intestin, Anus.",
+    "respiration": "RESPIRATION 10H : On inspire O2, on expire CO2. Air -> Nez / Bouche -> Trachee -> Bronches -> Poumons -> Sang.",
+    "reproduction": "REPRODUCTION 10H : Pour avoir un bebe, il faut un spermatozoide (homme) + un ovule (femme). Ca forme un oeuf qui grandit dans l uterus pendant 9 mois.",
+    "puberte": "PUBERTE 10H : Periode ou le corps change pour devenir adulte. En general entre 10 et 15 ans. C est normal, tout le monde passe par la, a son rythme.",
+    "systeme immunitaire": "SYSTEME IMMUNITAIRE 10H : L armee de ton corps. Globules blancs = soldats qui tuent les microbes. Vaccins = entrainent ton systeme immunitaire.",
+    "microbes": "MICROBES 10H : Petits etres vivants qu on ne voit pas a l oeil nu. Bons microbes : yaourts, pain, digestion. Mauvais : angine, gastro.",
+    "virus": "VIRUS 10H : Plus petit qu une bacterie, il a besoin d une cellule pour se multiplier. Ex : grippe, rhume, COVID.",
+    "evolution": "EVOLUTION 10H : Les especes changent avec le temps. Darwin : les mieux adaptes survivent et se reproduisent.",
+    "biodiversite": "BIODIVERSITE 10H : Diversite du vivant : especes, genes, ecosystemes. Plus il y a de biodiversite, plus la nature est forte.",
+    "chaine alimentaire": "CHAINE ALIMENTAIRE 10H : Qui mange qui. Ex : Herbe -> Sauterelle -> Grenouille -> Serpent -> Aigle.",
     "ecosysteme": "ECOSYSTEME 10H : Un milieu + les etres vivants qui y vivent + leurs interactions. Ex : Foret, Lac, Ocean, Desert.",
-    "seismes": "SEISMES 10H : Tremblement de terre. Cause : plaques tectoniques qui bougent. Epicentre = point a la surface au-dessus du seisme. Magnitude = force.",
+    "seismes": "SEISMES 10H : Tremblement de terre. Cause : plaques tectoniques qui bougent. Epicentre = point a la surface au-dessus du seisme.",
     "plaques tectoniques": "PLAQUES TECTONIQUES 10H : La Terre est coupee en plaques qui bougent lentement (quelques cm par an). Quand elles se cognent, ca fait des montagnes, des seismes, des volcans.",
-    "erosion": "EROSION 10H : L eau, le vent, la glace usent les roches petit a petit. Ex : Une riviere creuse une vallee, le vent use une falaise.",
+    "erosion": "EROSION 10H : L eau, le vent, la glace usent les roches petit a petit. Ex : Une riviere creuse une vallee.",
     "cycle de l eau": "CYCLE DE L EAU 10H : Evaporation (mer -> nuage), Condensation (nuage), Precipitation (pluie / neige), Infiltration (dans le sol), Ruissellement (rivieres -> mer).",
     "marees": "MAREES 10H : La mer monte et descend 2 fois par jour a cause de la Lune. Maree haute = pleine mer, Maree basse = basse mer.",
     "force": "FORCE 10H : En Newtons (N). Poids = masse x gravite. Ex : 50 kg sur Terre = 500 N.",
-    "pression": "PRESSION 10H : Force / surface. Ex : Un couteau coupe car la force est sur une petite surface. Pression de l air = 1 bar.",
+    "pression": "PRESSION 10H : Force / surface. Ex : Un couteau coupe car la force est sur une petite surface.",
     "poids": "POIDS 10H : Poids = masse x gravite. Masse = en kg, ne change pas. Poids = en N, change selon la planete. Sur Terre, 50 kg = 500 N. Sur la Lune, 50 kg = 80 N.",
-    "masse": "MASSE 10H : Quantite de matiere, en kg. Elle ne change pas ou que tu sois. Tu as la meme masse sur Terre et sur la Lune, mais pas le meme poids.",
+    "masse": "MASSE 10H : Quantite de matiere, en kg. Elle ne change pas ou que tu sois.",
     "tableau periodique": "TABLEAU PERIODIQUE 10H : Tableau avec tous les elements chimiques. H = Hydrogene, O = Oxygene, C = Carbone, Fe = Fer, Au = Or.",
-    "ph": "PH 10H : Mesure si c est acide ou basique. Echelle de 0 a 14. 0-6 = acide (citron = 2, vinaigre = 3), 7 = neutre (eau pure), 8-14 = basique (savon = 10, javel = 12).",
+    "ph": "PH 10H : Mesure si c est acide ou basique. Echelle de 0 a 14. 0-6 = acide (citron = 2), 7 = neutre (eau pure), 8-14 = basique (savon = 10).",
     "acide": "ACIDE 10H : pH < 7. Gout aigre. Ex : citron, vinaigre, jus d orange. Acide + Base = Sel + Eau.",
     "base": "BASE 10H : pH > 7. Gout amer, glissant. Ex : savon, javel, bicarbonate. Base + Acide = Sel + Eau.",
     "reaction chimique": "REACTION CHIMIQUE 10H : Des reactifs se transforment en produits. Ex : Bois + Oxygene -> CO2 + Eau + Chaleur.",
     "combustion": "COMBUSTION 10H : Bruler quelque chose avec de l oxygene. Ex : Bois + O2 -> CO2 + H2O + chaleur. Il faut 3 choses : combustible, oxygene, chaleur.",
-    "oxydation": "OXYDATION 10H : Reaction avec l oxygene. Ex : Le fer rouille : Fer + Oxygene + Eau -> Rouille. La pomme brunit quand on la coupe.",
-    "co2": "CO2 10H : Dioxyde de carbone. On l expire, les plantes l absorbent pour la photosynthese. On en produit en brulant du bois, de l essence, du charbon. Trop de CO2 = rechauffement.",
-    "dioxygene": "DIOXYGENE 10H : O2. Le gaz qu on respire. 21% de l air. Produit par les plantes (photosynthese). Sans O2, on meurt en 3 minutes.",
-    "melanges": "MELANGES 10H : Homogene = on ne voit pas les composants (eau + sel). Heterogene = on voit les composants (eau + sable). On peut separer : filtration, evaporation, decantation.",
-    "dissolution": "DISSOLUTION 10H : Quand un solide disparait dans un liquide. Ex : Sel dans l eau. Le sel est le solute, l eau est le solvant, l eau salee est la solution.",
+    "oxydation": "OXYDATION 10H : Reaction avec l oxygene. Ex : Le fer rouille : Fer + Oxygene + Eau -> Rouille.",
+    "co2": "CO2 10H : Dioxyde de carbone. On l expire, les plantes l absorbent pour la photosynthese. Trop de CO2 = rechauffement.",
+    "dioxygene": "DIOXYGENE 10H : O2. Le gaz qu on respire. 21% de l air. Produit par les plantes (photosynthese).",
+    "melanges": "MELANGES 10H : Homogene = on ne voit pas les composants (eau + sel). Heterogene = on voit les composants (eau + sable).",
+    "dissolution": "DISSOLUTION 10H : Quand un solide disparait dans un liquide. Ex : Sel dans l eau. Le sel est le solute, l eau est le solvant.",
     "circuit electrique": "CIRCUIT ELECTRIQUE 10H : Boucle avec : Pile, Fils, Interrupteur, Lampe. Pour que ca marche, le circuit doit etre ferme.",
-    "en serie / en parallele": "EN SERIE / EN PARALLELE 10H : En serie : les lampes sont l une apres l autre. Si une grille, tout s eteint. En parallele : chaque lampe a son propre circuit. Si une grille, les autres restent allumees.",
+    "en serie / en parallele": "EN SERIE / EN PARALLELE 10H : En serie : les lampes sont l une apres l autre. Si une grille, tout s eteint. En parallele : chaque lampe a son propre circuit.",
     "tension": "TENSION 10H : En Volts (V). C est la pression qui pousse les electrons. Pile = 1.5V, Prise suisse = 230V.",
     "intensite": "INTENSITE 10H : En Amperes (A). C est le debit d electrons. Plus il y a de lampes en parallele, plus l intensite augmente.",
     "resistance": "RESISTANCE 10H : En Ohms. Elle freine le courant. Plus la resistance est grande, moins il y a de courant. Loi Ohm : U = R x I.",
     "loi ohm": "LOI OHM 10H : U = R x I. U = tension en Volts, R = resistance en Ohms, I = intensite en Amperes. Ex : R = 10, I = 2, U = 20V.",
-    "aimant": "AIMANT 10H : Il attire le fer, le nickel, le cobalt. Il a 2 poles : Nord et Sud. Nord attire Sud, Nord repousse Nord. La Terre est un gros aimant.",
-    "magnetisme": "MAGNETISME 10H : Force des aimants. Autour d un aimant, il y a un champ magnetique. Un fil avec du courant cree aussi un champ magnetique.",
-    "bug": "BUG 10H - INFO : Erreur dans un programme. Ex : tu oublies une parenthese, tu mets un mauvais nom. Pour corriger : lis l erreur, verifie ligne par ligne, teste petit a petit.",
-    "octet": "OCTET 10H - INFO : 1 octet = 8 bits. 1 Ko = 1000 octets, 1 Mo = 1 million, 1 Go = 1 milliard. Une photo = 2-5 Mo, un film = 1-2 Go.",
-    "bit": "BIT 10H - INFO : Plus petite unite : 0 ou 1. 8 bits = 1 octet. Tout dans un ordi, c est des 0 et des 1 : texte, photos, musique, videos.",
-    "binaire": "BINAIRE 10H - INFO : Systeme avec 0 et 1. Ex : 1 = 1, 10 = 2, 11 = 3, 100 = 4, 101 = 5. Ton ordi ne comprend que ca.",
-    "internet": "INTERNET 10H : Reseau mondial d ordinateurs relies. Cree dans les annees 60 pour l armee, ouvert au public dans les annees 90. Services : Web, mail, videos, jeux.",
-    "reseau": "RESEAU 10H - INFO : Ordinateurs relies pour partager. LAN = petit reseau (maison, ecole), WAN = grand reseau (Internet). WiFi = sans fil, Ethernet = avec cable.",
-    "cloud": "CLOUD 10H : Stocker sur Internet au lieu de sur ton ordi. Ex : Google Drive, iCloud. Avantages : accessible partout, pas perdu si ton ordi casse.",
-    "mot de passe": "MOT DE PASSE 10H : Pour proteger tes comptes. Regles : long (12+ caracteres), avec majuscules, chiffres, symboles, different pour chaque site, jamais partage.",
-    "virus informatique": "VIRUS INFORMATIQUE 10H : Programme qui abime ton ordi ou vole tes donnees. Comment l attraper : cliquer sur un lien bizarre, telecharger un fichier douteux. Protection : antivirus, mises a jour.",
+    "aimant": "AIMANT 10H : Il attire le fer, le nickel, le cobalt. Il a 2 poles : Nord et Sud. Nord attire Sud, Nord repousse Nord.",
+    "magnetisme": "MAGNETISME 10H : Force des aimants. Autour d un aimant, il y a un champ magnetique.",
+    "bug": "BUG 10H - INFO : Erreur dans un programme. Ex : tu oublies une parenthese, tu mets un mauvais nom. Pour corriger : lis l erreur, verifie ligne par ligne.",
+    "octet": "OCTET 10H - INFO : 1 octet = 8 bits. 1 Ko = 1000 octets, 1 Mo = 1 million, 1 Go = 1 milliard.",
+    "bit": "BIT 10H - INFO : Plus petite unite : 0 ou 1. 8 bits = 1 octet. Tout dans un ordi, c est des 0 et des 1.",
+    "binaire": "BINAIRE 10H - INFO : Systeme avec 0 et 1. Ex : 1 = 1, 10 = 2, 11 = 3, 100 = 4, 101 = 5.",
+    "internet": "INTERNET 10H : Reseau mondial d ordinateurs relies. Cree dans les annees 60 pour l armee, ouvert au public dans les annees 90.",
+    "reseau": "RESEAU 10H - INFO : Ordinateurs relies pour partager. LAN = petit reseau (maison, ecole), WAN = grand reseau (Internet).",
+    "cloud": "CLOUD 10H : Stocker sur Internet au lieu de sur ton ordi. Ex : Google Drive, iCloud.",
+    "mot de passe": "MOT DE PASSE 10H : Pour proteger tes comptes. Regles : long (12+ caracteres), avec majuscules, chiffres, symboles, different pour chaque site.",
+    "virus informatique": "VIRUS INFORMATIQUE 10H : Programme qui abime ton ordi ou vole tes donnees. Protection : antivirus, mises a jour.",
     "cyberharcelement": "CYBERHARCELEMENT 10H : Harceler quelqu un sur Internet : insultes, moqueries, rumeurs, photos sans accord. C est interdit, c est puni par la loi. Si ca t arrive : ne reponds pas, garde les preuves, parles-en a un adulte, bloque, signale.",
-    "scratch": "SCRATCH 10H : Logiciel pour apprendre a coder avec des blocs. Tu deplaces des blocs comme un puzzle : bouger, parler, repeter... Ideal pour debuter avant Python.",
-    "site web": "SITE WEB 10H : Ensemble de pages sur Internet. 3 langages : HTML (squelette), CSS (style), JavaScript (interactions). Ton agent, c est un site web fait avec Streamlit et Python.",
-    "application": "APPLICATION 10H : Programme pour telephone ou ordi. Ex : WhatsApp, TikTok, Fortnite. On la telecharge sur App Store / Play Store.",
+    "scratch": "SCRATCH 10H : Logiciel pour apprendre a coder avec des blocs. Tu deplaces des blocs comme un puzzle.",
+    "site web": "SITE WEB 10H : Ensemble de pages sur Internet. 3 langages : HTML (squelette), CSS (style), JavaScript (interactions).",
+    "application": "APPLICATION 10H : Programme pour telephone ou ordi. Ex : 【entity-WhatsApp¦canonical_name=WhatsApp】, TikTok, 【entity-Fortnite¦canonical_name=Fortnite】.",
     "budget": "BUDGET 10H - ECO : Prevoir ce que tu gagnes et ce que tu depenses. Ex : Tu as 100 CHF. Tu mets 50 pour manger, 20 pour loisirs, 30 en epargne. Regle 50/30/20.",
     "impot": "IMPOT 10H - ECO : Argent qu on donne a l Etat pour payer ecoles, hopitaux, routes, police. En Suisse, on paie impot federal + cantonal + communal.",
-    "tva": "TVA 10H- ECO : Taxe sur la Valeur Ajoutee. En Suisse : 8.1% en general, 2.6% pour la nourriture, 3.8% pour l hotel. Quand tu achetes un jeu a 100 CHF, environ 8 CHF vont a l Etat.",
-    "inflation": "INFLATION 10H - ECO : Quand les prix montent. Ex : Une pizza a 10 CHF, l annee d apres a 11 CHF = inflation de 10%. Causes : plus de demande, plus de couts. Consequences : ton argent vaut moins.",
-    "chomage": "CHOMAGE 10H - ECO : Quand quelqu un veut travailler mais ne trouve pas de travail. Causes : crise, robotisation, manque de formation. Solutions : formation, apprentissage, aide de l Etat.",
-    "offre et demande": "OFFRE ET DEMANDE 10H - ECO : Si beaucoup de gens veulent acheter et peu de produits, le prix monte. Si peu de gens veulent acheter et beaucoup de produits, le prix baisse. Ex : PS5 au debut = tres demandee, peu de stock = prix tres haut.",
-    "entreprise": "ENTREPRISE 10H - ECO : Organisation qui produit ou vend. Ex : 【entity-Nestle¦canonical_name=Nestle】, 【entity-Rolex¦canonical_name=Rolex】, 【entity-Migros¦canonical_name=Migros】, Coop. Types : petite (boulangerie), moyenne, grande (multinationale). But : gagner de l argent en repondant a un besoin.",
-    "benefice": "BENEFICE 10H - ECO : Benefice = Recettes - Couts. Ex : Tu vends des limonades pour 100 CHF, ca t a coute 40 CHF. Benefice = 60 CHF. Si couts > recettes, c est une perte.",
-    "cout": "COUT 10H - ECO : Ce que ca coute pour produire. Cout fixe : loyer, meme si tu ne vends rien. Cout variable : ingredients, ca change avec ce que tu produis.",
-    "consommation": "CONSOMMATION 10H - ECO : Acheter et utiliser. On consomme : nourriture, vetements, loisirs, energie. Consommation responsable : acheter moins, acheter local, reparer, recycler, ne pas gaspiller.",
-    "epargne": "EPARGNE 10H - ECO : Mettre de l argent de cote pour plus tard. Ex : Tu as 50 CHF, tu en mets 20 en epargne pour ton futur PC. Regle : epargne d abord, depense apres.",
-    "credit": "CREDIT 10H - ECO : Emprunter de l argent a la banque. Tu dois rembourser + des interets. Ex : Tu empruntes 1000 CHF, tu rembourses 1100 CHF. Attention : un credit, ca coute cher.",
-    "interet": "INTERET 10H - ECO : Prix de l argent. Si tu pretes 100 CHF a 5% pendant 1 an, tu recois 105 CHF. Si tu empruntes 100 CHF a 5%, tu rembourses 105 CHF.",
-    "metier": "METIER 10H - ECO : Developpeur, Medecin, Avocat, Pilote, Ingenieur, Enseignant, Infirmier, Electricien, Cuisinier, Youtubeur. Le meilleur metier, c est celui que tu aimes + qui paie bien + qui est utile.",
-    "loi": "LOI 10H - DROIT : Regle obligatoire pour tous. Si tu ne la respectes pas, tu es puni. Ex : ne pas voler, ne pas rouler trop vite, aller a l ecole jusqu a 15 ans. Les lois sont votees par le Parlement.",
-    "democratie": "DEMOCRATIE 10H - DROIT : Le peuple decide. En Suisse : democratie directe (votations). En France : democratie representative (on vote pour des deputes). Principes : egalite, liberte, vote libre et secret.",
-    "voter": "VOTER 10H : Choisir. En Suisse, on vote a partir de 18 ans. On vote pour : elire des gens, accepter ou refuser des lois (votations). Voter, c est un droit et un devoir.",
-    "majorite": "MAJORITE 10H : A 18 ans en Suisse, tu es majeur. Tu peux voter, conduire, signer un contrat, etre responsable de tes actes. Avant 18 ans, tu es mineur, tes parents sont responsables.",
-    "droits de l enfant": "DROITS DE L ENFANT 10H : Convention de l ONU 1989. Droits : aller a l ecole, etre protege, avoir un nom, une famille, jouer, donner ton avis, ne pas etre maltraite.",
+    "tva": "TVA 10H - ECO : Taxe sur la Valeur Ajoutee. En Suisse : 8.1% en general, 2.6% pour la nourriture, 3.8% pour l hotel. Quand tu achetes un jeu a 100 CHF, environ 8 CHF vont a l Etat.",
+    "inflation": "INFLATION 10H - ECO : Quand les prix montent. Ex : Une pizza a 10 CHF, l annee d apres a 11 CHF = inflation de 10%.",
+    "chomage": "CHOMAGE 10H - ECO : Quand quelqu un veut travailler mais ne trouve pas de travail. Causes : crise, robotisation, manque de formation.",
+    "offre et demande": "OFFRE ET DEMANDE 10H - ECO : Si beaucoup de gens veulent acheter et peu de produits, le prix monte. Si peu de gens veulent acheter et beaucoup de produits, le prix baisse.",
+    "entreprise": "ENTREPRISE 10H - ECO : Organisation qui produit ou vend. Ex : 【entity-Nestle¦canonical_name=Nestle】, 【entity-Rolex¦canonical_name=Rolex】, 【entity-Migros¦canonical_name=Migros】, Coop.",
+    "benefice": "BENEFICE 10H - ECO : Benefice = Recettes - Couts. Ex : Tu vends des limonades pour 100 CHF, ca t a coute 40 CHF. Benefice = 60 CHF.",
+    "cout": "COUT 10H - ECO : Ce que ca coute pour produire. Cout fixe : loyer, meme si tu ne vends rien. Cout variable : ingredients.",
+    "consommation": "CONSOMMATION 10H - ECO : Acheter et utiliser. Consommation responsable : acheter moins, acheter local, reparer, recycler, ne pas gaspiller.",
+    "epargne": "EPARGNE 10H - ECO : Mettre de l argent de cote pour plus tard. Ex : Tu as 50 CHF, tu en mets 20 en epargne pour ton futur PC.",
+    "credit": "CREDIT 10H - ECO : Emprunter de l argent a la banque. Tu dois rembourser + des interets. Ex : Tu empruntes 1000 CHF, tu rembourses 1100 CHF.",
+    "interet": "INTERET 10H - ECO : Prix de l argent. Si tu pretes 100 CHF a 5% pendant 1 an, tu recois 105 CHF.",
+    "metier": "METIER 10H - ECO : Developpeur, Medecin, Avocat, Pilote, Ingenieur, Enseignant, Infirmier, Electricien, Cuisinier, Youtubeur.",
+    "loi": "LOI 10H - DROIT : Regle obligatoire pour tous. Si tu ne la respectes pas, tu es puni. Ex : ne pas voler, ne pas rouler trop vite.",
+    "democratie": "DEMOCRATIE 10H - DROIT : Le peuple decide. En Suisse : democratie directe (votations). En France : democratie representative.",
+    "voter": "VOTER 10H : Choisir. En Suisse, on vote a partir de 18 ans. On vote pour : elire des gens, accepter ou refuser des lois (votations).",
+    "majorite": "MAJORITE 10H : A 18 ans en Suisse, tu es majeur. Tu peux voter, conduire, signer un contrat, etre responsable de tes actes.",
+    "droits de l enfant": "DROITS DE L ENFANT 10H : Convention de l ONU 1989. Droits : aller a l ecole, etre protege, avoir un nom, une famille, jouer, donner ton avis.",
     "constitution": "CONSTITUTION 10H : C est la loi la plus importante. Elle dit les droits, l organisation du pays. En Suisse : Constitution de 1999.",
-    "citoyen": "CITOYEN 10H : Habitant d un pays avec des droits et des devoirs. Droits : voter, aller a l ecole, etre soigne. Devoirs : respecter les lois, payer des impots, respecter les autres.",
-    "justice": "JUSTICE 10H : Elle dit qui a raison, qui a tort, et punit. Tribunaux : juge, avocat, procureur. Si tu es accuse, tu as droit a un avocat, a te defendre, a etre presume innocent.",
-    "contrat": "CONTRAT 10H : Accord entre 2 personnes. Ex : contrat d apprentissage, contrat de travail, contrat de location. Il dit : qui fait quoi, combien, pendant combien de temps. Lis toujours avant de signer !",
-    "liberte d expression": "LIBERTE D EXPRESSION 10H : Droit de dire ce que tu penses. Mais limites : pas d insultes, pas de mensonges qui font du mal, pas de racisme, pas d appels a la violence. Sur Internet aussi, tu es responsable de ce que tu ecris.",
-    "art": "ART 10H : Creer quelque chose de beau ou qui fait reflechir. Peinture, sculpture, photo, cinema, musique, danse, theatre. L art n a pas de bonne ou mauvaise reponse, c est ton regard.",
-    "perspective": "PERSPECTIVE 10H - ARTS : Technique pour donner l impression de profondeur sur une feuille plate. Les lignes se rejoignent a un point de fuite. Plus c est loin, plus c est petit.",
+    "citoyen": "CITOYEN 10H : Habitant d un pays avec des droits et des devoirs. Droits : voter, aller a l ecole, etre soigne. Devoirs : respecter les lois, payer des impots.",
+    "justice": "JUSTICE 10H : Elle dit qui a raison, qui a tort, et punit. Tribunaux : juge, avocat, procureur.",
+    "contrat": "CONTRAT 10H : Accord entre 2 personnes. Ex : contrat d apprentissage, contrat de travail, contrat de location. Lis toujours avant de signer !",
+    "liberte d expression": "LIBERTE D EXPRESSION 10H : Droit de dire ce que tupense, c'est ton droit. Mais limites : pas d insultes, pas de mensonges qui font du mal, pas de racisme, pas d appels a la violence.",
+    "art": "ART 10H : Creer quelque chose de beau ou qui fait reflechir. Peinture, sculpture, photo, cinema, musique, danse, theatre.",
+    "perspective": "PERSPECTIVE 10H - ARTS : Technique pour donner l impression de profondeur sur une feuille plate. Les lignes se rejoignent a un point de fuite.",
     "couleurs primaires": "COULEURS PRIMAIRES 10H : Rouge, Bleu, Jaune. Avec ces 3, tu peux faire toutes les autres. Rouge + Jaune = Orange. Bleu + Jaune = Vert. Rouge + Bleu = Violet.",
     "couleurs chaudes / froides": "COULEURS CHAUDES / FROIDES 10H : Chaudes : rouge, orange, jaune = feu, soleil, energie. Froides : bleu, vert, violet = mer, glace, calme.",
-    "portrait": "PORTRAIT 10H - ARTS : Dessin / photo d une personne. On regarde : visage, expression, vetements, fond. Pour reussir : bien placer les yeux (au milieu), le nez, la bouche.",
-    "paysage": "PAYSAGE 10H - ARTS : Dessin / photo d un lieu. On regarde : premier plan, arriere-plan, ciel, lumiere. Astuce : ne pas mettre l horizon au milieu.",
+    "portrait": "PORTRAIT 10H - ARTS : Dessin / photo d une personne. On regarde : visage, expression, vetements, fond.",
+    "paysage": "PAYSAGE 10H - ARTS : Dessin / photo d un lieu. On regarde : premier plan, arriere-plan, ciel, lumiere.",
     "art abstrait": "ART ABSTRAIT 10H : Art qui ne represente pas quelque chose de reel. Que des formes, des couleurs, des lignes. Ex : Kandinsky, Mondrian.",
     "photographie": "PHOTOGRAPHIE 10H : Prendre une photo, c est choisir : cadrage, lumiere, moment. Regles : regle des tiers, lumiere naturelle, fond simple.",
-    "cinema": "CINEMA 10H : 24 images par seconde = impression de mouvement. Metiers : realisateur, acteur, cameraman, monteur, scenariste. Genres : comedie, drame, action, animation, documentaire.",
-    "rythme": "RYTHME 10H - MUSIQUE : Le rythme, c est quand on tape dans les mains. Il est regulier : 1-2-3-4, 1-2-3-4. Sans rythme, la musique est bizarre.",
-    "melodie": "MELODIE 10H - MUSIQUE : Suite de notes qu on peut chanter. Ex : Joyeux Anniversaire. La melodie + le rythme = une chanson.",
-    "tempo": "TEMPO 10H - MUSIQUE : Vitesse de la musique. Lent = calme, Rapide = danse. On le mesure avec un metronome.",
-    "gamme": "GAMME 10H - MUSIQUE : Suite de notes dans l ordre. Gamme de Do majeur : Do, Re, Mi, Fa, Sol, La, Si, Do. Majeur = joyeux, Mineur = triste.",
-    "solfege": "SOLFEGE 10H - MUSIQUE : Apprendre a lire les notes sur une portee (5 lignes). Cle de Sol pour les aigus, Cle de Fa pour les graves. Notes : Do, Re, Mi, Fa, Sol, La, Si.",
-    "orchestre": "ORCHESTRE 10H - MUSIQUE : Grand groupe de musiciens. Cordes (violon, violoncelle), Vents (flute, trompette), Percussions (batterie, tambour). Chef d orchestre = celui qui dirige.",
+    "cinema": "CINEMA 10H : 24 images par seconde = impression de mouvement. Metiers : realisateur, acteur, cameraman, monteur, scenariste.",
+    "rythme": "RYTHME 10H - MUSIQUE : Le rythme, c est quand on tape dans les mains. Il est regulier : 1-2-3-4, 1-2-3-4.",
+    "melodie": "MELODIE 10H - MUSIQUE : Suite de notes qu on peut chanter. Ex : Joyeux Anniversaire.",
+    "tempo": "TEMPO 10H - MUSIQUE : Vitesse de la musique. Lent = calme, Rapide = danse.",
+    "gamme": "GAMME 10H - MUSIQUE : Suite de notes dans l ordre. Gamme de Do majeur : Do, Re, Mi, Fa, Sol, La, Si, Do.",
+    "solfege": "SOLFEGE 10H - MUSIQUE : Apprendre a lire les notes sur une portee (5 lignes). Cle de Sol pour les aigus, Cle de Fa pour les graves.",
+    "orchestre": "ORCHESTRE 10H - MUSIQUE : Grand groupe de musiciens. Cordes (violon, violoncelle), Vents (flute, trompette), Percussions (batterie, tambour).",
     "musique classique": "MUSIQUE CLASSIQUE 10H : Musique de Mozart, Beethoven, Bach, Chopin. Pas de paroles, souvent avec un orchestre.",
-    "jazz": "JAZZ 10H : Musique nee aux USA, avec beaucoup d improvisation (on invente sur le moment). Instruments : saxophone, trompette, piano, contrebasse.",
+    "jazz": "JAZZ 10H : Musique nee aux USA, avec beaucoup d improvisation (on invente sur le moment). Instruments : saxophone, trompette, piano.",
     "rock": "ROCK 10H : Musique avec guitare electrique, basse, batterie. Nee dans les annees 50. Groupes : 【entity-Queen¦canonical_name=Queen】, 【entity-AC/DC¦canonical_name=AC/DC】, Nirvana.",
-    "fair-play": "FAIR-PLAY 10H - SPORT : Jouer honnetement, respecter l adversaire, l arbitre, les regles. Gagner, c est bien, mais gagner en trichant, ce n est pas gagner.",
-    "echauffement": "ECHAUFFEMENT 10H - SPORT : Avant le sport, il faut echauffer les muscles 5-10 min : courir doucement, tourner les bras, les jambes, les chevilles. Ca evite les blessures.",
-    "endurance": "ENDURANCE 10H - SPORT : Pouvoir courir longtemps sans etre trop fatigue. On l entraine en courant lentement longtemps, en faisant du velo, de la natation.",
+    "fair-play": "FAIR-PLAY 10H - SPORT : Jouer honnetement, respecter l adversaire, l arbitre, les regles.",
+    "echauffement": "ECHAUFFEMENT 10H - SPORT : Avant le sport, il faut echauffer les muscles 5-10 min : courir doucement, tourner les bras, les jambes.",
+    "endurance": "ENDURANCE 10H - SPORT : Pouvoir courir longtemps sans etre trop fatigue. On l entraine en courant lentement longtemps.",
     "souplesse": "SOUPLESSE 10H - SPORT : Pouvoir bouger facilement sans se faire mal. On l entraine avec des etirements, du yoga, de la gymnastique.",
-    "coordination": "COORDINATION 10H - SPORT : Faire bouger plusieurs parties du corps en meme temps. Ex : jongler, dribbler au foot, faire du velo.",
-    "dopage": "DOPAGE 10H - SPORT : Prendre des produits interdits pour etre plus fort. C est de la triche, c est dangereux pour la sante, c est puni. Les vrais champions ne se dopent pas.",
-    "addictions": "ADDICTIONS 10H - SANTE : Quand tu ne peux plus t arreter : jeux video, telephone, cigarette, alcool, drogues, sucre. Signes : tu y penses tout le temps, tu es enerve sans, tu mens pour en avoir. Solution : en parler a un adulte.",
-    "tabac": "TABAC 10H - SANTE : La cigarette contient beaucoup de produits toxiques, dont la nicotine (addiction) et le goudron (cancer). Fumer = cancer du poumon, dents jaunes, souffle court, ca coute cher.",
-    "alcool": "ALCOOL 10H - SANTE : L alcool rend malade, fait faire des betises, detruit le foie, le cerveau. Pour les jeunes, c est encore plus dangereux car le cerveau grandit.",
-    "ecrans": "ECRANS 10H - SANTE : Trop d ecrans = mal aux yeux, mal a dormir, moins de sport, moins d amis en vrai. Regles : pas d ecran 1h avant de dormir, pas d ecran a table, faire des pauses toutes les 30 min.",
+    "coordination": "COORDINATION 10H - SPORT : Faire bouger plusieurs parties du corps en meme temps. Ex : jongler, dribbler au foot.",
+    "dopage": "DOPAGE 10H - SPORT : Prendre des produits interdits pour etre plus fort. C est de la triche, c est dangereux pour la sante, c est puni.",
+    "addictions": "ADDICTIONS 10H - SANTE : Quand tu ne peux plus t arreter : jeux video, telephone, cigarette, alcool, drogues, sucre. Solution : en parler a un adulte.",
+    "tabac": "TABAC 10H - SANTE : La cigarette contient beaucoup de produits toxiques, dont la nicotine (addiction) et le goudron (cancer).",
+    "alcool": "ALCOOL 10H - SANTE : L alcool rend malade, fait faire des betises, detruit le foie, le cerveau. Pour les jeunes, c est encore plus dangereux.",
+    "ecrans": "ECRANS 10H - SANTE : Trop d ecrans = mal aux yeux, mal a dormir, moins de sport, moins d amis en vrai. Regles : pas d ecran 1h avant de dormir.",
     "stress": "STRESS 10H - SANTE : Quand tu es stresse, ton coeur bat vite, tu as mal au ventre, tu dors mal. C est normal avant un test. Pour gerer : respirer lentement, preparer a l avance, en parler, faire du sport, dormir.",
-    "hygiene": "HYGIENE 10H - SANTE : Se laver les mains, se brosser les dents 2x par jour, se doucher, changer de vetements, se couper les ongles. Ca evite les maladies, les caries.",
-    "premiers secours": "PREMIERS SECOURS 10H : Si quelqu un se blesse : 1. Securise. 2. Appelle le 144. 3. Parle a la personne, rassure-la. 4. Si elle saigne, appuie avec un linge propre. 5. Ne deplace pas quelqu un qui s est fait mal au dos / a la tete.",
-    "144": "144 10H : Numero d urgence en Suisse pour l ambulance. 117 = police, 118 = pompiers, 144 = ambulance, 147 = aide pour les jeunes. Si tu appelles : dis qui tu es, ou tu es, ce qui s est passe, combien de blesses.",
-    "alimentation equilibree": "ALIMENTATION EQUILIBREE 10H : Manger de tout, en quantites raisonnables. Beaucoup d eau, fruits, legumes, cereales, un peu de viande / poisson / oeufs, peu de sucre, peu de gras, peu de sel.",
-    "apprendre par coeur": "APPRENDRE PAR COEUR 10H : 1. Lis 3 fois a voix haute. 2. Cache et recite. 3. Repete le lendemain. 4. Utilise des images, des rimes, des histoires. 5. Dors bien, ton cerveau range la nuit.",
+    "hygiene": "HYGIENE 10H - SANTE : Se laver les mains, se brosser les dents 2x par jour, se doucher, changer de vetements, se couper les ongles.",
+    "premiers secours": "PREMIERS SECOURS 10H : Si quelqu un se blesse : 1. Securise. 2. Appelle le 144. 3. Parle a la personne, rassure-la. 4. Si elle saigne, appuie avec un linge propre.",
+    "144": "144 10H : Numero d urgence en Suisse pour l ambulance. 117 = police, 118 = pompiers, 144 = ambulance, 147 = aide pour les jeunes.",
+    "alimentation equilibree": "ALIMENTATION EQUILIBREE 10H : Manger de tout, en quantites raisonnables. Beaucoup d eau, fruits, legumes, cereales, un peu de viande / poisson / oeufs, peu de sucre.",
+    "apprendre par coeur": "APPRENDRE PAR COEUR 10H : 1. Lis 3 fois a voix haute. 2. Cache et recite. 3. Repete le lendemain. 4. Utilise des images, des rimes, des histoires. 5. Dors bien.",
     "expose": "EXPOSE 10H : Pour reussir un expose : 1. Choisis un sujet que tu aimes. 2. Cherche 3-4 idees principales. 3. Fais un plan (intro, parties, conclusion). 4. Fais des diapos simples. 5. Entraine-toi a voix haute 3 fois.",
     "gerer son temps": "GERER SON TEMPS 10H : 1. Fais une liste de ce que tu dois faire. 2. Fais d abord le plus important. 3. Utilise un agenda. 4. Pomodoro : 25 min de travail, 5 min de pause. 5. Pas de telephone pendant le travail.",
-    "faire ses devoirs plus vite": "FAIRE SES DEVOIRS PLUS VITE 10H : 1. Commence tout de suite apres l ecole. 2. Fais un coin calme, sans telephone. 3. Fais d abord le plus dur. 4. Si tu bloques 5 min, passe a autre chose et reviens apres.",
+    "faire ses devoirs plus vite": "FAIRE SES DEVOIRS PLUS VITE 10H : 1. Commence tout de suite apres l ecole. 2. Fais un coin calme, sans telephone. 3. Fais d abord le plus dur.",
     "ne pas stresser avant un test": "NE PAS STRESSER AVANT UN TEST 10H : 1. Revise a l avance, pas la veille au soir. 2. Dors bien la veille. 3. Mange un bon petit-dejeuner. 4. Respire lentement avant le test. 5. Lis toutes les questions d abord, commence par les faciles.",
-    "prendre des notes": "PRENDRE DES NOTES 10H : N ecris pas tout, ecris les mots importants, les exemples, les dates. Utilise des abreviations. Laisse des espaces pour completer apres. Relis tes notes le soir meme.",
-    "fiche de revision": "FICHE DE REVISION 10H : Une feuille A4 par chapitre. Recto : titre, definitions, formules, exemples. Verso : exercices + reponses. Couleurs : bleu = titre, rouge = important, vert = exemple.",
+    "prendre des notes": "PRENDRE DES NOTES 10H : N ecris pas tout, ecris les mots importants, les exemples, les dates. Utilise des abreviations.",
+    "fiche de revision": "FICHE DE REVISION 10H : Une feuille A4 par chapitre. Recto : titre, definitions, formules, exemples. Verso : exercices + reponses.",
     "gerer un conflit": "GERER UN CONFLIT 10H : 1. Calme-toi (respire). 2. Ecoute l autre sans couper. 3. Dis ce que tu ressens avec je : Je suis enerve quand... 4. Cherche une solution gagnant-gagnant. 5. Si ca ne marche pas, demande a un adulte.",
-    "se faire des amis": "SE FAIRE DES AMIS 10H : 1. Souris, dis bonjour. 2. Pose des questions, ecoute. 3. Propose une activite. 4. Sois toi-meme, ne fais pas semblant. 5. Sois gentil, aide. Un vrai ami, c est quelqu un qui te respecte.",
+    "se faire des amis": "SE FAIRE DES AMIS 10H : 1. Souris, dis bonjour. 2. Pose des questions, ecoute. 3. Propose une activite. 4. Sois toi-meme, ne fais pas semblant. 5. Sois gentil, aide.",
     "dire non": "DIRE NON 10H : Tu as le droit de dire non, meme a tes amis. Ex : Non, je ne veux pas fumer, Non, je ne veux pas tricher. Dis-le calmement, avec une raison, propose autre chose.",
-    "confiance en soi": "CONFIANCE EN SOI 10H : Personne n est bon en tout. 1. Note tes reussites. 2. Compare-toi a toi-meme d hier, pas aux autres. 3. Parle-toi gentiment. 4. Essaie des choses nouvelles, meme si tu as peur.",
-    "choisir son metier": "CHOISIR SON METIER 10H : 1. Qu est-ce que tu aimes faire ? 2. Qu est-ce que tu sais faire ? 3. Quels metiers existent ? 4. Essaie : stage, journee portes ouvertes. Tu as le droit de changer d avis.",
-    "stage": "STAGE 10H : Tu vas voir un vrai metier pendant 1-5 jours. Tu observes, tu poses des questions, tu essaies. Ca t aide a choisir. Pour trouver : demande a ta famille, a tes profs, ecris a des entreprises.",
-    "apprentissage": "APPRENTISSAGE 10H : En Suisse, apres la 11H, beaucoup font un apprentissage (CFC). Tu apprends un metier en travaillant 3-4 jours en entreprise + 1-2 jours a l ecole. Tu es paye. Duree : 2-4 ans.",
+    "confiance en soi": "CONFIANCE EN SOI 10H : Personne n est bon en tout. 1. Note tes reussites. 2. Compare-toi a toi-meme d hier, pas aux autres. 3. Parle-toi gentiment.",
+    "choisir son metier": "CHOISIR SON METIER 10H : 1. Qu est-ce que tu aimes faire ? 2. Qu est-ce que tu sais faire ? 3. Quels metiers existent ? 4. Essaie : stage, journee portes ouvertes.",
+    "stage": "STAGE 10H : Tu vas voir un vrai metier pendant 1-5 jours. Tu observes, tu poses des questions, tu essaies. Ca t aide a choisir.",
+    "apprentissage": "APPRENTISSAGE 10H : En Suisse, apres la 11H, beaucoup font un apprentissage (CFC). Tu apprends un metier en travaillant 3-4 jours en entreprise + 1-2 jours a l ecole. Tu es paye.",
     "gymnase": "GYMNASE 10H : Apres la 11H, si tu as de bonnes notes, tu peux aller au gymnase. 4 ans. Tu etudies beaucoup. A la fin, tu as une maturite, tu peux aller a l universite.",
-    "universite": "UNIVERSITE 10H : Apres la maturite, tu peux aller a l universite (Lausanne, Geneve, Fribourg, Zurich...). Tu choisis une branche. Tu etudies 3 ans pour un Bachelor, + 2 ans pour un Master.",
+    "universite": "UNIVERSITE 10H : Apres la maturite, tu peux aller a l universite (Lausanne, Geneve, Fribourg, Zurich...). Tu choisis une branche.",
     "conseil pour reviser": "CONSEIL POUR REVISER 10H : 1. Pomodoro : 25 min, 5 min pause. 2. Teste-toi, ne relis pas. 3. Explique a quelqu un. 4. Dors bien. 5. Pas de telephone. 6. Fais des fiches. 7. Commence 1 semaine avant, pas la veille.",
-    "2eme guerre": "2EME GUERRE MONDIALE 10H : 1939-1945. Allemagne contre Allies (France, Angleterre, USA, URSS). Beaucoup de morts. Fin : 1945, debarquement en Normandie 1944, bombes sur Hiroshima et Nagasaki.",
+    "2eme guerre": "2EME GUERRE MONDIALE 10H : 1939-1945. Allemagne contre Allies (France, Angleterre, USA, URSS). Fin : 1945, debarquement en Normandie 1944, bombes sur Hiroshima et Nagasaki.",
     "1ere guerre": "1ERE GUERRE MONDIALE 10H : 1914-1918. France, Angleterre contre Allemagne, Autriche. Guerre des tranchees, beaucoup de morts. Fin : Armistice 11 novembre 1918.",
     "revolution": "REVOLUTION FRANCAISE 10H : 1789. Le peuple se revolte contre le roi Louis XVI. Prise de la Bastille 14 juillet 1789. Declaration des Droits de l Homme.",
     "rome": "ROME 10H : Empire romain, il y a 2000 ans. Colisee, gladiateurs, Jules Cesar, Auguste. Rome a conquis toute l Europe. Langue : latin, ancetre du francais, espagnol, italien.",
@@ -786,14 +870,14 @@ TOUT = {
     "jo": "JO 10H : Tous les 4 ans. 2024 = Paris, 2028 = Los Angeles. Devise : Plus vite, plus haut, plus fort.",
     "manger sain": "MANGER SAIN 10H : 5 fruits et legumes par jour, boire 1.5L d eau, moins de sucre.",
     "sommeil": "SOMMEIL 10H : A 13 ans, il faut 9-10h de sommeil ! Pas d ecran 1h avant de dormir.",
-    "【entity-messi¦canonical_name=Messi】": "【entity-MESSI¦canonical_name=Messi】 : 8 Ballons d Or (record), 91 buts en une annee. Coupe du Monde 2022.",
-    "ronaldo": "RONALDO : 5 Ballons d Or, meilleur buteur de l histoire (beaucoup de buts).",
-    "mbappe": "MBAPPE : Champion du Monde 2018 a 19 ans. Vitesse : 36 km/h. Real Madrid depuis 2024.",
+    "messi": "MESSI : 8 Ballons d Or (record), 91 buts en une annee. Coupe du Monde 2022.",
+    "【entity-ronaldo¦canonical_name=Ronaldo】": "【entity-RONALDO¦canonical_name=Ronaldo】 : 5 Ballons d Or, meilleur buteur de l histoire (beaucoup de buts).",
+    "【entity-mbappe¦canonical_name=Mbappe】": "【entity-MBAPPE¦canonical_name=Mbappe】 : Champion du Monde 2018 a 19 ans. Vitesse : 36 km/h. Real Madrid depuis 2024.",
     "ballon d or": "BALLON D OR 10H : Trophee du meilleur joueur du monde. Messi en a 8 (record), Ronaldo 5.",
     "coupe du monde": "COUPE DU MONDE 10H : Tous les 4 ans, 48 equipes en 2026. 2022 = Argentine gagne contre France.",
-    "ligue des champions": "LIGUE DES CHAMPIONS 10H : 【entity-Real Madrid¦canonical_name=Real Madrid】 a gagne 15 fois, record !",
+    "ligue des champions": "LIGUE DES CHAMPIONS 10H : Real Madrid a gagne 15 fois, record !",
     "minecraft": "MINECRAFT 10H : Jeu le plus vendu au monde : beaucoup de millions de copies ! Monde en cubes, Creeper, Ender Dragon.",
-    "fortnite": "FORTNITE 10H : Battle Royale : 100 joueurs, le dernier vivant gagne.",
+    "【entity-fortnite¦canonical_name=Fortnite】": "【entity-FORTNITE¦canonical_name=Fortnite】 10H : Battle Royale : 100 joueurs, le dernier vivant gagne.",
     "roblox": "ROBLOX 10H : Des millions de jeux crees par les joueurs. Jeux cultes : Brookhaven, Blox Fruits, Doors.",
     "gta": "GTA V 10H : Beaucoup de millions de copies. Monde ouvert : Los Santos. GTA VI sort en 2026, a Vice City.",
     "brawl stars": "BRAWL STARS 10H : Jeu mobile de Supercell. 3v3, Brawlers : Shelly, Colt, Spike, Leon...",
@@ -861,7 +945,7 @@ def trouver(q_orig):
         if st.session_state.mode_train:
             st.session_state.mode_train = False
             st.session_state.train_q = None
-            return "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " | Meilleur streak : " + str(st.session_state.best_streak) + " ! Bravo !"
+            return "Entrainement termine ! Score final : " + str(st.session_state.score) + "/" + str(st.session_state.total_quiz) + " ! Bravo !"
         else:
             return "Tu n es pas en entrainement. Clique sur MODE ENTRAINEMENT en haut pour commencer !"
     if st.session_state.mode_train and st.session_state.train_q is not None:
