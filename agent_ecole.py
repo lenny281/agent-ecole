@@ -56,7 +56,7 @@ MATIERES_GENRES = {
         "🍕 Fractions / Pourcentages": ["C est quoi une fraction ?", "C est quoi le pourcentage ?", "C est quoi une equation ?", "C est quoi la racine carree ?", "C est quoi une equation du 1er degre ?", "C est quoi une inequation ?", "C est quoi la proportionnalite ?", "C est quoi le produit en croix ?"],
         "📊 Stats / Proba 10H": ["C est quoi la moyenne ?", "C est quoi la mediane ?", "C est quoi le mode ?", "C est quoi l etendue ?", "C est quoi la frequence ?", "C est quoi une probabilite ?", "C est quoi un diagramme en batons ?", "C est quoi un diagramme circulaire ?"],
     },
-    "🇫🇷 10H Français": {
+    "🇫🇷 10H Francais": {
         "📖 Grammaire 10H": ["C est quoi le COD ?", "C est quoi le COI ?", "C est quoi le sujet ?", "C est quoi un adjectif ?", "C est quoi le pluriel ?", "C est quoi le verbe ?", "C est quoi le pronom ?", "C est quoi le complement circonstanciel ?", "C est quoi la proposition subordonnee ?", "C est quoi la proposition relative ?", "C est quoi le groupe nominal ?", "C est quoi l attribut du sujet ?", "C est quoi le participe passe ?", "C est quoi l accord du participe passe ?"],
         "✍️ Verbes les plus connus": ["Conjugue ETRE", "Conjugue AVOIR", "Conjugue ALLER", "Conjugue FAIRE", "Conjugue DIRE", "Conjugue POUVOIR", "Conjugue VOULOIR", "Conjugue SAVOIR", "Conjugue DEVOIR", "Conjugue VENIR", "Conjugue VOIR", "Conjugue PRENDRE", "Conjugue METTRE", "Conjugue DONNER", "Conjugue PARLER", "Conjugue MANGER", "Conjugue DORMIR", "Conjugue ECRIRE", "Conjugue LIRE", "Conjugue PARTIR", "Conjugue JOUER", "Conjugue APPRENDRE"],
         "📝 Orthographe / Conjugaison 10H": ["C est quoi a / a ?", "C est quoi et / est ?", "C est quoi son / sont ?", "C est quoi ces / ses ?", "C est quoi ou / ou ?", "C est quoi le passe compose ?", "C est quoi l imparfait ?", "C est quoi le passe simple ?", "C est quoi le futur simple ?", "C est quoi le conditionnel ?", "C est quoi le subjonctif ?", "C est quoi le plus-que-parfait ?", "C est quoi l infinitif ?"],
@@ -141,7 +141,7 @@ THEMES = {
 
 TRAIN_FACILE = [("C est quoi 2+2 ?", "4"), ("C est quoi 5x2 ?", "10"), ("C est quoi la capitale de la France ?", "paris"), ("C est quoi 3x3 ?", "9"), ("C est quoi 10-3 ?", "7"), ("Conjugue ETRE : je ... ?", "suis"), ("C est quoi PI ?", "3.14")]
 TRAIN_MOYEN = [("C est quoi 7x8 ?", "56"), ("C est quoi la capitale du Japon ?", "tokyo"), ("C est quoi 15+25 ?", "40"), ("Qui a gagne la Coupe du Monde 2022 ?", "argentine"), ("C est quoi la capitale de la Suisse ?", "berne"), ("C est quoi 9x9 ?", "81")]
-TRAIN_DIFFICILE = [("C est quoi 12x12 ?", "144"), ("C est quoi la capitale de l Australie ?", "canberra"), ("C est quoi 144 / 12 ?", "12"), ("Combien de Ballons d Or a 【entity-Messi¦canonical_name=Messi】 ?", "8"), ("En quelle annee a coule le 【entity-Titanic¦canonical_name=TITANIC】 ?", "1912")]
+TRAIN_DIFFICILE = [("C est quoi 12x12 ?", "144"), ("C est quoi la capitale de l Australie ?", "canberra"), ("C est quoi 144 / 12 ?", "12"), ("Combien de Ballons d Or a 【entity-Messi¦canonical_name=Messi】 ?", "8"), ("En quelle annee a coule le Titanic ?", "1912")]
 TRAIN_VERBES = [("Conjugue ETRE au present : je ... ?", "suis"), ("Conjugue AVOIR au present : tu ... ?", "as"), ("Conjugue TO BE : I ... ?", "am"), ("Conjugue SEIN : ich ... ?", "bin"), ("Conjugue ALLER : il ... ?", "va")]
 TRAIN_MATHS = [("C est quoi 7x8 ?", "56"), ("C est quoi 9x9 ?", "81"), ("C est quoi 12+15 ?", "27"), ("C est quoi PI ?", "3.14"), ("C est quoi 100-37 ?", "63")]
 TRAIN_FRANCAIS = [("C est quoi le COD ?", "cod"), ("Conjugue ETRE : je ... ?", "suis"), ("C est quoi le pluriel de cheval ?", "chevaux")]
@@ -322,10 +322,10 @@ BASES = {
 BLAGUES = ["Pourquoi les plongeurs plongent-ils toujours en arriere ? Parce que sinon, ils tombent dans le bateau !", "Que dit un zero a un huit ? Belle ceinture !", "Pourquoi les maths sont tristes ? Parce qu elles ont trop de problemes !", "Pourquoi les poissons n aiment pas jouer au foot ? Parce qu ils ont peur des filets !", "Que fait une fraise sur un cheval ? Tagada tagada !", "Pourquoi PI est trop fort ? Parce qu il ne s arrete jamais !"]
 MOTIVATIONS = ["Tu peux le faire ! Chaque erreur, c est une lecon. Ne lache rien !", "N abandonne jamais ! 10 minutes par jour, tous les jours, et dans 1 mois tu seras trop fort !", "Tu es capable de beaucoup plus que tu crois ! Commence petit, 1 exercice, et ca va venir !"]
 TRADUCTIONS = {"bonjour en anglais": "Bonjour en anglais = Hello / Good morning !", "bonjour en allemand": "Bonjour en allemand = Hallo / Guten Tag !", "bonjour en espagnol": "Bonjour en espagnol = Hola / Buenos dias !", "bonjour en italien": "Bonjour en italien = Ciao / Buongiorno !", "merci en anglais": "Merci en anglais = Thank you / Thanks !", "merci en allemand": "Merci en allemand = Danke !", "merci en espagnol": "Merci en espagnol = Gracias !", "merci en italien": "Merci en italien = Grazie !", "ecole en anglais": "Ecole en anglais = School !", "chien en anglais": "Chien en anglais = Dog !", "ecole en allemand": "Ecole en allemand = Schule !", "chien en allemand": "Chien en allemand = Hund !", "ecole en espagnol": "Ecole en espagnol = Escuela !"}
-CAPITALES = {"france": "Paris - Tour Eiffel, Louvre.", "suisse": "Berne - Capitale de la Suisse depuis 1848.", "allemagne": "Berlin - Mur de Berlin tombe en 1989.", "italie": "Rome - Colisee, Vatican.", "espagne": "Madrid - 【entity-Real Madrid¦canonical_name=Real Madrid】.", "angleterre": "Londres - Big Ben.", "japon": "Tokyo - Plus grande ville du monde !", "usa": "Washington D.C. - Maison Blanche.", "canada": "Ottawa - Toronto = plus grande ville.", "chine": "Pekin - Grande Muraille.", "russie": "Moscou - Place Rouge.", "bresil": "Brasilia - Rio = plus connue.", "inde": "New Delhi - Taj Mahal.", "australie": "Canberra - Sydney = plus connue.", "egypte": "Le Caire - Pyramides de Gizeh.", "maroc": "Rabat - Maroc.", "portugal": "Lisbonne - 【entity-Cristiano Ronaldo¦canonical_name=Cristiano Ronaldo】 !", "belgique": "Bruxelles - Frites, Chocolat !", "pays-bas": "Amsterdam - Canaux, Velos.", "suede": "Stockholm - 【entity-IKEA¦canonical_name=IKEA】, 【entity-ABBA¦canonical_name=ABBA】.", "norvege": "Oslo - Fjords, 【entity-Haaland¦canonical_name=Haaland】 !", "grece": "Athenes - Democratie, 【entity-Jeux Olympiques¦canonical_name=Jeux Olympiques】.", "mexique": "Mexico - Tacos, Azteques.", "argentine": "Buenos Aires - Tango, 【entity-Messi¦canonical_name=Messi】.", "monaco": "Monaco - 2 km2, Grand Prix F1.", "qatar": "Doha - Qatar, Coupe du Monde 2022 !", "nepal": "Katmandou - Nepal, Everest, 8848m !", "jamaique": "Kingston - Jamaique, Bob Marley, 【entity-Usain Bolt¦canonical_name=Usain Bolt】 !", "turquie": "Ankara - Turquie, Istanbul = plus grande ville.", "coree": "Seoul - Coree du Sud, K-Pop, 【entity-Samsung¦canonical_name=Samsung】.", "colombie": "Bogota - Colombie, Cafe.", "senegal": "Dakar - Senegal, 【entity-Sadio Mane¦canonical_name=Sadio Mane】.", "madagascar": "Antananarivo - Madagascar, Lemuriens.", "indonesie": "Jakarta - Indonesie, 17000 iles !", "singapour": "Singapour - Ville-pays, la plus propre !", "nouvelle-zelande": "Wellington - Nouvelle-Zelande, Seigneur des Anneaux !", "irlande": "Dublin - Irlande, Saint-Patrick.", "islande": "Reykjavik - Islande, Volcans, Aurores boreales.", "finlande": "Helsinki - Finlande, Pere Noel.", "pologne": "Varsovie - Pologne, 【entity-Lewandowski¦canonical_name=Lewandowski】.", "danemark": "Copenhague - Danemark, 【entity-LEGO¦canonical_name=LEGO】.", "autriche": "Vienne - Autriche, Mozart.", "cuba": "La Havane - Cuba, Salsa."}
+CAPITALES = {"france": "Paris - Tour Eiffel, Louvre.", "suisse": "Berne - Capitale de la Suisse depuis 1848.", "allemagne": "Berlin - Mur de Berlin tombe en 1989.", "italie": "Rome - Colisee, Vatican.", "espagne": "Madrid - 【entity-Real Madrid¦canonical_name=Real Madrid】.", "angleterre": "Londres - Big Ben.", "japon": "Tokyo - Plus grande ville du monde !", "usa": "Washington D.C. - Maison Blanche.", "canada": "Ottawa - Toronto = plus grande ville.", "chine": "Pekin - Grande Muraille.", "russie": "Moscou - Place Rouge.", "bresil": "Brasilia - Rio = plus connue.", "inde": "New Delhi - Taj Mahal.", "australie": "Canberra - Sydney = plus connue.", "egypte": "Le Caire - Pyramides de Gizeh.", "maroc": "Rabat - Maroc.", "portugal": "Lisbonne - 【entity-Cristiano Ronaldo¦canonical_name=Cristiano Ronaldo】 !", "belgique": "Bruxelles - Frites, Chocolat !", "pays-bas": "Amsterdam - Canaux, Velos.", "suede": "Stockholm - 【entity-IKEA¦canonical_name=IKEA】, 【entity-ABBA¦canonical_name=ABBA】.", "norvege": "Oslo - Fjords, 【entity-Haaland¦canonical_name=Haaland】 !", "grece": "Athenes - Democratie, Jeux Olympiques.", "mexique": "Mexico - Tacos, Azteques.", "argentine": "Buenos Aires - Tango, 【entity-Messi¦canonical_name=Messi】.", "monaco": "Monaco - 2 km2, Grand Prix F1.", "qatar": "Doha - Qatar, Coupe du Monde 2022 !", "nepal": "Katmandou - Nepal, Everest, 8848m !", "jamaique": "Kingston - Jamaique, Bob Marley, 【entity-Usain Bolt¦canonical_name=Usain Bolt】 !", "turquie": "Ankara - Turquie, Istanbul = plus grande ville.", "coree": "Seoul - Coree du Sud, K-Pop, 【entity-Samsung¦canonical_name=Samsung】.", "colombie": "Bogota - Colombie, Cafe.", "senegal": "Dakar - Senegal, 【entity-Sadio Mane¦canonical_name=Sadio Mane】.", "madagascar": "Antananarivo - Madagascar, Lemuriens.", "indonesie": "Jakarta - Indonesie, 17000 iles !", "singapour": "Singapour - Ville-pays, la plus propre !", "nouvelle-zelande": "Wellington - Nouvelle-Zelande, Seigneur des Anneaux !", "irlande": "Dublin - Irlande, Saint-Patrick.", "islande": "Reykjavik - Islande, Volcans, Aurores boreales.", "finlande": "Helsinki - Finlande, Pere Noel.", "pologne": "Varsovie - Pologne, Lewandowski.", "danemark": "Copenhague - Danemark, 【entity-LEGO¦canonical_name=LEGO】.", "autriche": "Vienne - Autriche, Mozart.", "cuba": "La Havane - Cuba, Salsa."}
 PC = {
     "rapport qualite prix": "MEILLEUR RAPPORT PC 2026 : GAGNANT 1300 CHF : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS. PETIT BUDGET 900 CHF : RTX 4060 + Ryzen 5 7600 = 900 CHF. GROS BUDGET 2000 CHF : RTX 5070 Ti + 9800X3D = 2000 CHF.",
-    "pc 900": "PC 900 CHF : RTX 4060 + Ryzen 5 7600 + 16 Go + SSD 1 To = 900 CHF. Fortnite 144 FPS !",
+    "pc 900": "PC 900 CHF : RTX 4060 + Ryzen 5 7600 + 16 Go + SSD 1 To = 900 CHF. 【entity-Fortnite¦canonical_name=Fortnite】 144 FPS !",
     "pc 1300": "PC 1300 CHF - MEILLEUR RAPPORT : RTX 5070 + Ryzen 7 7800X3D + 32 Go + SSD 1 To = 1300 CHF. 1440p Ultra 180 FPS !",
     "pc 2000": "PC 2000 CHF : RTX 5070 Ti + Ryzen 7 9800X3D + 32 Go + SSD 2 To = 2000 CHF. 240 FPS, 4K !",
     "meilleure gpu": "MEILLEURE GPU : 1. RTX 5090 - 32 Go, 4K Ultra 200 FPS, 2500 CHF. 2. RTX 5070 - MEILLEUR RAPPORT : 12 Go, 1440p 180 FPS, 600 CHF.",
@@ -338,8 +338,8 @@ PC = {
     "ping": "PING = Temps de reponse internet. 10 ms = parfait, 30 ms = tres bien, 100 ms = ca lag, 200 ms = injouable.",
 }
 CHANTEURS = {
-    "werenoi": "WERENOI : Vrai nom 【entity-Jeremy Bana Owona¦canonical_name=Jeremy Bana Owona】. Ne en 1994 a Melun. Il a explose en 2023 avec Pyramide et Solitaire. Albums : Pyramide, Diamant Noir. Le plus ecoute en France en 2024 et 2025 !",
-    "ninho": "NINHO : Vrai nom 【entity-William Nzobazola¦canonical_name=William Nzobazola】. Le rappeur avec le plus de disques d or et de diamant en France ! Albums : Jefe, NI.",
+    "werenoi": "WERENOI : Vrai nom Jeremy Bana Owona. Ne en 1994 a Melun. Il a explose en 2023 avec Pyramide et Solitaire. Albums : Pyramide, Diamant Noir. Le plus ecoute en France en 2024 et 2025 !",
+    "ninho": "NINHO : Vrai nom William Nzobazola. Le rappeur avec le plus de disques d or et de diamant en France ! Albums : Jefe, NI.",
     "jul": "JUL : Vrai nom Julien Mari. Ne en 1990 a Marseille. Le plus productif : 2 albums par an ! Sons : Tchikita, Bande organisee.",
     "gazo": "GAZO : Roi de la drill en France ! Albums : KMT, Apocalypse. Sons : La Melo avec Tiakola.",
     "tiakola": "TIAKOLA : Membre de 4Keus. Albums : Melo, BDLM. Sons : La Melo, Gasolina.",
@@ -506,7 +506,6 @@ TOUT = {
     "subjonctif": "SUBJONCTIF 10H : Apres il faut que, je veux que, je suis content que... Ex : Il faut que tu viennes, Je veux que tu fasses tes devoirs.",
     "plus-que-parfait": "PLUS-QUE-PARFAIT 10H : Pour une action qui s est passee avant une autre action au passe. Ex : Quand je suis arrive, il avait deja mange.",
     "infinitif": "INFINITIF 10H : Forme non conjuguee du verbe. Ex : manger, finir, prendre, etre, avoir.",
-    "participe present": "PARTICIPE PRESENT 10H : Verbe + -ant. Ex : En mangeant, En jouant, En parlant.",
     "synonyme": "SYNONYME 10H : Mot qui veut dire la meme chose. Ex : content = heureux.",
     "antonyme": "ANTONYME 10H : Mot qui veut dire le contraire. Ex : grand = petit, chaud = froid.",
     "homonyme": "HOMONYME 10H : Mots qui se prononcent pareil mais s ecrivent differemment. Ex : a / a, et / est, son / sont.",
@@ -536,8 +535,6 @@ TOUT = {
     "prateritum": "PRATERITUM 10H - ALLEMAND : Passe simple, surtout a l ecrit. Ex : Ich war, Ich hatte, Ich konnte, Ich musste.",
     "futur en allemand": "FUTUR EN ALLEMAND 10H : werden + infinitif a la fin. Ex : Ich werde lernen, Du wirst kommen.",
     "comparatif en allemand": "COMPARATIF EN ALLEMAND 10H : Plus... que = -er + als. Ex : grosser als = plus grand que. gut -> besser als.",
-    "superlatif en allemand": "SUPERLATIF EN ALLEMAND 10H : am + adjectif + -sten. Ex : am besten = le mieux, am grossten = le plus grand.",
-    "phrase subordonnee en allemand": "PHRASE SUBORDONNEE EN ALLEMAND 10H : Le verbe conjugue va a la FIN. Ex : Ich weiss, dass du kommst.",
     "weil / dass / wenn": "WEIL / DASS / WENN 10H : weil = parce que. dass = que. wenn = quand / si. Ex : Ich bleibe zu Hause, weil ich krank bin.",
     "present simple": "PRESENT SIMPLE 10H - ANGLAIS : Pour les habitudes. I play, He plays (avec -s !). Ex : He plays football every day.",
     "present perfect": "PRESENT PERFECT 10H - ANGLAIS : have / has + participe passe. Ex : I have lived here for 5 years. I have just eaten.",
@@ -658,11 +655,10 @@ TOUT = {
     "application": "APPLICATION 10H : Programme pour telephone ou ordi. Ex : WhatsApp, TikTok, Fortnite. On la telecharge sur App Store / Play Store.",
     "budget": "BUDGET 10H - ECO : Prevoir ce que tu gagnes et ce que tu depenses. Ex : Tu as 100 CHF. Tu mets 50 pour manger, 20 pour loisirs, 30 en epargne. Regle 50/30/20.",
     "impot": "IMPOT 10H - ECO : Argent qu on donne a l Etat pour payer ecoles, hopitaux, routes, police. En Suisse, on paie impot federal + cantonal + communal.",
-    "tva": "TVA 10H - ECO : Taxe sur la Valeur```python
-    "tva": "TVA 10H - ECO : Taxe sur la Valeur Ajoutee. En Suisse : 8.1% en general, 2.6% pour la nourriture, 3.8% pour l hotel. Quand tu achetes un jeu a 100 CHF, environ 8 CHF vont a l Etat.",
+    "tva": "TVA 10H- ECO : Taxe sur la Valeur Ajoutee. En Suisse : 8.1% en general, 2.6% pour la nourriture, 3.8% pour l hotel. Quand tu achetes un jeu a 100 CHF, environ 8 CHF vont a l Etat.",
     "inflation": "INFLATION 10H - ECO : Quand les prix montent. Ex : Une pizza a 10 CHF, l annee d apres a 11 CHF = inflation de 10%. Causes : plus de demande, plus de couts. Consequences : ton argent vaut moins.",
     "chomage": "CHOMAGE 10H - ECO : Quand quelqu un veut travailler mais ne trouve pas de travail. Causes : crise, robotisation, manque de formation. Solutions : formation, apprentissage, aide de l Etat.",
-    "offre et demande": "OFFRE ET DEMANDE 10H - ECO : Si beaucoup de gens veulent acheter et peu de produits, le prix monte. Si peu de gens veulent acheter et beaucoup de produits, le prix baisse. Ex : 【entity-PS5¦canonical_name=PS5】 au debut = tres demandee, peu de stock = prix tres haut.",
+    "offre et demande": "OFFRE ET DEMANDE 10H - ECO : Si beaucoup de gens veulent acheter et peu de produits, le prix monte. Si peu de gens veulent acheter et beaucoup de produits, le prix baisse. Ex : PS5 au debut = tres demandee, peu de stock = prix tres haut.",
     "entreprise": "ENTREPRISE 10H - ECO : Organisation qui produit ou vend. Ex : 【entity-Nestle¦canonical_name=Nestle】, 【entity-Rolex¦canonical_name=Rolex】, 【entity-Migros¦canonical_name=Migros】, Coop. Types : petite (boulangerie), moyenne, grande (multinationale). But : gagner de l argent en repondant a un besoin.",
     "benefice": "BENEFICE 10H - ECO : Benefice = Recettes - Couts. Ex : Tu vends des limonades pour 100 CHF, ca t a coute 40 CHF. Benefice = 60 CHF. Si couts > recettes, c est une perte.",
     "cout": "COUT 10H - ECO : Ce que ca coute pour produire. Cout fixe : loyer, meme si tu ne vends rien. Cout variable : ingredients, ca change avec ce que tu produis.",
@@ -702,7 +698,6 @@ TOUT = {
     "fair-play": "FAIR-PLAY 10H - SPORT : Jouer honnetement, respecter l adversaire, l arbitre, les regles. Gagner, c est bien, mais gagner en trichant, ce n est pas gagner.",
     "echauffement": "ECHAUFFEMENT 10H - SPORT : Avant le sport, il faut echauffer les muscles 5-10 min : courir doucement, tourner les bras, les jambes, les chevilles. Ca evite les blessures.",
     "endurance": "ENDURANCE 10H - SPORT : Pouvoir courir longtemps sans etre trop fatigue. On l entraine en courant lentement longtemps, en faisant du velo, de la natation.",
-    "force": "FORCE 10H - SPORT : Pouvoir soulever, pousser, tirer. On l entraine avec des pompes, des squats, des tractions, des poids legers. A 13 ans, pas de poids lourds, poids du corps = parfait.",
     "souplesse": "SOUPLESSE 10H - SPORT : Pouvoir bouger facilement sans se faire mal. On l entraine avec des etirements, du yoga, de la gymnastique.",
     "coordination": "COORDINATION 10H - SPORT : Faire bouger plusieurs parties du corps en meme temps. Ex : jongler, dribbler au foot, faire du velo.",
     "dopage": "DOPAGE 10H - SPORT : Prendre des produits interdits pour etre plus fort. C est de la triche, c est dangereux pour la sante, c est puni. Les vrais champions ne se dopent pas.",
@@ -785,20 +780,20 @@ TOUT = {
     "guitare": "GUITARE 10H : Instrument avec 6 cordes. Accords de base : Do, Sol, La mineur, Mi mineur.",
     "note": "NOTE DE MUSIQUE 10H : 7 notes : Do, Re, Mi, Fa, Sol, La, Si.",
     "foot": "FOOT 10H : Sport le plus joue au monde, beaucoup de milliards de fans ! 2 equipes de 11, 90 minutes.",
-    "basket": "BASKET 10H : 5 vs 5, panier a 3.05m. Michael Jordan = GOAT. 【entity-Wembanyama¦canonical_name=Wembanyama】 = 2m24 !",
-    "tennis": "TENNIS 10H : 【entity-Federer¦canonical_name=Roger Federer】 (20 Grands Chelems, Suisse !), 【entity-Nadal¦canonical_name=Nadal】 (22), 【entity-Djokovic¦canonical_name=Djokovic】 (24, record).",
-    "formule 1": "FORMULE 1 10H : 350 km/h ! 【entity-Verstappen¦canonical_name=Verstappen】 a gagne 2021, 2022, 2023, 2024. 【entity-Hamilton¦canonical_name=Hamilton】 = 7 titres.",
+    "basket": "BASKET 10H : 5 vs 5, panier a 3.05m. Michael Jordan = GOAT. Wembanyama = 2m24 !",
+    "tennis": "TENNIS 10H : Federer (20 Grands Chelems, Suisse !), Nadal (22), Djokovic (24, record).",
+    "formule 1": "FORMULE 1 10H : 350 km/h ! Verstappen a gagne 2021, 2022, 2023, 2024. Hamilton = 7 titres.",
     "jo": "JO 10H : Tous les 4 ans. 2024 = Paris, 2028 = Los Angeles. Devise : Plus vite, plus haut, plus fort.",
     "manger sain": "MANGER SAIN 10H : 5 fruits et legumes par jour, boire 1.5L d eau, moins de sucre.",
     "sommeil": "SOMMEIL 10H : A 13 ans, il faut 9-10h de sommeil ! Pas d ecran 1h avant de dormir.",
     "【entity-messi¦canonical_name=Messi】": "【entity-MESSI¦canonical_name=Messi】 : 8 Ballons d Or (record), 91 buts en une annee. Coupe du Monde 2022.",
     "ronaldo": "RONALDO : 5 Ballons d Or, meilleur buteur de l histoire (beaucoup de buts).",
-    "mbappe": "MBAPPE : Champion du Monde 2018 a 19 ans. Vitesse : 36 km/h. 【entity-Real Madrid¦canonical_name=Real Madrid】 depuis 2024.",
-    "ballon d or": "BALLON D OR 10H : Trophee du meilleur joueur du monde. 【entity-Messi¦canonical_name=Messi】 en a 8 (record), Ronaldo 5.",
+    "mbappe": "MBAPPE : Champion du Monde 2018 a 19 ans. Vitesse : 36 km/h. Real Madrid depuis 2024.",
+    "ballon d or": "BALLON D OR 10H : Trophee du meilleur joueur du monde. Messi en a 8 (record), Ronaldo 5.",
     "coupe du monde": "COUPE DU MONDE 10H : Tous les 4 ans, 48 equipes en 2026. 2022 = Argentine gagne contre France.",
     "ligue des champions": "LIGUE DES CHAMPIONS 10H : 【entity-Real Madrid¦canonical_name=Real Madrid】 a gagne 15 fois, record !",
     "minecraft": "MINECRAFT 10H : Jeu le plus vendu au monde : beaucoup de millions de copies ! Monde en cubes, Creeper, Ender Dragon.",
-    "【entity-fortnite¦canonical_name=Fortnite】": "【entity-FORTNITE¦canonical_name=Fortnite】 10H : Battle Royale : 100 joueurs, le dernier vivant gagne.",
+    "fortnite": "FORTNITE 10H : Battle Royale : 100 joueurs, le dernier vivant gagne.",
     "roblox": "ROBLOX 10H : Des millions de jeux crees par les joueurs. Jeux cultes : Brookhaven, Blox Fruits, Doors.",
     "gta": "GTA V 10H : Beaucoup de millions de copies. Monde ouvert : Los Santos. GTA VI sort en 2026, a Vice City.",
     "brawl stars": "BRAWL STARS 10H : Jeu mobile de Supercell. 3v3, Brawlers : Shelly, Colt, Spike, Leon...",
